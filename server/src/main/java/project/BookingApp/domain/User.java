@@ -1,0 +1,58 @@
+package project.BookingApp.domain;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import project.BookingApp.util.constant.RoleEnum;
+
+import java.time.Instant;
+
+@Entity
+@Table(name = "users")
+@DynamicUpdate
+@DynamicInsert
+@Getter
+@Setter
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @NotBlank(message = "Email is required")
+    private String email;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role is required")
+    private RoleEnum role;
+
+    @PrePersist
+    public void handleCreateAt() {
+//        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+//                ? SecurityUtil.getCurrentUserLogin().get()
+//                : "";
+//        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleUpdateAt() {
+//        this.updatedAt = Instant.now();
+//
+//        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+//                ? SecurityUtil.getCurrentUserLogin().get()
+//                : "";
+    }
+}
