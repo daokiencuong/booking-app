@@ -1,0 +1,12 @@
+<mat-card>
+  <h2>Dashboard Tổng Quan</h2>
+  <div>Số booking: {{ stats().bookingCount }}</div>
+  <div>Doanh thu: {{ stats().revenue | number }} VNĐ</div>
+  <div>Số dịch vụ: {{ stats().serviceCount }}</div>
+  <div>Số nhân viên: {{ stats().staffCount }}</div>
+  <div class="mt-2">
+    <button mat-raised-button color="primary" (click)="goto('/admin/services')">Quản lý dịch vụ</button>
+    <button mat-raised-button color="accent" (click)="goto('/admin/bookings')">Quản lý booking</button>
+    <button mat-raised-button (click)="goto('/admin/staffs')">Quản lý nhân viên</button>
+  </div>
+</mat-card> 

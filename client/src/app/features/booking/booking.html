@@ -1,0 +1,40 @@
+<mat-horizontal-stepper [selectedIndex]="step()">
+  <mat-step label="Chọn dịch vụ">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Dịch vụ</mat-label>
+      <mat-select (selectionChange)="selectedService()">
+        <mat-option *ngFor="let s of services()" [value]="s.id">{{ s.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onServiceSelect()" [disabled]="!selectedService()">Tiếp tục</button>
+  </mat-step>
+  <mat-step label="Chọn thời gian">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Khung giờ</mat-label>
+      <mat-select (selectionChange)="selectedTime()">
+        <mat-option *ngFor="let t of times()" [value]="t.id">{{ t.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button (click)="step.set(0)">Quay lại</button>
+    <button mat-raised-button color="primary" (click)="onTimeSelect()" [disabled]="!selectedTime()">Tiếp tục</button>
+  </mat-step>
+  <mat-step label="Xác nhận">
+    <mat-card>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Tên khách</mat-label>
+        <input matInput [(ngModel)]="customer().name">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput [(ngModel)]="customer().phone">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Ghi chú</mat-label>
+        <input matInput [(ngModel)]="customer().note">
+      </mat-form-field>
+      <button mat-raised-button (click)="step.set(1)">Quay lại</button>
+      <button mat-raised-button color="accent" (click)="confirmBooking()" [disabled]="!customer().name || !customer().phone">Xác nhận đặt lịch</button>
+    </mat-card>
+  </mat-step>
+</mat-horizontal-stepper>
+
