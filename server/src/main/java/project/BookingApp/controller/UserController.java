@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.BookingApp.domain.request.user.ReqUserCreateDTO;
+import project.BookingApp.domain.request.user.ReqUserUpdateDTO;
 import project.BookingApp.domain.response.user.ResUserCreateDTO;
+import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.service.UserService;
 import project.BookingApp.util.annotation.ApiMessage;
 
@@ -32,4 +34,12 @@ public class UserController {
         ResUserCreateDTO createdUser = this.userService.handleCreateNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
+
+    @PostMapping("common/users")
+    @ApiMessage("Update information successfull")
+    public ResponseEntity<ResUserUpdateDTO> updateUser(@Valid @RequestBody ReqUserUpdateDTO req) {
+        ResUserUpdateDTO res = this.userService.handleUpdateUser(req);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
 }

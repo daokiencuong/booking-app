@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class GlobalException {
     @ExceptionHandler(value = {
             BadCredentialsException.class,
+            UserException.class
             })
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();
