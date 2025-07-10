@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/api/v1/admin/generate",
+                "/api/v1/admin/users"
         };
 
         http.csrf(c -> c.disable()).cors(Customizer.withDefaults())

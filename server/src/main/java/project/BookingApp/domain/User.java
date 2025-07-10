@@ -37,6 +37,9 @@ public class User {
     private String createdBy;
     private String updatedBy;
 
+    @Column(columnDefinition = "TEXT")
+    private String refreshToken;
+
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role is required")
     private RoleEnum role;

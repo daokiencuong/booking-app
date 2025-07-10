@@ -21,7 +21,7 @@ import java.util.Optional;
 public class SecurityUtil {
     private final JwtEncoder jwtEncoder;
 
-    public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
+    public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
     public SecurityUtil(JwtEncoder jwtEncoder) {
         this.jwtEncoder = jwtEncoder;

@@ -23,7 +23,6 @@ public class ResLoginDTO {
         private String email;
         private String name;
         private RoleEnum role;
-        private String phoneNumber;
     }
 
     @Getter
