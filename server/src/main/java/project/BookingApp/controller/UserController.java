@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.BookingApp.domain.request.user.ReqUserCreateDTO;
@@ -35,8 +36,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PostMapping("common/users")
-    @ApiMessage("Update information successfull")
+    @PutMapping("common/users")
+    @ApiMessage("Update information successfully")
     public ResponseEntity<ResUserUpdateDTO> updateUser(@Valid @RequestBody ReqUserUpdateDTO req) {
         ResUserUpdateDTO res = this.userService.handleUpdateUser(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);

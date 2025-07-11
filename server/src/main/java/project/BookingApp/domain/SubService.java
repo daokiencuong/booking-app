@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import project.BookingApp.util.SecurityUtil;
 import project.BookingApp.util.constant.PriceType;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "subServices")
@@ -26,4 +29,26 @@ public class SubService {
     @ManyToOne
     @JoinColumn(name = "main_service_id")
     private MainService mainService;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+
+    @PrePersist
+    public void handleCreateAt() {
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleUpdateAt() {
+        this.updatedAt = Instant.now();
+
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
 }
