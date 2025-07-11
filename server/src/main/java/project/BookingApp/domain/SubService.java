@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import project.BookingApp.util.SecurityUtil;
 import project.BookingApp.util.constant.PriceType;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Entity
@@ -23,7 +24,9 @@ public class SubService {
 
     private String name;
     private double price;
-    private int durationTime;
+    private Duration durationTime;
+
+    @Enumerated(EnumType.STRING)
     private PriceType priceType;
 
     @ManyToOne
