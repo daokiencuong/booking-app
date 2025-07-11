@@ -1,26 +1,19 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { ApiService } from '../../../core/service/api.service';
-import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
 })
-export class DashboardComponent implements OnInit {
-  private api = inject(ApiService);
-  private router = inject(Router);
-  stats = signal<any>({});
-
-  ngOnInit() {
-    this.api.get('/api/dashboard').subscribe(data => this.stats.set(data));
-  }
-
-  goto(path: string) {
-    this.router.navigate([path]);
+export class Dashboard {
+  userName = '';
+  constructor(private authService: AuthService) {
+    const user = this.authService.getUser();
+    this.userName = user?.name || '';
   }
 } 

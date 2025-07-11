@@ -1,5 +1,0 @@
-<mat-card *ngFor="let b of bookings()" class="mb-2">
-  <div><b>Khách:</b> {{ b.customer.name }} | <b>Dịch vụ:</b> {{ b.serviceName }} | <b>Thời gian:</b> {{ b.time }}</div>
-  <div><b>Trạng thái:</b> {{ b.status }}</div>
-  <button mat-button color="primary" *ngIf="b.status !== 'done'" (click)="updateStatus(b.id, 'done')">Xác nhận hoàn thành</button>
-</mat-card> 
