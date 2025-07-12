@@ -9,4 +9,5 @@ import project.BookingApp.domain.User;
 public interface UserRepository extends JpaRepository<User,Long>, JpaSpecificationExecutor<User> {
 
     User findByEmail(String email);
+    Boolean existsByEmail(String email);
 }
