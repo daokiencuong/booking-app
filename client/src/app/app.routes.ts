@@ -23,5 +23,5 @@ export const routes: Routes = [
       }
     ]
   },
-  // ... các route khác
+  
 ];

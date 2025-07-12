@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+@Injectable({ providedIn: 'root' })
+export class MessageService {
+  constructor(private snackBar: MatSnackBar) {}
+
+  showSuccess(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+  }
+
+  showError(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['error-snackbar']
+    });
+  }
+
+  showInfo(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['info-snackbar']
+    });
+  }
+
+  showWarning(message: string) {
+    this.snackBar.open(message, 'Đóng', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['warning-snackbar']
+    });
+  }
+} 
