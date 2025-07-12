@@ -11,7 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   standalone: true,
   imports: [CommonModule, FormsModule, MatSnackBarModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss']
+  styleUrls: ['./login.css']
 })
 export class Login {
   email = '';

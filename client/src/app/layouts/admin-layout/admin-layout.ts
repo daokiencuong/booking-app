@@ -8,6 +8,6 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterOutlet],
   templateUrl: './admin-layout.html',
-  styleUrls: ['./admin-layout.scss']
+  styleUrls: ['./admin-layout.css']
 })
 export class AdminLayout {} 
