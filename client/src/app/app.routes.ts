@@ -20,6 +20,14 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./features/admin/dashboard/dashboard').then(m => m.Dashboard)
+      },
+      {
+        path: 'service',
+        loadComponent: () => import('./features/admin/service/service').then(m => m.Service)
+      },
+      {
+        path: 'staff',
+        loadComponent: () => import('./features/admin/staff/staff').then(m => m.Staff)
       }
     ]
   },

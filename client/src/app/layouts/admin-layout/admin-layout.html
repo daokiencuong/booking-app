@@ -2,19 +2,17 @@
   <header class="admin-header">
     <div class="logo">Nail Booking Admin</div>
     <div class="user-info">
-      <!-- Hiển thị tên user ở đây sau này -->
-      <span>Xin chào, Admin</span>
-      <button class="logout-btn">Đăng xuất</button>
+      <span>Xin chào, {{userName}}</span>
+      <button class="logout-btn" (click)="logout()">Đăng xuất</button>
     </div>
   </header>
   <div class="admin-main">
     <aside class="admin-sidebar">
       <nav>
         <ul>
-          <li><a routerLink="/admin">Dashboard</a></li>
-          <li><a routerLink="/admin/services">Dịch vụ</a></li>
-          <li><a routerLink="/admin/staff">Nhân viên</a></li>
-          <!-- Thêm các menu khác nếu cần -->
+          <li><a routerLink="/admin" routerLinkActive="active">Dashboard</a></li>
+          <li><a routerLink="/admin/service" routerLinkActive="active">Dịch vụ</a></li>
+          <li><a routerLink="/admin/staff" routerLinkActive="active">Nhân viên</a></li>
         </ul>
       </nav>
     </aside>

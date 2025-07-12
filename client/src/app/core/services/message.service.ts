@@ -7,7 +7,7 @@ export class MessageService {
 
   showSuccess(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 3000,
+      duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['success-snackbar']
@@ -16,7 +16,7 @@ export class MessageService {
 
   showError(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 500000,
+      duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['error-snackbar']
@@ -25,7 +25,7 @@ export class MessageService {
 
   showInfo(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 3000,
+      duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['info-snackbar']
@@ -34,7 +34,7 @@ export class MessageService {
 
   showWarning(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 4000,
+      duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['warning-snackbar']
