@@ -1,6 +1,5 @@
 <form class="login-form" (ngSubmit)="onSubmit()" autocomplete="off">
-  <h2>Đăng nhập</h2>
-  <div *ngIf="errorMsg" class="error-message">{{ errorMsg }}</div>
+  <h2 class="text-xl">Đăng nhập</h2>
   <div class="form-group">
     <label for="email">Email</label>
     <input id="email" name="email" type="email" [(ngModel)]="email" required />

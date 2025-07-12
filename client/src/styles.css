@@ -1,36 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
+html,
+body {
+  height: 100%;
+  font-family: Inter, "Helvetica Neue", sans-serif;
+}
+body {
+  margin: 0;
+}
+
 /* Angular Material Snackbar Styles */
-.success-snackbar {
-  background: #4caf50;
+.success-snackbar .mat-mdc-snackbar-surface {
+  background: #4caf50 !important;
   color: white;
 }
 
-.error-snackbar {
-  background: #f44336;
+.error-snackbar .mat-mdc-snackbar-surface {
+  background: #f44336 !important;
   color: white;
 }
 
-.info-snackbar {
-  background: #2196f3;
+.info-snackbar .mat-mdc-snackbar-surface {
+  background: #2196f3 !important;
   color: white;
 }
 
-.warning-snackbar {
-  background: #ff9800;
+.warning-snackbar .mat-mdc-snackbar-surface {
+  background: #ff9800 !important;
   color: white;
 }
 
-/* Override default snackbar styles */
-.mat-mdc-snack-bar-container {
-  margin-top: 20px;
+.mat-mdc-snack-bar-container .mdc-button {
+  color: white !important;
 }
 
-.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }
+/* Toolbar */
+.mat-toolbar {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Button */
+.mat-button, .mat-raised-button, .mat-icon-button {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Form field label */
+.mat-form-field-label {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* MDC SnackBar */
+.mat-mdc-snack-bar-container .mdc-snackbar__label, .mdc-button__label {
+  font-family: 'Inter', sans-serif !important;
+}

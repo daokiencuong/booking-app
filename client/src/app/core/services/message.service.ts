@@ -6,7 +6,7 @@ export class MessageService {
   constructor(private snackBar: MatSnackBar) {}
 
   showSuccess(message: string) {
-    this.snackBar.open(message, 'Đóng', {
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
@@ -15,8 +15,8 @@ export class MessageService {
   }
 
   showError(message: string) {
-    this.snackBar.open(message, 'Đóng', {
-      duration: 5000,
+    this.snackBar.open(message, 'Close', {
+      duration: 500000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['error-snackbar']
@@ -24,7 +24,7 @@ export class MessageService {
   }
 
   showInfo(message: string) {
-    this.snackBar.open(message, 'Đóng', {
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
@@ -33,7 +33,7 @@ export class MessageService {
   }
 
   showWarning(message: string) {
-    this.snackBar.open(message, 'Đóng', {
+    this.snackBar.open(message, 'Close', {
       duration: 4000,
       horizontalPosition: 'center',
       verticalPosition: 'top',

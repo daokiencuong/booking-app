@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { MessageService } from '../../../core/services/message.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatSnackBarModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -45,7 +44,7 @@ export class Login {
       },
       error: (err) => {
         this.loading = false;
-        const errorMessage = err?.error?.message || 'Đăng nhập thất bại!';
+        const errorMessage = 'Đăng nhập thất bại!';
         this.errorMsg = errorMessage;
         this.messageService.showError(errorMessage);
       }
