@@ -3,10 +3,7 @@ package project.BookingApp.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import project.BookingApp.domain.request.subService.ReqSubServiceCreate;
 import project.BookingApp.domain.request.subService.ReqSubServiceUpdate;
 import project.BookingApp.domain.response.subService.ResSubServiceCreate;
@@ -32,5 +29,11 @@ public class SubServiceController {
     public ResponseEntity<ResSubServiceUpdate> updateSubService(@RequestBody ReqSubServiceUpdate req){
         ResSubServiceUpdate res = this.subServiceService.handleUpdateSubService(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteSubService(@PathVariable Long id){
+        this.subServiceService.handleDeleteSubService(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

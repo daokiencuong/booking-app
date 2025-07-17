@@ -36,12 +36,18 @@ public class ServiceCategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @GetMapping("common/service-category")
+    @GetMapping("common/service")
     public ResponseEntity<ResultPaginationDTO> getAllServiceCategory(
             @Filter Specification<ServiceCategory> spec,
             Pageable pageable
             ){
         ResultPaginationDTO res = this.serviceCategoryService.handleGetAllServiceCategory(spec, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @DeleteMapping("admin/service-category/{id}")
+    public ResponseEntity<Void> deleteServiceCategory(@PathVariable("id") Long id){
+        this.serviceCategoryService.handleDeleteServiceCategory(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

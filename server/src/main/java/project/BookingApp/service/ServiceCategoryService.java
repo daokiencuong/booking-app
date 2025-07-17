@@ -22,9 +22,11 @@ import java.util.List;
 @Service
 public class ServiceCategoryService {
     private final ServiceCategoryRepository serviceCategoryRepository;
+    private final MainServiceService mainServiceService;
 
-    public ServiceCategoryService(ServiceCategoryRepository serviceCategoryRepository) {
+    public ServiceCategoryService(ServiceCategoryRepository serviceCategoryRepository, MainServiceService mainServiceService) {
         this.serviceCategoryRepository = serviceCategoryRepository;
+        this.mainServiceService = mainServiceService;
     }
 
     public ServiceCategory findById(Long id){
@@ -125,5 +127,15 @@ public class ServiceCategoryService {
         paginationDTO.setResult(serviceCategoryList);
 
         return paginationDTO;
+    }
+
+    public void handleDeleteServiceCategory(Long id){
+        ServiceCategory serviceCategory = findById(id);
+
+        serviceCategory.getMainServices().forEach(service -> {
+            this.mainServiceService.handleDeleteMainService(service.getId());
+        });
+
+        this.serviceCategoryRepository.delete(serviceCategory);
     }
 }

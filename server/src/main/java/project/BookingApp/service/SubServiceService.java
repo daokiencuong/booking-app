@@ -13,16 +13,17 @@ import project.BookingApp.domain.response.subService.ResSubServiceCreate;
 import project.BookingApp.domain.response.subService.ResSubServiceUpdate;
 import project.BookingApp.repository.MainServiceRepository;
 import project.BookingApp.repository.SubServiceRepository;
+import project.BookingApp.util.error.MainServiceException;
 import project.BookingApp.util.error.SubServiceException;
 
 @Service
 public class SubServiceService {
     private final SubServiceRepository subServiceRepository;
-    private final MainServiceService mainServiceService;
+    private final MainServiceRepository mainServiceRepository;
 
-    public SubServiceService(SubServiceRepository subServiceRepository, MainServiceService mainServiceService) {
+    public SubServiceService(SubServiceRepository subServiceRepository, MainServiceRepository mainServiceRepository) {
         this.subServiceRepository = subServiceRepository;
-        this.mainServiceService = mainServiceService;
+        this.mainServiceRepository = mainServiceRepository;
     }
 
     public SubService findById(Long id){
@@ -40,7 +41,14 @@ public class SubServiceService {
         subService.setDurationTime(req.getDurationTime());
         subService.setPriceType(req.getPriceType());
 
-        MainService mainService = this.mainServiceService.findById(req.getMainService().getId());
+        MainService mainService = new MainService();
+
+        if(mainServiceRepository.findById(req.getMainService().getId()).isPresent()){
+            mainService = mainServiceRepository.findById(req.getMainService().getId()).get();
+        } else {
+            throw new MainServiceException("Main Service Not Found");
+        }
+
         subService.setMainService(mainService);
 
         SubService savedSubService = this.subServiceRepository.save(subService);
@@ -81,6 +89,11 @@ public class SubServiceService {
         res.setUpdatedBy(savedSubService.getUpdatedBy());
 
         return res;
+    }
+
+    public void handleDeleteSubService(Long id){
+        SubService subService = findById(id);
+        subServiceRepository.delete(subService);
     }
 
 }

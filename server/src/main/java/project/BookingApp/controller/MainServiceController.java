@@ -3,10 +3,7 @@ package project.BookingApp.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import project.BookingApp.domain.request.mainService.ReqMainServiceCreate;
 import project.BookingApp.domain.request.mainService.ReqMainServiceUpdate;
 import project.BookingApp.domain.response.mainService.ResMainServiceCreate;
@@ -32,5 +29,11 @@ public class MainServiceController {
     public ResponseEntity<ResMainServiceUpdate> updateMainService(@RequestBody ReqMainServiceUpdate req){
         ResMainServiceUpdate res = this.mainServiceService.handleUpdateMainService(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteMainService(@PathVariable("id") Long id){
+        this.mainServiceService.handleDeleteMainService(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

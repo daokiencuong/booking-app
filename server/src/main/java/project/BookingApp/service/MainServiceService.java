@@ -8,23 +8,29 @@ import project.BookingApp.domain.request.mainService.ReqMainServiceUpdate;
 import project.BookingApp.domain.response.mainService.ResMainServiceCreate;
 import project.BookingApp.domain.response.mainService.ResMainServiceUpdate;
 import project.BookingApp.repository.MainServiceRepository;
+import project.BookingApp.repository.ServiceCategoryRepository;
 import project.BookingApp.util.error.MainServiceException;
+import project.BookingApp.util.error.ServiceCategoryException;
+
+import java.util.List;
 
 @Service
 public class MainServiceService {
     private final MainServiceRepository mainServiceRepository;
-    private final ServiceCategoryService serviceCategoryService;
+    private final ServiceCategoryRepository serviceCategoryRepository;
+    private final SubServiceService subServiceService;
 
-    public MainServiceService(MainServiceRepository mainServiceRepository, ServiceCategoryService serviceCategoryService) {
+    public MainServiceService(MainServiceRepository mainServiceRepository, ServiceCategoryRepository serviceCategoryRepository, SubServiceService subServiceService) {
         this.mainServiceRepository = mainServiceRepository;
-        this.serviceCategoryService = serviceCategoryService;
+        this.serviceCategoryRepository = serviceCategoryRepository;
+        this.subServiceService = subServiceService;
     }
 
     public MainService findById(Long id){
         if(mainServiceRepository.findById(id).isPresent()){
             return mainServiceRepository.findById(id).get();
         } else {
-            throw new MainServiceException("No main service with id " + id + " exists");
+            throw new MainServiceException("Main Service Not Found");
         }
     }
 
@@ -36,7 +42,14 @@ public class MainServiceService {
         mainService.setDescription(req.getDescription());
         mainService.setDurationTime(req.getDurationTime());
 
-        ServiceCategory serviceCategory = this.serviceCategoryService.findById(req.getServiceCategory().getId());
+        ServiceCategory serviceCategory =  new ServiceCategory();
+
+        if(this.serviceCategoryRepository.findById(req.getServiceCategory().getId()).isPresent()){
+            serviceCategory = this.serviceCategoryRepository.findById(req.getServiceCategory().getId()).get();
+        }else {
+            throw new ServiceCategoryException("Service Category Not Found");
+        }
+
         mainService.setServiceCategory(serviceCategory);
 
         MainService savedMainService = this.mainServiceRepository.save(mainService);
@@ -81,4 +94,15 @@ public class MainServiceService {
 
         return res;
     }
+
+    public void handleDeleteMainService(Long id) {
+        MainService mainService = findById(id);
+
+        mainService.getSubServices().forEach(subService ->
+                this.subServiceService.handleDeleteSubService(subService.getId())
+        );
+
+        mainServiceRepository.delete(mainService);
+    }
+
 }
