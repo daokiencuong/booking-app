@@ -4,10 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.BookingApp.domain.request.mainService.ReqMainServiceCreate;
+import project.BookingApp.domain.request.mainService.ReqMainServiceUpdate;
 import project.BookingApp.domain.response.mainService.ResMainServiceCreate;
+import project.BookingApp.domain.response.mainService.ResMainServiceUpdate;
 import project.BookingApp.service.MainServiceService;
 
 @Controller
@@ -23,5 +26,11 @@ public class MainServiceController {
     public ResponseEntity<ResMainServiceCreate> createNewMainService(@RequestBody ReqMainServiceCreate req){
         ResMainServiceCreate res = this.mainServiceService.handleCreateNewMainService(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<ResMainServiceUpdate> updateMainService(@RequestBody ReqMainServiceUpdate req){
+        ResMainServiceUpdate res = this.mainServiceService.handleUpdateMainService(req);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }
