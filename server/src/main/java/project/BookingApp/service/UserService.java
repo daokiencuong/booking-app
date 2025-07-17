@@ -2,11 +2,14 @@ package project.BookingApp.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.BookingApp.domain.User;
+import project.BookingApp.domain.request.user.ReqChangePassForceDTO;
 import project.BookingApp.domain.request.user.ReqUserCreateDTO;
 import project.BookingApp.domain.request.user.ReqUserUpdateDTO;
 import project.BookingApp.domain.response.ResultPaginationDTO;
+import project.BookingApp.domain.response.user.ResChangePassForceDTO;
 import project.BookingApp.domain.response.user.ResUserCreateDTO;
 import project.BookingApp.domain.response.user.ResUserGetDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
@@ -19,10 +22,12 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(
-            UserRepository userRepository) {
+            UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User findById(long id) {
@@ -109,6 +114,17 @@ public class UserService {
         paginationDTO.setResult(userList);
 
         return paginationDTO;
+    }
+
+    public ResChangePassForceDTO handleChangePasswordForce(ReqChangePassForceDTO req){
+        User user = findById(req.getId());
+        String hashPassword = this.passwordEncoder.encode(req.getPassword());
+        user.setPassword(hashPassword);
+
+        ResChangePassForceDTO res = new ResChangePassForceDTO();
+        res.setMessage("Successfully changed password");
+
+        return res;
     }
 
     public void handleDeleteUser(Long id){

@@ -59,7 +59,6 @@ public class SecurityConfiguration {
                                         .requestMatchers("api/v1/admin/**").hasRole("ADMIN")
                                         .requestMatchers("api/v1/member/**").hasRole("MEMBER")
                                         .anyRequest().authenticated()
-                                        //.anyRequest().permitAll()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))

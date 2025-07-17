@@ -104,7 +104,7 @@ public class AuthController {
         return ResponseEntity.ok(userGetAccount);
     }
 
-    @GetMapping("/refresh")
+    @PostMapping("/refresh")
     @ApiMessage("Refresh token")
     public ResponseEntity<ResLoginDTO> refreshToken(
             @CookieValue(name = "refresh_token") String refreshToken) throws RefreshTokenException {

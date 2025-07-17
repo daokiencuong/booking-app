@@ -9,9 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import project.BookingApp.domain.User;
+import project.BookingApp.domain.request.user.ReqChangePassForceDTO;
 import project.BookingApp.domain.request.user.ReqUserCreateDTO;
 import project.BookingApp.domain.request.user.ReqUserUpdateDTO;
 import project.BookingApp.domain.response.ResultPaginationDTO;
+import project.BookingApp.domain.response.user.ResChangePassForceDTO;
 import project.BookingApp.domain.response.user.ResUserCreateDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.service.UserService;
@@ -36,6 +38,13 @@ public class UserController {
         user.setPassword(hashPassword);
         ResUserCreateDTO createdUser = this.userService.handleCreateNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @PutMapping("admin/users/change-pass-force")
+    @ApiMessage("Update password successfully")
+    public ResponseEntity<ResChangePassForceDTO> changePasswordForce(@RequestBody ReqChangePassForceDTO req){
+        ResChangePassForceDTO res = this.userService.handleChangePasswordForce(req);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("admin/users")
