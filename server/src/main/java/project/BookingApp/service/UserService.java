@@ -58,6 +58,8 @@ public class UserService {
         user.setPassword(req.getPassword());
         user.setRole(req.getRole());
         user.setName(req.getName());
+        user.setDescription(req.getDescription());
+        user.setStaffActive(req.isStaffActive());
 
         User savedUser = this.userRepository.save(user);
         ResUserCreateDTO resUserCreateDTO = new ResUserCreateDTO();
@@ -67,12 +69,16 @@ public class UserService {
         resUserCreateDTO.setRole(savedUser.getRole());
         resUserCreateDTO.setCreatedBy(savedUser.getCreatedBy());
         resUserCreateDTO.setCreatedAt(savedUser.getCreatedAt());
+        resUserCreateDTO.setDescription(savedUser.getDescription());
+        resUserCreateDTO.setStaffActive(savedUser.isStaffActive());
         return resUserCreateDTO;
     }
 
     public ResUserUpdateDTO handleUpdateUser(ReqUserUpdateDTO req){
         User user = findById(req.getId());
         user.setName(req.getName());
+        user.setDescription(req.getDescription());
+        user.setStaffActive(req.isStaffActive());
 
         User savedUser = this.userRepository.save(user);
         ResUserUpdateDTO resUserUpdateDTO = new ResUserUpdateDTO();
@@ -80,8 +86,10 @@ public class UserService {
         resUserUpdateDTO.setName(savedUser.getName());
         resUserUpdateDTO.setEmail(savedUser.getEmail());
         resUserUpdateDTO.setRole(savedUser.getRole());
+        resUserUpdateDTO.setDescription(savedUser.getDescription());
         resUserUpdateDTO.setUpdatedBy(savedUser.getUpdatedBy());
         resUserUpdateDTO.setUpdatedAt(savedUser.getUpdatedAt());
+        resUserUpdateDTO.setStaffActive(savedUser.isStaffActive());
 
         return resUserUpdateDTO;
     }
@@ -94,10 +102,12 @@ public class UserService {
             resUserGetDTO.setName(user.getName());
             resUserGetDTO.setEmail(user.getEmail());
             resUserGetDTO.setRole(user.getRole());
+            resUserGetDTO.setDescription(user.getDescription());
             resUserGetDTO.setCreatedAt(user.getCreatedAt());
             resUserGetDTO.setUpdatedAt(user.getUpdatedAt());
             resUserGetDTO.setCreatedBy(user.getCreatedBy());
             resUserGetDTO.setUpdatedBy(user.getUpdatedBy());
+            resUserGetDTO.setStaffActive(user.isStaffActive());
             return resUserGetDTO;
         }).toList();
 

@@ -8,4 +8,6 @@ import lombok.Setter;
 public class ReqUserUpdateDTO {
     private long id;
     private String name;
+    private String description;
+    private boolean staffActive;
 }

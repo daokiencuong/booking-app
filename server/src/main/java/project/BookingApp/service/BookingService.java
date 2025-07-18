@@ -6,7 +6,9 @@ import project.BookingApp.domain.MainService;
 import project.BookingApp.domain.SubService;
 import project.BookingApp.domain.User;
 import project.BookingApp.domain.request.booking.ReqBookingCreateDTO;
+import project.BookingApp.domain.request.booking.ReqCheckStaffAvailableDTO;
 import project.BookingApp.domain.response.booking.ResBookingCreateDTO;
+import project.BookingApp.domain.response.booking.ResCheckStaffAvailableDTO;
 import project.BookingApp.repository.BookingRepository;
 import project.BookingApp.repository.MainServiceRepository;
 import project.BookingApp.repository.SubServiceRepository;
@@ -98,6 +100,15 @@ public class BookingService {
 
 
         res.setMainServices(listMainServices);
+        return res;
+    }
+
+    public ResCheckStaffAvailableDTO handleCheckStaffAvailable(ReqCheckStaffAvailableDTO req){
+
+        List<Booking> listBooking = this.bookingRepository.findAllByBookingDate(req.getBookingDate());
+
+        ResCheckStaffAvailableDTO res = new ResCheckStaffAvailableDTO();
+
         return res;
     }
 }

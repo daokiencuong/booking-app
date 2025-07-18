@@ -15,4 +15,6 @@ public class ReqUserCreateDTO {
     @NotBlank(message = "Password is required")
     private String password;
     private RoleEnum role;
+    private String description;
+    private boolean staffActive;
 }

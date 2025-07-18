@@ -32,6 +32,10 @@ public class User {
     @NotBlank(message = "Password is required")
     private String password;
 
+    private String description;
+
+    private boolean staffActive;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

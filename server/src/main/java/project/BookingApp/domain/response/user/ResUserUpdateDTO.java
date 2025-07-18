@@ -15,4 +15,6 @@ public class ResUserUpdateDTO {
     private Instant updatedAt;
     private String updatedBy;
     private RoleEnum role;
+    private String description;
+    private boolean staffActive;
 }

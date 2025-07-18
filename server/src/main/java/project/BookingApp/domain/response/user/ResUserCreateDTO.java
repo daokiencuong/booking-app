@@ -15,4 +15,6 @@ public class ResUserCreateDTO {
     private Instant createdAt;
     private String createdBy;
     private RoleEnum role;
+    private String description;
+    private boolean staffActive;
 }

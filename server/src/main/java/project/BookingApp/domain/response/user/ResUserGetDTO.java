@@ -14,7 +14,8 @@ public class ResUserGetDTO {
     private String name;
     private String email;
     private RoleEnum role;
-
+    private String description;
+    private boolean staffActive;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
