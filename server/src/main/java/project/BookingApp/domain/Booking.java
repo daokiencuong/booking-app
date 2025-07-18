@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import project.BookingApp.util.SecurityUtil;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,13 +23,14 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String customerEmail;
     private String customerName;
     private double totalPrice;
     private LocalDate bookingDate;
-    private LocalTime bookingTime;
+    private LocalTime startTime;
     private Duration durationTime;
+    private LocalTime endTime;
+    private Instant createdAt;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
@@ -35,9 +38,22 @@ public class Booking {
 
     @ManyToMany
     @JoinTable(
-            name = "booking_service",
+            name = "booking_mainService",
             joinColumns = @JoinColumn(name = "booking_id"),
             inverseJoinColumns = @JoinColumn(name = "main_service_id")
     )
     private List<MainService> mainServices;
+
+    @ManyToMany
+    @JoinTable(
+            name = "booking_subService",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "sub_service_id")
+    )
+    private List<SubService> subServices;
+
+    @PrePersist
+    public void handleCreateAt() {
+        this.createdAt = Instant.now();
+    }
 }

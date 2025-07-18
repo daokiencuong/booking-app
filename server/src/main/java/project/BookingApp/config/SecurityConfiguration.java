@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -48,7 +47,8 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/api/v1/admin/generate",
-                "/api/v1/admin/users"
+                "/api/v1/admin/users",
+                "api/v1/booking",
         };
 
         http.csrf(c -> c.disable()).cors(Customizer.withDefaults())

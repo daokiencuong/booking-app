@@ -10,6 +10,7 @@ import project.BookingApp.util.constant.PriceType;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "subServices")
@@ -32,6 +33,9 @@ public class SubService {
     @ManyToOne
     @JoinColumn(name = "main_service_id")
     private MainService mainService;
+
+    @ManyToMany(mappedBy = "subServices")
+    private List<Booking> bookings;
 
     private Instant createdAt;
     private Instant updatedAt;
