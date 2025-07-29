@@ -1,0 +1,6 @@
+.footer-title{
+    text-align: center;
+    font-size: clamp(1.2rem, 1.09rem + 0.36vw, 1.6rem);
+    padding: 5px 10px;
+    color: #7F8FA4;
+}

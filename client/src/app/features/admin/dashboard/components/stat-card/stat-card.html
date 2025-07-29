@@ -1,0 +1,11 @@
+<div class="stat-card-container">
+  <div class="stat-card-title">{{ title() }}</div>
+  <div class="stat-card-value">
+    {{ value() }}
+    @if (trend() === true) {
+    <span class="material-symbols-outlined trending_up"> trending_up </span>
+    } @else if (trend() === false) {
+    <span class="material-symbols-outlined trending_down"> trending_down </span>
+    }
+  </div>
+</div>

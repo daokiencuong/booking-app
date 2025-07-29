@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'admin-sidebar',
   imports: [],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'

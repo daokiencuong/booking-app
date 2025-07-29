@@ -1,0 +1,38 @@
+.dashboard-container{
+    padding: 20px;
+}
+
+.dashboard-title{
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.dashboard-greeting{
+    margin-top: -5px;
+    font-size: 1.4rem;
+}
+
+.dashboard-stat{
+    margin: 15px 0;
+}
+
+.dashboard-stat .stat-title{
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.stat-list{
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-item{
+    margin-right: 20px;
+    width: 100%;
+}
+
+.stat-item:last-child{
+    margin-right: 0;
+}
+

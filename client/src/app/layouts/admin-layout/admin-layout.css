@@ -1,0 +1,9 @@
+.admin-layout-container{
+    display: flex;
+    background-color: #F7F8FA;
+    min-height: 100vh;
+}
+
+.admin-layout-content{
+    width: 100%;
+}
