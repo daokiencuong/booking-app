@@ -1,9 +1,21 @@
-.admin-layout-container{
-    display: flex;
-    background-color: #F7F8FA;
-    min-height: 100vh;
+.admin-layout-container {
+  display: flex;
+  background-color: #f7f8fa;
+  min-height: 100vh;
 }
 
-.admin-layout-content{
-    width: 100%;
+.admin-layout-content {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px 15px 0px;
+}
+
+.admin-layout-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: flex-start;
 }

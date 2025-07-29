@@ -1,0 +1,11 @@
+<div class="staff-manage-container">
+    <h1 class="staff-manage-title">Staff Manage</h1>
+    <button (click)="openDialogCreate()" class="btn btn-primary">Create New Staff</button>
+    <div class="staff-list">
+        <app-list-staff/>
+    </div>
+</div>
+
+@if (isDialogCreateOpen()) {
+    <modal-new-staff (close)="closeDialogCreate()" (create)="createNewStaff($event)"/>
+}

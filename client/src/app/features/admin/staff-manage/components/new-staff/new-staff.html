@@ -1,0 +1,62 @@
+<div class="dialog-backdrop" (click)="closeDialog()"></div>
+<div class="dialog">
+  <h2>Create New Staff</h2>
+  <form (ngSubmit)="submit()" #staffForm="ngForm">
+    <input
+      type="text"
+      name="name"
+      [(ngModel)]="staff.name"
+      placeholder="Name"
+      required
+    />
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="staff.email"
+      placeholder="Email"
+      required
+    />
+    <div class="input-group">
+      <input
+        [type]="showPassword() ? 'text' : 'password'"
+        name="password"
+        [(ngModel)]="staff.password"
+        placeholder="Password"
+        required
+      />
+      <span class="toggle-password" (click)="onShowPassword()">
+        @if (showPassword()) {
+            🙈
+        } @else {
+            👁️
+        }
+      </span>
+    </div>
+
+    <select name="role" [(ngModel)]="staff.role" required>
+      <option value="'ADMIN'">ADMIN</option>
+      <option value="'MEMBER'">STAFF</option>
+    </select>
+    <textarea
+      name="description"
+      [(ngModel)]="staff.description"
+      placeholder="Description"
+    ></textarea>
+    <div class="switch-label">
+      <span>Staff Active</span>
+      <label class="switch">
+        <input
+          type="checkbox"
+          [(ngModel)]="staff.staffActive"
+          name="staffActive"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="submit">Create</button>
+      <button type="button" (click)="closeDialog()">Cancel</button>
+    </div>
+  </form>
+</div>
