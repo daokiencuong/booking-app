@@ -1,11 +1,15 @@
-<div class="staff-manage-container">
-    <h1 class="staff-manage-title">Staff Manage</h1>
-    <button (click)="openDialogCreate()" class="btn btn-primary">Create New Staff</button>
-    <div class="staff-list">
-        <app-list-staff/>
-    </div>
-</div>
+<admin-section [sectionTitle]="'Staff Management'">
+  <button (click)="openDialogCreate()" class="btn btn-primary">
+    Create New Staff
+  </button>
+  <div class="staff-list">
+    <app-list-staff />
+  </div>
+</admin-section>
 
 @if (isDialogCreateOpen()) {
-    <modal-new-staff (close)="closeDialogCreate()" (create)="createNewStaff($event)"/>
+<modal-new-staff
+  (close)="closeDialogCreate()"
+  (create)="createNewStaff($event)"
+/>
 }

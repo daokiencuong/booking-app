@@ -2,10 +2,11 @@ import { Component, signal } from '@angular/core';
 import { ListStaff } from "./components/list-staff/list-staff";
 import { NewStaff } from './components/new-staff/new-staff';
 import { StaffCreateModel } from '../../../model/staff-create.model';
+import { AdminSection } from '../../../shared/admin-section/admin-section';
 
 @Component({
   selector: 'staff-manage',
-  imports: [ListStaff, NewStaff],
+  imports: [ListStaff, NewStaff, AdminSection],
   templateUrl: './staff-manage.html',
   styleUrl: './staff-manage.css'
 })
