@@ -2,6 +2,22 @@
 
 *{
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #6b5aff18 #f0f0f0;
+}
+
+*::-webkit-scrollbar {
+  width: 2px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #6b5aff18;
+  border-radius: 2px;
+  border: 2px solid #ffffff;
 }
 
 body {
@@ -11,4 +27,32 @@ body {
 
 html {
   font-size: 62.5%; /* 62.5% của 16px = 10px */
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+
+:root {
+  /* Base colors */
+  --color-gray: #bbc5d5;
+  --color-primary: #ffa101;
+  --color-secondary: #322a7d;
+
+  /* Hover & Active states */
+  --color-primary-hover: #e89000;   /* tối hơn primary */
+  --color-primary-active: #cc7e00;
+
+  --color-secondary-hover: #28215e; /* tối hơn secondary */
+  --color-secondary-active: #1f1a4a;
+
+  /* Text colors */
+  --color-text: #222;
+  --color-text-light: #fff;
+
+  /* Backgrounds */
+  --bg-light: #f8f9fa;
+  --bg-dark: #1a1a1a;
+
+  /* Borders */
+  --border-color: #d1d9e6;
 }

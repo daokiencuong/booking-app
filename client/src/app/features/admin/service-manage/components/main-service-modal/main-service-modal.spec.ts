@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubService } from './sub-service';
+import { MainServiceModal } from './main-service-modal';
 
-describe('SubService', () => {
-  let component: SubService;
-  let fixture: ComponentFixture<SubService>;
+describe('MainServiceModal', () => {
+  let component: MainServiceModal;
+  let fixture: ComponentFixture<MainServiceModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubService]
+      imports: [MainServiceModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SubService);
+    fixture = TestBed.createComponent(MainServiceModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

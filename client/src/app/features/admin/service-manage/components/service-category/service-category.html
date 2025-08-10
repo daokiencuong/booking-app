@@ -1,6 +1,9 @@
-<div class="category-title-container">
-  <p (click)="onClick()">{{ category().name }}</p>
+<div class="category-title-container" (click)="onClick()">
+  <i class="bi bi-folder-fill"></i>
+  <span class="category-name">{{ category().name }}</span>
+  <span class="badge bg-primary ms-auto">Xem</span>
 </div>
+
 
 @if (isTabOpen()) {
 <table class="table table-hover table-borderless align-middle">
@@ -27,7 +30,7 @@
       <td class="text-center">{{ mainService.createdAt | date : "short" }}</td>
       <td class="text-center">{{ mainService.createdBy }}</td>
       <td class="text-center">
-        <button class="btn btn-sm btn-primary me-1">View</button>
+        <button class="btn btn-sm btn-primary me-1">Details</button>
         <button class="btn btn-sm btn-warning mx-1">Edit</button>
         <button class="btn btn-sm btn-danger ms-1">Delete</button>
       </td>

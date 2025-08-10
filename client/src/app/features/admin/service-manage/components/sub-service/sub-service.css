@@ -1,8 +1,0 @@
-:host {
-  display: block; 
-  padding: 10px;
-  background-color: rgba(0, 255, 55, 0.05); /* nền xám nhẹ */
-  border: 1px solid rgba(51, 255, 0, 0.2); /* viền mờ */
-  border-radius: 6px;
-  margin-bottom: 15px;
-}

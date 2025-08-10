@@ -14,6 +14,6 @@ export class DurationPipe implements PipeTransform {
     const hours = hoursMatch ? `${hoursMatch[1]}h` : '';
     const minutes = minutesMatch ? `${minutesMatch[1]}m` : '';
 
-    return `${hours} ${minutes}`.trim();
+    return `${hours}${minutes}`.trim();
   }
 }

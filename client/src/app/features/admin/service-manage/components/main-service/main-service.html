@@ -1,8 +1,0 @@
-<p (click)="onClick()">{{mainService().name}}</p>
-@if (isTabOpen()) {
-@for (subService of mainService().subServices; track subService.id) {
-    <app-sub-service [subService]="subService"/>
-}
-<h5>add subservice</h5>
-}
-
