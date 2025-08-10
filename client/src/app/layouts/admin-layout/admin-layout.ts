@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Sidebar } from "../../features/admin/sidebar/sidebar";
-import { Footer } from '../../shared/footer/footer';
+import { Footer } from '../../shared/components/footer/footer';
 import { ServiceManage } from "../../features/admin/service-manage/service-manage";
 @Component({
   selector: 'app-admin-layout',

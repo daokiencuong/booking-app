@@ -1,11 +1,11 @@
 import { Component, input, signal } from '@angular/core';
 import { ServiceCategoryGet } from '../../../../../model/response/service/service-category-get.model';
-import { MainService } from '../main-service/main-service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { DurationPipe } from '../../../../../shared/pipes/duration-pipe-pipe';
 
 @Component({
   selector: 'app-service-category',
-  imports: [MainService, DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule, DurationPipe],
   templateUrl: './service-category.html',
   styleUrl: './service-category.css'
 })

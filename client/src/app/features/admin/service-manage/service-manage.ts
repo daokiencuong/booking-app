@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminSection } from '../../../shared/admin-section/admin-section';
+import { AdminSection } from '../../../shared/components/admin-section/admin-section';
 import { ServiceCategory } from './components/service-category/service-category';
 import { ServiceCategoryGet } from '../../../model/response/service/service-category-get.model';
 
