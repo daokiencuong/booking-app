@@ -1,7 +1,34 @@
 <p (click)="onClick()">{{ category().name }}</p>
+
 @if (isTabOpen()) {
-    @for (mainService of category().mainServices; track mainService.id) 
-    { 
-        <app-main-service [mainService]="mainService" />
-    } 
+<table class="table table-hover table-borderless align-middle">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center">ID</th>
+      <th scope="col" class="text-center">Service Name</th>
+      <th scope="col" class="text-center">Price</th>
+      <th scope="col" class="text-center">Price Type</th>
+      <th scope="col" class="text-center">Duration</th>
+      <th scope="col" class="text-center">Created At</th>
+      <th scope="col" class="text-center">Created By</th>
+      <th scope="col" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (mainService of category().mainServices; track mainService.id) {
+    <tr>
+      <th scope="row" class="text-center">{{ mainService.id }}</th>
+      <td class="text-center">{{ mainService.name }}</td>
+      <td class="text-center">{{ mainService.price | currency:'USD' }}</td>
+      <td class="text-center">{{ mainService.priceType }}</td>
+      <td class="text-center">{{ mainService.durationTime }}</td>
+      <td class="text-center">{{ mainService.createdAt | date:'short' }}</td>
+      <td class="text-center">{{ mainService.createdBy }}</td>
+      <td class="text-center">
+        <button class="btn btn-sm btn-primary">View</button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
 }
