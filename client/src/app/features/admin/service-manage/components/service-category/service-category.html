@@ -1,0 +1,7 @@
+<p (click)="onClick()">{{ category().name }}</p>
+@if (isTabOpen()) {
+    @for (mainService of category().mainServices; track mainService.id) 
+    { 
+        <app-main-service [mainService]="mainService" />
+    } 
+}
