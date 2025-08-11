@@ -1,1 +1,63 @@
-<p>main-service-modal works!</p>
+<div class="modal-body">
+  <div class="info-grid">
+    <div class="info-item">
+      <label>ID</label>
+      <span>{{ mainService.id }}</span>
+    </div>
+    <div class="info-item">
+      <label>Name</label>
+      <span>{{ mainService.name }}</span>
+    </div>
+    <div class="info-item">
+      <label>Price</label>
+      <span>{{ mainService.price | currency:'USD' }}</span>
+    </div>
+    <div class="info-item">
+      <label>Price Type</label>
+      <span>{{ mainService.priceType }}</span>
+    </div>
+    <div class="info-item full-width">
+      <label>Description</label>
+      <span>{{ mainService.description }}</span>
+    </div>
+    <div class="info-item">
+      <label>Duration</label>
+      <span>{{ mainService.durationTime }}</span>
+    </div>
+    <div class="info-item">
+      <label>Created At</label>
+      <span>{{ mainService.createdAt }}</span>
+    </div>
+    <div class="info-item">
+      <label>Created By</label>
+      <span>{{ mainService.createdBy }}</span>
+    </div>
+    <div class="info-item">
+      <label>Updated At</label>
+      <span>{{ mainService.updatedAt || '—' }}</span>
+    </div>
+    <div class="info-item">
+      <label>Updated By</label>
+      <span>{{ mainService.updatedBy || '—' }}</span>
+    </div>
+  </div>
+
+  <h6>Sub Services</h6>
+  <button class="btn-add">+ Add Subservice</button>
+  <table class="subservice-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sub of mainService.subServices; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ sub.name }}</td>
+        <td>{{ sub.price | currency:'USD' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

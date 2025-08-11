@@ -1,9 +1,11 @@
 <div class="admin-layout-container">
-    <div class="admin-layout-sidebar">
-        <admin-sidebar/>
+  <div class="admin-layout-sidebar">
+    <admin-sidebar />
+  </div>
+  <div class="admin-layout-content">
+    <div class="admin-layout-content-route">
+      <router-outlet />
     </div>
-    <div class="admin-layout-content">
-        <service-manage/>
-        <app-footer/>
-    </div>
+    <app-footer />
+  </div>
 </div>

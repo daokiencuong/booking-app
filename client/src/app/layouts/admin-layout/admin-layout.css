@@ -9,8 +9,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 15px 15px 0px;
+}
+
+.admin-layout-content-route {
+  flex: 1; 
 }
 
 .admin-layout-sidebar {
