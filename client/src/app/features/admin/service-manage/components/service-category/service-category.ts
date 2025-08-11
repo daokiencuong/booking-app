@@ -10,7 +10,7 @@ import { DurationPipe } from '../../../../../shared/pipes/duration-pipe-pipe';
   styleUrl: './service-category.css'
 })
 export class ServiceCategory {
-  isTabOpen = signal<boolean>(false);
+  isTabOpen = signal<boolean>(true);
   category = input.required<ServiceCategoryGet>();
 
   onClick() {

@@ -1,0 +1,79 @@
+:host{
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    cursor: pointer;
+}
+
+:host:hover{
+    background: #322a7d39;
+}
+
+.ms-check{
+    padding: 0px 10px;
+}
+
+.form-check-input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.ms-content {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+.content-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ms-title {
+  color: #322a7d; /* màu xanh dương */
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0;
+  flex: 1;
+}
+
+.ms-price {
+  background-color: #ffa101; /* màu xanh nền nhẹ */
+  color: #282167;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 600;
+  font-size: 16px;
+  min-width: 60px;
+  text-align: center;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.ms-dur {
+  color: #666666;
+  font-weight: 400;
+  font-size: 13px;
+  flex: 1;
+}
+
+.ms-prtype {
+  color: #666666;
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+.ms-des {
+  color: #666666;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 0;
+}

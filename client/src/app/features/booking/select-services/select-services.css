@@ -1,0 +1,28 @@
+
+.categories {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.categories button.active {
+  background: purple;
+  color: white;
+  border-radius: 20px;
+}
+
+.service-list {
+  height: 80vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  width: 50vw;
+}
+
+.category-section {
+  padding: 20px 0;
+}

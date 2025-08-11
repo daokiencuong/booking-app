@@ -1,0 +1,20 @@
+
+  <div class="categories" #categoryTabs>
+    <button
+      *ngFor="let cat of mockdata"
+      [class.active]="activeCategory === cat.id"
+      (click)="scrollToCategory(cat.id)"
+    >
+      {{ cat.name }}
+    </button>
+  </div>
+
+  <!-- Danh sách dịch vụ -->
+  <div class="service-list" (scroll)="onScroll($event)" #serviceList>
+    <div *ngFor="let cat of mockdata" [id]="cat.id" class="category-section">
+      <h2>{{ cat.name }}</h2>
+      <div *ngFor="let service of cat.mainServices" class="service-item">
+        <app-main-service [mainService]="service" />
+      </div>
+    </div>
+  </div>

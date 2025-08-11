@@ -6,6 +6,12 @@ export const routes: Routes = [
   {
     path: '',
     component: PublicLayout,
+    children: [
+      {
+        path: 'select-service',
+        loadComponent: () => import('./features/booking/select-services/select-services').then(m => m.SelectServices),
+      }
+    ]
   },
   {
     path: 'admin',

@@ -1,0 +1,35 @@
+/* Container chính */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: white;
+  border-bottom: 1px solid #2b1d6d;
+}
+
+/* Logo */
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2b1d6d; /* màu chữ */
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav div {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.nav div:hover {
+  color: #7d3cff;
+}
+
