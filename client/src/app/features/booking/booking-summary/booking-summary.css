@@ -9,3 +9,7 @@ h6{
 button{
     font-size: 1.3rem;
 }
+
+.none-border{
+    border: none;
+}

@@ -4,11 +4,12 @@ import {
   ElementRef,
   OnInit,
   QueryList,
+  signal,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { ServiceCategoryGet } from '../../../model/response/service/service-category-get.model';
-import { MainService } from "./components/main-service/main-service";
+import { MainService } from './components/main-service/main-service';
 import { BookingService } from '../../../core/services/booking-service';
 
 @Component({
@@ -17,39 +18,40 @@ import { BookingService } from '../../../core/services/booking-service';
   templateUrl: './select-services.html',
   styleUrl: './select-services.css',
 })
-export class SelectServices implements OnInit{
-  @ViewChild('serviceList') serviceList!: ElementRef;
-  @ViewChildren('categorySection') categorySections!: QueryList<ElementRef>;
-  mockdata: ServiceCategoryGet[] = [];
-  activeCategory!: number;
+export class SelectServices implements OnInit {
+  @ViewChild('categoryBar') categoryBar!: ElementRef<HTMLDivElement>;
+  data: ServiceCategoryGet[] = [];
+  activeCategory = signal<number>(0);
+  showLeftArrow = false;
+  showRightArrow = true;
 
-  constructor(private bookingService: BookingService){}
+  constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
-      this.mockdata = this.bookingService.getAllService();
-      this.activeCategory = this.mockdata[0].id;
-  }
-  
-  scrollToCategory(id: number) {
-    if (id !== undefined) {
-      const elId = String(id);
-      const el = document.getElementById(elId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+    this.data = this.bookingService.getAllService();
   }
 
-  onScroll(event: any) {
-    const scrollTop = event.target.scrollTop;
-    for (let cat of this.mockdata) {
-      if (cat?.id !== undefined) {
-        const elId = String(cat.id);
-        const el = document.getElementById(elId);
-        if (el && el.offsetTop - 60 <= scrollTop) {
-          this.activeCategory = cat.id + 1;
-        }
-      }
-    }
+  onChangeCategory(categoryIndex: number) {
+    this.activeCategory.set(categoryIndex);
+  }
+
+  ngAfterViewInit() {
+    this.updateArrows();
+  }
+
+  scrollLeft() {
+    this.categoryBar.nativeElement.scrollBy({ left: -200, behavior: 'smooth' });
+    setTimeout(() => this.updateArrows(), 300);
+  }
+
+  scrollRight() {
+    this.categoryBar.nativeElement.scrollBy({ left: 200, behavior: 'smooth' });
+    setTimeout(() => this.updateArrows(), 300);
+  }
+
+  updateArrows() {
+    const el = this.categoryBar.nativeElement;
+    this.showLeftArrow = el.scrollLeft > 0;
+    this.showRightArrow = el.scrollLeft + el.clientWidth < el.scrollWidth - 2;
   }
 }

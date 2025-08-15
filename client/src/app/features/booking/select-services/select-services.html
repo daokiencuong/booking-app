@@ -1,33 +1,37 @@
-<!-- Categories Tabs -->
-<div class="categories d-flex gap-2 mb-3" #categoryTabs>
-  @for (cat of mockdata; track cat.id) {
-    <button
-      class="btn btn-outline-primary"
-      [class.active]="activeCategory === cat.id"
-      (click)="scrollToCategory(cat.id)"
+<div class="category-wrapper">
+  @if (showLeftArrow) {
+  <span
+    class="material-symbols-outlined scroll-btn left"
+    (click)="scrollLeft()"
+  >
+    arrow_left_alt
+  </span>
+  }
+
+  <div #categoryBar class="category-bar">
+    @for (category of data; track $index) {
+    <div
+      class="category-item"
+      [class.active]="$index === activeCategory()"
+      (click)="onChangeCategory($index)"
     >
-      {{ cat.name }}
-    </button>
+      {{ category.name }}
+    </div>
+    }
+  </div>
+
+  @if (showRightArrow) {
+  <span class="material-symbols-outlined scroll-btn right" (click)="scrollRight()"> arrow_right_alt </span>
   }
 </div>
 
-<!-- Service List -->
-<div 
-  class="service-list overflow-auto p-3 border rounded" 
-  (scroll)="onScroll($event)" 
-  #serviceList
->
-  @for (cat of mockdata; track cat.id) {
-    <div [id]="cat.id" class="mb-4">
-      <h4 class="mb-3 border-bottom pb-1">{{ cat.name }}</h4>
-      
-      <div class="row g-3">
-        @for (service of cat.mainServices; track service.id) {
-          <div class="col-12">
-            <app-main-service [mainService]="service" />
-          </div>
-        }
-      </div>
-    </div>
-  }
-</div> 
+<div class="service-list">
+  <h5 class="category-title">
+    {{ data[activeCategory()].name }}
+  </h5>
+  <div class="main-service-list">
+    @for (mainService of data[activeCategory()].mainServices; track $index) {
+    <app-main-service [mainService]="mainService" />
+    }
+  </div>
+</div>
