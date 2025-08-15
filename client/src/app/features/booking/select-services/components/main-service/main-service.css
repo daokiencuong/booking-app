@@ -1,11 +1,11 @@
-:host{
+.main-service-container{
     display: flex;
     align-items: center;
     padding: 5px 12px;
     cursor: pointer;
 }
 
-:host:hover{
+.main-service-container:hover{
     background: #afa7ff;
 }
 
@@ -76,4 +76,11 @@
   font-size: 13px;
   line-height: 1.4;
   margin-top: 0;
+}
+
+.sub-service-title{
+  font-size: 1.4rem;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-top: 1px solid #e6f0f2;
 }

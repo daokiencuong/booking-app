@@ -26,7 +26,6 @@ export class PublicLayout {
     if (this.step() > 4) {
     } else {
       this.step.update((prevVal) => --prevVal);
-      console.log(this.step());
     }
   }
 }

@@ -1,0 +1,57 @@
+:host{
+  cursor: pointer;
+}
+
+.service-item:hover{
+  background-color: #d6d3fa;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px 10px 50px;
+  border: 1px solid #e6f0f2;
+}
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  margin-right:10px;
+  cursor: pointer;
+  border: none;
+}
+
+.service-details {
+  flex: 1;
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.service-name {
+  color: #0096c7;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.service-price {
+  background-color: #c8f2ff;
+  color: #006e88;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.service-meta {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+}

@@ -11,6 +11,7 @@ import {
 import { ServiceCategoryGet } from '../../../model/response/service/service-category-get.model';
 import { MainService } from './components/main-service/main-service';
 import { BookingService } from '../../../core/services/booking-service';
+import { MainServiceGet } from '../../../model/response/service/main-service-get.model';
 
 @Component({
   selector: 'app-select-services',

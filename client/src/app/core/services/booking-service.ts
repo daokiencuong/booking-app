@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { ServiceCategoryGet } from '../../model/response/service/service-category-get.model';
+import { MainServiceGet } from '../../model/response/service/main-service-get.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookingService {
-    mockdata: ServiceCategoryGet[] = [
+  mockdata: ServiceCategoryGet[] = [
     {
       id: 1,
       name: 'Nail Enhancements',
@@ -18,7 +19,52 @@ export class BookingService {
             '60-minute facial designed to reduce fine lines and rejuvenate the skin.',
           durationTime: 'PT1H',
           priceType: 'FIXED',
-          subServices: [],
+          subServices: [
+            {
+              id: 1,
+              name: 'Beard Trim & Styling',
+              price: 25.0,
+              durationTime: 'PT15M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:03.839412Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 2,
+              name: 'Classic Haircut',
+              price: 30.0,
+              durationTime: 'PT30M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:28.925262Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 8,
+              name: 'Men’s Hair Styling',
+              price: 27.0,
+              durationTime: 'PT20M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:08.664803Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 10,
+              name: 'Moustache Grooming',
+              price: 15.0,
+              durationTime: 'PT10M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:20.481251Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+          ],
           createdAt: '2025-08-09T14:14:29.260525Z',
           createdBy: 'admin@example.com',
           updatedAt: null,
@@ -32,7 +78,52 @@ export class BookingService {
             'Facial treatment to even skin tone and restore radiance.',
           durationTime: 'PT1H',
           priceType: 'FIXED',
-          subServices: [],
+          subServices: [
+            {
+              id: 1,
+              name: 'Beard Trim & Styling',
+              price: 25.0,
+              durationTime: 'PT15M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:03.839412Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 2,
+              name: 'Classic Haircut',
+              price: 30.0,
+              durationTime: 'PT30M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:28.925262Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 8,
+              name: 'Men’s Hair Styling',
+              price: 27.0,
+              durationTime: 'PT20M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:08.664803Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 10,
+              name: 'Moustache Grooming',
+              price: 15.0,
+              durationTime: 'PT10M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:20.481251Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+          ],
           createdAt: '2025-08-09T14:15:25.677222Z',
           createdBy: 'admin@example.com',
           updatedAt: null,
@@ -45,7 +136,52 @@ export class BookingService {
           description: 'Spa pedicure with exfoliation, massage, and polish.',
           durationTime: 'PT45M',
           priceType: 'FIXED',
-          subServices: [],
+          subServices: [
+            {
+              id: 1,
+              name: 'Beard Trim & Styling',
+              price: 25.0,
+              durationTime: 'PT15M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:03.839412Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 2,
+              name: 'Classic Haircut',
+              price: 30.0,
+              durationTime: 'PT30M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:16:28.925262Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 8,
+              name: 'Men’s Hair Styling',
+              price: 27.0,
+              durationTime: 'PT20M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:08.664803Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+            {
+              id: 10,
+              name: 'Moustache Grooming',
+              price: 15.0,
+              durationTime: 'PT10M',
+              priceType: 'FIXED',
+              createdAt: '2025-08-09T14:17:20.481251Z',
+              createdBy: 'daokiencuong04@gmail.com',
+              updatedAt: null,
+              updatedBy: null,
+            },
+          ],
           createdAt: '2025-08-09T14:15:36.215305Z',
           createdBy: 'admin@example.com',
           updatedAt: null,
@@ -1237,7 +1373,8 @@ export class BookingService {
       createdBy: 'admin@example.com',
       updatedAt: null,
       updatedBy: null,
-    },{
+    },
+    {
       id: 5,
       name: 'Hair Care',
       mainServices: [
@@ -1444,7 +1581,93 @@ export class BookingService {
     },
   ];
 
-  getAllService(): ServiceCategoryGet[]{
+  mainServiceSelected = signal<MainServiceGet[]>([]);
+  getAllSeviceSelected = this.mainServiceSelected.asReadonly();
+
+  getTotalPrice = computed(() => {
+    return this.getAllSeviceSelected().reduce((total, main) => {
+      let mainPrice = main.price || 0;
+      let subPrice = main.subServices.reduce(
+        (sum, sub) => sum + (sub.price || 0),
+        0
+      );
+      return total + mainPrice + subPrice;
+    }, 0);
+  });
+
+  getTotalDuration = computed(() => {
+    const totalMinutes = this.getAllSeviceSelected().reduce((total, main) => {
+      let mainMinutes = this.parseDuration(main.durationTime);
+      let subMinutes = main.subServices.reduce(
+        (sum, sub) => sum + this.parseDuration(sub.durationTime),
+        0
+      );
+      return total + mainMinutes + subMinutes;
+    }, 0);
+
+    // Chuyển phút → giờ & phút
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    if (hours > 0 && minutes > 0) {
+      return `${hours}h ${minutes}m`;
+    } else if (hours > 0) {
+      return `${hours}h`;
+    } else {
+      return `${minutes}m`;
+    }
+  });
+
+  // Hàm parse "PT1H30M" → số phút
+  parseDuration(duration: string): number {
+    if (!duration) return 0;
+    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+    if (!match) return 0;
+    const hours = parseInt(match[1] || '0', 10);
+    const minutes = parseInt(match[2] || '0', 10);
+    return hours * 60 + minutes;
+  }
+
+  getAllService(): ServiceCategoryGet[] {
     return this.mockdata;
+  }
+
+  onToggleMainService(data: MainServiceGet) {
+    this.mainServiceSelected.update((services) => {
+      const exists = services.some((s) => s.id === data.id);
+      if (exists) {
+        return services.filter((s) => s.id !== data.id);
+      } else {
+        return [...services, JSON.parse(JSON.stringify(data))];
+      }
+    });
+    console.log(this.mainServiceSelected());
+  }
+
+  onUpdateSubService(data: MainServiceGet) {
+    this.mainServiceSelected.update((services) => {
+      const idx = services.findIndex((s) => s.id === data.id);
+      if (idx !== -1) {
+        return services.map((s, i) =>
+          i === idx ? JSON.parse(JSON.stringify(data)) : s
+        );
+      }
+      return services;
+    });
+    console.log(this.mainServiceSelected());
+  }
+
+  isMainServiceSelected(id: number) {
+    return this.mainServiceSelected().some((s) => s.id === id);
+  }
+
+  isSubServiceSelected(mainServiceId: number, subServiceId: number) {
+    const mainService = this.mainServiceSelected().find(
+      (s) => s.id === mainServiceId
+    );
+    return (
+      !!mainService &&
+      mainService.subServices.some((s) => s.id === subServiceId)
+    );
   }
 }

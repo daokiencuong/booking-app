@@ -1,16 +1,39 @@
-<div class="ms-check">
-  <input class="form-check-input" type="checkbox" value="" id="checkDefault" [checked]="isChecked()"/>
+<div class="main-service-container" (click)="onSelect()">
+  <div class="ms-check">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="checkDefault"
+      [checked]="bookingService.isMainServiceSelected(mainService().id)"
+    />
+  </div>
+  <div class="ms-content">
+    <div class="content-row">
+      <h2 class="ms-title">{{ mainService().name }}</h2>
+      <div class="ms-price">{{ mainService().price | currency : "USD" }}</div>
+    </div>
+    <div class="content-row">
+      <div class="ms-dur">{{ mainService().durationTime | duration }}</div>
+      <div class="ms-prtype">{{ mainService().priceType }}</div>
+    </div>
+    <div class="content-row">
+      <div class="ms-des">{{ mainService().description }}</div>
+    </div>
+  </div>
 </div>
-<div class="ms-content">
-  <div class="content-row">
-    <h2 class="ms-title">{{mainService().name}}</h2>
-    <div class="ms-price">{{mainService().price | currency: 'USD'}}</div>
-  </div>
-  <div class="content-row">
-    <div class="ms-dur">{{mainService().durationTime | duration}}</div>
-    <div class="ms-prtype">{{mainService().priceType}}</div>
-  </div>
-  <div class="content-row">
-    <div class="ms-des">{{mainService().description}}</div>
-  </div>
+
+@if (bookingService.isMainServiceSelected(mainService().id) &&
+mainService().subServices.length !== 0) {
+<div class="sub-service-title">Add-on Services (Optional)</div>
+<div class="sub-service-container">
+  @for (subService of mainService().subServices; track $index) {
+  <app-sub-service
+    [subServiceData]="subService"
+    (checked)="onPushSubservice($event)"
+    [isChecked]="
+      bookingService.isSubServiceSelected(mainService().id, subService.id)
+    "
+  />
+  }
 </div>
+}

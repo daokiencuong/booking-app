@@ -21,7 +21,12 @@
   </div>
 
   @if (showRightArrow) {
-  <span class="material-symbols-outlined scroll-btn right" (click)="scrollRight()"> arrow_right_alt </span>
+  <span
+    class="material-symbols-outlined scroll-btn right"
+    (click)="scrollRight()"
+  >
+    arrow_right_alt
+  </span>
   }
 </div>
 
@@ -31,7 +36,9 @@
   </h5>
   <div class="main-service-list">
     @for (mainService of data[activeCategory()].mainServices; track $index) {
-    <app-main-service [mainService]="mainService" />
+    <app-main-service
+      [mainService]="mainService"
+    />
     }
   </div>
 </div>

@@ -1,15 +1,29 @@
-:host{
-    font-size: 1.4rem;
+:host {
+  font-size: 1.4rem;
 }
 
-h6{
-    font-size: 1.4rem;
+h6 {
+  font-size: 1.4rem;
 }
 
-button{
-    font-size: 1.3rem;
+button {
+  font-size: 1.3rem;
 }
 
-.none-border{
-    border: none;
+.none-border {
+  border: none;
+  width: 15vw;
+}
+
+.list-service {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.notice {
+  color: rgba(0, 0, 0, 0.5); /* Màu đen mờ 50% */
+  font-style: italic; /* Chữ nghiêng tạo cảm giác nhẹ nhàng */
+  text-align: center; /* Canh giữa */
+  padding: 1rem;
 }

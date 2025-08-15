@@ -1,4 +1,4 @@
-<div class="card p-3 none-border" style="width: 100%; max-width: 350px">
+<div class="card p-3 none-border" style="width: 22vw">
   <!-- Header: Salon Info -->
   <div class="d-flex align-items-center mb-2">
     <img src="logo.jpg" alt="Salon" class="rounded" width="60" height="60" />
@@ -11,25 +11,50 @@
   <hr class="my-2" />
 
   <!-- Service Item -->
-  <div class="d-flex justify-content-between align-items-start mb-3">
-    <div>
-      <div>Haircut - Premier Stylist</div>
-      <small class="text-muted">1h</small>
-    </div>
-    <div>INR 900</div>
+  @if (listServiceSelected().length == 0) {
+  <div class="notice">
+    Thank you for choosing us! We’re excited to help you find the perfect
+    service.
   </div>
+  } @else {
+  <div class="list-service">
+    @for (mainService of listServiceSelected(); track $index) {
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <div>{{ mainService.name }}</div>
+        <small class="text-muted">{{ mainService.durationTime }}</small>
+      </div>
+      <div>CAD {{ mainService.price }}</div>
+    </div>
+    @for (subService of mainService.subServices; track $index) {
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <div>{{ subService.name }}</div>
+        <small class="text-muted">{{ subService.durationTime }}</small>
+      </div>
+      <div>CAD {{ subService.price }}</div>
+    </div>
+    } }
+  </div>
+  }
 
   <hr class="my-2" />
 
   <!-- Total -->
+  @if (totalMoney() !== 0) {
   <div class="d-flex justify-content-between fw-bold mb-3">
     <div>Total</div>
-    <div>INR 900</div>
+
+    <div>CAD {{ totalMoney() }} - {{ totalDuration() }}</div>
   </div>
+  }
 
   <!-- Continue Button -->
-  @if (currentStep() !== 4) {
-  <button class="btn btn-primary w-100 mb-2" (click)="onNextStep()">Continue</button>} 
-  @if (currentStep() !== 1) {
-  <button class="btn btn-secondary w-100" (click)="onPrevStep()">Previous</button>}
+  @if (currentStep() !== 4 && totalMoney() !== 0) {
+  <button class="btn btn-primary w-100 mb-2" (click)="onNextStep()">
+    Continue</button
+  >} @if (currentStep() !== 1) {
+  <button class="btn btn-secondary w-100" (click)="onPrevStep()">
+    Previous</button
+  >}
 </div>
