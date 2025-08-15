@@ -1,3 +1,21 @@
 .content {
   background: #f7f8fa;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px 0;
+}
+
+.content-select {
+  width: 50%;
+  background: #ffffff;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.content-view {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+  align-self: flex-start;
 }

@@ -1,5 +1,23 @@
 <app-header />
 <div class="content">
-  <app-select-services/>
+  <div class="content-select">
+    @switch ( step() ) { 
+      @case (1) {
+    <app-select-services />
+    } 
+    @case (2) {
+      <app-select-time/>
+    }
+    @case (3) {
+      <app-review-and-confirm/>
+    }
+    @case (4) {
+      <app-final/>
+    }
+  }
+  </div>
+  <div class="content-view">
+    <app-booking-summary [currentStep]="step()" (nextStep)="nextStep()" (prevStep)="backStep()"/>
+  </div>
 </div>
-<app-footer/>
+<app-footer />

@@ -1,20 +1,33 @@
-
-  <div class="categories" #categoryTabs>
+<!-- Categories Tabs -->
+<div class="categories d-flex gap-2 mb-3" #categoryTabs>
+  @for (cat of mockdata; track cat.id) {
     <button
-      *ngFor="let cat of mockdata"
+      class="btn btn-outline-primary"
       [class.active]="activeCategory === cat.id"
       (click)="scrollToCategory(cat.id)"
     >
       {{ cat.name }}
     </button>
-  </div>
+  }
+</div>
 
-  <!-- Danh sách dịch vụ -->
-  <div class="service-list" (scroll)="onScroll($event)" #serviceList>
-    <div *ngFor="let cat of mockdata" [id]="cat.id" class="category-section">
-      <h2>{{ cat.name }}</h2>
-      <div *ngFor="let service of cat.mainServices" class="service-item">
-        <app-main-service [mainService]="service" />
+<!-- Service List -->
+<div 
+  class="service-list overflow-auto p-3 border rounded" 
+  (scroll)="onScroll($event)" 
+  #serviceList
+>
+  @for (cat of mockdata; track cat.id) {
+    <div [id]="cat.id" class="mb-4">
+      <h4 class="mb-3 border-bottom pb-1">{{ cat.name }}</h4>
+      
+      <div class="row g-3">
+        @for (service of cat.mainServices; track service.id) {
+          <div class="col-12">
+            <app-main-service [mainService]="service" />
+          </div>
+        }
       </div>
     </div>
-  </div>
+  }
+</div> 
