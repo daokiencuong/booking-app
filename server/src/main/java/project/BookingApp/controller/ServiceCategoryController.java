@@ -12,8 +12,11 @@ import project.BookingApp.domain.request.serviceCategory.ReqServiceCategoryCreat
 import project.BookingApp.domain.request.serviceCategory.ReqServiceCategoryUpdate;
 import project.BookingApp.domain.response.ResultPaginationDTO;
 import project.BookingApp.domain.response.serviceCategory.ResServiceCategoryCreate;
+import project.BookingApp.domain.response.serviceCategory.ResServiceCategoryGet;
 import project.BookingApp.domain.response.serviceCategory.ResServiceCategoryUpdate;
 import project.BookingApp.service.ServiceCategoryService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("${bookingapp.endpoint}")
@@ -42,6 +45,12 @@ public class ServiceCategoryController {
             Pageable pageable
             ){
         ResultPaginationDTO res = this.serviceCategoryService.handleGetAllServiceCategory(spec, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("public/service")
+    private ResponseEntity<List<ResServiceCategoryGet>> getAllServiceCategory(){
+        List<ResServiceCategoryGet> res = this.serviceCategoryService.handleGetAllService();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
