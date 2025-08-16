@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-*{
+* {
   box-sizing: border-box;
   scrollbar-width: thin;
+  -ms-overflow-style: none;
   scrollbar-color: #6b5aff18 #f0f0f0;
 }
 
@@ -20,6 +21,10 @@
   border: 2px solid #ffffff;
 }
 
+*::-webkit-scrollbar-button {
+  display: none;
+}
+
 body {
   font-family: "Inter", sans-serif;
   margin: 0;
@@ -31,7 +36,6 @@ html {
   scroll-behavior: smooth;
 }
 
-
 :root {
   /* Base colors */
   --color-gray: #bbc5d5;
@@ -39,7 +43,7 @@ html {
   --color-secondary: #322a7d;
 
   /* Hover & Active states */
-  --color-primary-hover: #e89000;   /* tối hơn primary */
+  --color-primary-hover: #e89000; /* tối hơn primary */
   --color-primary-active: #cc7e00;
 
   --color-secondary-hover: #28215e; /* tối hơn secondary */

@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="option-card" [class.active]="isSeleted(0)" (click)="onSelected(0)">
+    <div class="option-body">
+      <div class="option-icon">👤</div>
+      <div class="option-text">
+        <h6>No preference</h6>
+        <small>Maximum availability</small>
+      </div>
+      <div class="arrow">&rsaquo;</div>
+    </div>
+  </div>
+
+  <div class="option-card">
+    <div class="option-body" (click)="onClick()">
+      <div class="option-icon">👥</div>
+      <div class="option-text">
+        <h6>Select preferred staff</h6>
+      </div>
+      @if (!isCardOpen()) {
+      <div class="arrow">&rsaquo;</div>
+      }
+    </div>
+    @if (isCardOpen()) { @for (staff of listStaff; track $index) {
+    <div class="staff-card" [class.active]="isSeleted(staff.id)" (click)="onSelected(staff.id)">
+      <div class="staff-icon">🦸</div>
+      <div class="staff-info">
+        <h6>{{ staff.name }}</h6>
+        <p>{{ staff.description }}</p>
+      </div>
+      <div class="arrow">&rsaquo;</div>
+    </div>
+    } }
+  </div>
+</div>

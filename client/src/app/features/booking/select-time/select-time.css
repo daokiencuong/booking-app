@@ -1,0 +1,43 @@
+.date-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  -ms-overflow-style: none;
+}
+
+.date-list::-webkit-scrollbar-button {
+  display: none; 
+}
+
+.date-item {
+  background: #ffffff;
+  padding: 0 0 5px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 70px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.4rem;
+}
+.date-item.active {
+  background: #322a7d;
+  color: #fff;
+}
+
+.date-item.active .month{
+    background: #ffa101;
+}
+
+.month{
+    background: #ffe3b3;
+    border-radius: 8px 8px 0 0;
+}
+
+.day{
+    font-weight: 500;
+    padding-top: 5px;
+}
