@@ -1,20 +1,26 @@
 package project.BookingApp.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import project.BookingApp.domain.Booking;
 import project.BookingApp.domain.MainService;
 import project.BookingApp.domain.SubService;
 import project.BookingApp.domain.User;
 import project.BookingApp.domain.request.booking.ReqBookingCreateDTO;
-import project.BookingApp.domain.request.booking.ReqCheckStaffAvailableDTO;
+import project.BookingApp.domain.request.booking.ReqCheckTimeAvailableDTO;
+import project.BookingApp.domain.response.ResultPaginationDTO;
+import project.BookingApp.domain.response.booking.ResBookingAdminGetDTO;
 import project.BookingApp.domain.response.booking.ResBookingCreateDTO;
-import project.BookingApp.domain.response.booking.ResCheckStaffAvailableDTO;
+import project.BookingApp.domain.response.booking.ResCheckTimeAvailableDTO;
 import project.BookingApp.repository.BookingRepository;
 import project.BookingApp.repository.MainServiceRepository;
 import project.BookingApp.repository.SubServiceRepository;
 import project.BookingApp.repository.UserRepository;
 import project.BookingApp.util.error.UserException;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,12 +109,78 @@ public class BookingService {
         return res;
     }
 
-    public ResCheckStaffAvailableDTO handleCheckStaffAvailable(ReqCheckStaffAvailableDTO req){
+    public List<ResCheckTimeAvailableDTO> handleCheckTimeAvailable(ReqCheckTimeAvailableDTO req){
+        List<Booking> listBookingInDate = this.bookingRepository.findAllByBookingDateAndStaffId(req.getBookingDate(), req.getStaffId());
 
-        List<Booking> listBooking = this.bookingRepository.findAllByBookingDate(req.getBookingDate());
+        List<ResCheckTimeAvailableDTO> res = listBookingInDate.stream().map(booking -> {
+            ResCheckTimeAvailableDTO resCheckTimeAvailableDTO = new ResCheckTimeAvailableDTO();
+            resCheckTimeAvailableDTO.setBookingDate(booking.getBookingDate());
+            resCheckTimeAvailableDTO.setStartTime(booking.getStartTime());
+            resCheckTimeAvailableDTO.setEndTime(booking.getEndTime());
+            resCheckTimeAvailableDTO.setStaffId(booking.getStaff().getId());
 
-        ResCheckStaffAvailableDTO res = new ResCheckStaffAvailableDTO();
+            return resCheckTimeAvailableDTO;
+        }).toList();
 
         return res;
+    }
+
+    public ResultPaginationDTO handleGetAllBookingForAdmin(Specification<Booking> spec, Pageable pageable){
+        Page<Booking> bookingPage = this.bookingRepository.findAll(spec, pageable);
+        List<ResBookingAdminGetDTO> bookingList = bookingPage.stream().map(booking -> {
+            ResBookingAdminGetDTO resBookingAdminGetDTO = new ResBookingAdminGetDTO();
+            resBookingAdminGetDTO.setId(booking.getId());
+            resBookingAdminGetDTO.setStartTime(booking.getStartTime());
+            resBookingAdminGetDTO.setEndTime(booking.getEndTime());
+            resBookingAdminGetDTO.setCustomerEmail(booking.getCustomerEmail());
+            resBookingAdminGetDTO.setCustomerName(booking.getCustomerName());
+            resBookingAdminGetDTO.setTotalPrice(booking.getTotalPrice());
+            resBookingAdminGetDTO.setBookingDate(booking.getBookingDate());
+            resBookingAdminGetDTO.setCreatedAt(booking.getCreatedAt());
+            resBookingAdminGetDTO.setDurationTime(booking.getDurationTime());
+
+            User staffData = booking.getStaff();
+            ResBookingAdminGetDTO.Staff staff = new ResBookingAdminGetDTO.Staff();
+            staff.setId(staffData.getId());
+            staff.setName(staffData.getName());
+            resBookingAdminGetDTO.setStaff(staff);
+
+            List<MainService> mainServiceList = booking.getMainServices();
+            List<SubService> subServiceList = booking.getSubServices();
+            List<ResBookingAdminGetDTO.Service> serviceList = mainServiceList.stream().map(mainService -> {
+                ResBookingAdminGetDTO.Service service = new ResBookingAdminGetDTO.Service();
+                service.setId(mainService.getId());
+                service.setName(mainService.getName());
+                service.setPrice(mainService.getPrice());
+
+                List<ResBookingAdminGetDTO.Service.SubService> subServices = subServiceList.stream().filter(sub -> sub.getMainService().getId().equals(mainService.getId())).map(sub -> {
+                    ResBookingAdminGetDTO.Service.SubService subService = new ResBookingAdminGetDTO.Service.SubService();
+                    subService.setId(sub.getId());
+                    subService.setName(sub.getName());
+                    subService.setPrice(sub.getPrice());
+                    return subService;
+                }).toList();
+
+                return service;
+            }).toList();
+
+            resBookingAdminGetDTO.setServices(serviceList);
+
+            return resBookingAdminGetDTO;
+        }).toList();
+
+        ResultPaginationDTO paginationDTO = new ResultPaginationDTO();
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta();
+
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPageSize(pageable.getPageSize());
+
+        meta.setPages(bookingPage.getTotalPages());
+        meta.setTotal(bookingPage.getTotalElements());
+
+        paginationDTO.setMeta(meta);
+        paginationDTO.setResult(bookingList);
+
+        return paginationDTO;
     }
 }

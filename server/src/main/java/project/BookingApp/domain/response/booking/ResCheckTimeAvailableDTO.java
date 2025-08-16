@@ -1,4 +1,4 @@
-package project.BookingApp.domain.request.booking;
+package project.BookingApp.domain.response.booking;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,11 +6,13 @@ import lombok.Setter;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
-public class ReqCheckStaffAvailableDTO {
+public class ResCheckTimeAvailableDTO {
+    private Long staffId;
     private LocalDate bookingDate;
     private LocalTime startTime;
-    private Duration durationTime;
+    private LocalTime endTime;
 }
