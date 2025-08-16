@@ -15,10 +15,13 @@ import project.BookingApp.domain.request.user.ReqUserUpdateDTO;
 import project.BookingApp.domain.response.ResultPaginationDTO;
 import project.BookingApp.domain.response.user.ResChangePassForceDTO;
 import project.BookingApp.domain.response.user.ResUserCreateDTO;
+import project.BookingApp.domain.response.user.ResUserGetDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.service.UserService;
 import project.BookingApp.util.annotation.ApiMessage;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("${bookingapp.endpoint}")
@@ -53,6 +56,12 @@ public class UserController {
             Pageable pageable
             ){
         ResultPaginationDTO res = this.userService.handleGetAllUsers(spec, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("public/staff")
+    public ResponseEntity<List<ResUserGetDTO>> getAllStaff(){
+        List<ResUserGetDTO> res = this.userService.handleGetAllStaff();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

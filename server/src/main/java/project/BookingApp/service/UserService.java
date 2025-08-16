@@ -137,6 +137,25 @@ public class UserService {
         return res;
     }
 
+    public List<ResUserGetDTO> handleGetAllStaff(){
+        Specification<User> customStaffSpec = (root, query, cb) -> cb.isTrue(root.get("staffActive"));
+        List<ResUserGetDTO> res = this.userRepository.findAll(customStaffSpec).stream().map(user -> {
+            ResUserGetDTO resUserGetDTO = new ResUserGetDTO();
+            resUserGetDTO.setId(user.getId());
+            resUserGetDTO.setName(user.getName());
+            resUserGetDTO.setEmail(user.getEmail());
+            resUserGetDTO.setRole(user.getRole());
+            resUserGetDTO.setDescription(user.getDescription());
+            resUserGetDTO.setCreatedBy(user.getCreatedBy());
+            resUserGetDTO.setCreatedAt(user.getCreatedAt());
+            resUserGetDTO.setUpdatedBy(user.getUpdatedBy());
+            resUserGetDTO.setUpdatedAt(user.getUpdatedAt());
+            resUserGetDTO.setStaffActive(user.isStaffActive());
+            return resUserGetDTO;
+        }).toList();
+        return res;
+    }
+
     public void handleDeleteUser(Long id){
         User user = findById(id);
         this.userRepository.delete(user);

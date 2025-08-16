@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                 "/api/v1/admin/generate",
                 "/api/v1/admin/users",
                 "api/v1/booking",
+                "api/v1/public/**",
         };
 
         http.csrf(c -> c.disable()).cors(Customizer.withDefaults())
