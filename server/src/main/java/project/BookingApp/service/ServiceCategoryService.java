@@ -16,6 +16,7 @@ import project.BookingApp.domain.response.serviceCategory.ResServiceCategoryUpda
 import project.BookingApp.repository.ServiceCategoryRepository;
 import project.BookingApp.util.error.ServiceCategoryException;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,10 +147,10 @@ public class ServiceCategoryService {
             ResServiceCategoryGet resServiceCategoryGet = new ResServiceCategoryGet();
             resServiceCategoryGet.setId(serviceCategory.getId());
             resServiceCategoryGet.setName(serviceCategory.getName());
-            resServiceCategoryGet.setCreatedAt(serviceCategory.getCreatedAt());
-            resServiceCategoryGet.setCreatedBy(serviceCategory.getCreatedBy());
-            resServiceCategoryGet.setUpdatedAt(serviceCategory.getUpdatedAt());
-            resServiceCategoryGet.setUpdatedBy(serviceCategory.getUpdatedBy());
+            resServiceCategoryGet.setCreatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+            resServiceCategoryGet.setCreatedBy("This data is stored on the server.");
+            resServiceCategoryGet.setUpdatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+            resServiceCategoryGet.setUpdatedBy("This data is stored on the server.");
 
             List<MainService> listMainService = serviceCategory.getMainServices();
             List<ResServiceCategoryGet.MainServiceCategory> mainServiceCategoryList = listMainService.stream().map(
@@ -161,10 +162,10 @@ public class ServiceCategoryService {
                         mainServiceCategory.setDescription(mainService.getDescription());
                         mainServiceCategory.setDurationTime(mainService.getDurationTime());
                         mainServiceCategory.setPriceType(mainService.getPriceType());
-                        mainServiceCategory.setCreatedAt(mainService.getCreatedAt());
-                        mainServiceCategory.setCreatedBy(mainService.getCreatedBy());
-                        mainServiceCategory.setUpdatedAt(mainService.getUpdatedAt());
-                        mainServiceCategory.setUpdatedBy(mainService.getUpdatedBy());
+                        mainServiceCategory.setCreatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+                        mainServiceCategory.setCreatedBy("This data is stored on the server.");
+                        mainServiceCategory.setUpdatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+                        mainServiceCategory.setUpdatedBy("This data is stored on the server.");
 
                         List<SubService> listSubService = mainService.getSubServices();
                         List<ResServiceCategoryGet.SubServiceMainServiceCategory> subServiceList = listSubService.stream().map(
@@ -175,10 +176,10 @@ public class ServiceCategoryService {
                                     subServiceMainServiceCategory.setPrice(subService.getPrice());
                                     subServiceMainServiceCategory.setDurationTime(subService.getDurationTime());
                                     subServiceMainServiceCategory.setPriceType(subService.getPriceType());
-                                    subServiceMainServiceCategory.setCreatedAt(subService.getCreatedAt());
-                                    subServiceMainServiceCategory.setCreatedBy(subService.getCreatedBy());
-                                    subServiceMainServiceCategory.setUpdatedAt(subService.getUpdatedAt());
-                                    subServiceMainServiceCategory.setUpdatedBy(subService.getUpdatedBy());
+                                    subServiceMainServiceCategory.setCreatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+                                    subServiceMainServiceCategory.setCreatedBy("This data is stored on the server.");
+                                    subServiceMainServiceCategory.setUpdatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+                                    subServiceMainServiceCategory.setUpdatedBy("This data is stored on the server.");
                                     return subServiceMainServiceCategory;
                                 }).toList();
                         mainServiceCategory.setSubServices(subServiceList);

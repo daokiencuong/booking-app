@@ -14,9 +14,11 @@ import project.BookingApp.domain.response.user.ResUserCreateDTO;
 import project.BookingApp.domain.response.user.ResUserGetDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.repository.UserRepository;
+import project.BookingApp.util.constant.RoleEnum;
 import project.BookingApp.util.error.UserException;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -143,13 +145,13 @@ public class UserService {
             ResUserGetDTO resUserGetDTO = new ResUserGetDTO();
             resUserGetDTO.setId(user.getId());
             resUserGetDTO.setName(user.getName());
-            resUserGetDTO.setEmail(user.getEmail());
-            resUserGetDTO.setRole(user.getRole());
+            resUserGetDTO.setEmail("This data is stored on the server.");
+            resUserGetDTO.setRole(RoleEnum.MEMBER);
             resUserGetDTO.setDescription(user.getDescription());
-            resUserGetDTO.setCreatedBy(user.getCreatedBy());
-            resUserGetDTO.setCreatedAt(user.getCreatedAt());
-            resUserGetDTO.setUpdatedBy(user.getUpdatedBy());
-            resUserGetDTO.setUpdatedAt(user.getUpdatedAt());
+            resUserGetDTO.setCreatedBy("This data is stored on the server.");
+            resUserGetDTO.setCreatedAt(Instant.parse("1999-01-01T00:00:00Z"));
+            resUserGetDTO.setUpdatedBy("This data is stored on the server.");
+            resUserGetDTO.setUpdatedAt(Instant.parse("1999-01-01T00:00:00Z"));
             resUserGetDTO.setStaffActive(user.isStaffActive());
             return resUserGetDTO;
         }).toList();
