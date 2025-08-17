@@ -1,3 +1,4 @@
+@if(isReady()){
 <div class="category-wrapper">
   @if (showLeftArrow()) {
   <span
@@ -35,9 +36,11 @@
     {{ data[activeCategory()].name }}
   </h5>
   <div class="main-service-list">
-    @for (mainService of data[activeCategory()].mainServices; track $index) {
+    @for (mainService of data[activeCategory()].mainServices; track mainService.id) {
     <app-main-service [mainService]="mainService" />
     }
   </div>
 </div>
-
+} @else {
+<div class="loader"></div>
+}

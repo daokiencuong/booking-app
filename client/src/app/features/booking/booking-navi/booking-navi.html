@@ -1,0 +1,38 @@
+<div
+  class="d-flex justify-content-between align-items-center px-4 py-4 rounded bg-light"
+>
+  <!-- Bên trái -->
+  @if(currentStep() === 1){
+  <div class="d-flex align-items-center gap-2 cursor-pointer">
+    <div>
+      <div class="fw-bold">C$ {{ totalMoney() }}</div>
+      <small class="text-muted"
+        >{{ totalService() }} service - {{ totalDuration() }}</small
+      >
+    </div>
+  </div>
+  } @else {
+  <div
+    class="d-flex align-items-center gap-2 cursor-pointer"
+    (click)="onPrevStep()"
+  >
+    <span class="material-icons">arrow_back</span>
+    <div>
+      <div class="fw-bold">C$ {{ totalMoney() }}</div>
+      <small class="text-muted"
+        >{{ totalService() }} service - {{ totalDuration() }}</small
+      >
+    </div>
+  </div>
+  }
+
+  <!-- Bên phải -->
+  <button
+    class="btn btn-primary text-white rounded-pill d-flex align-items-center gap-1 px-4 cursor-pointer"
+    (click)="onNextStep()"
+    [disabled]="totalService() === 0"
+  >
+    Next
+    <span class="material-icons">arrow_forward</span>
+  </button>
+</div>

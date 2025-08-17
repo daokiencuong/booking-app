@@ -18,7 +18,7 @@
       @switch ( step() ) { @case (1) {
       <app-select-services />
       } @case (2) {
-      <app-select-staff/>
+      <app-select-staff />
       } @case (3) {
       <app-select-time />
       } @case (4) {
@@ -32,6 +32,13 @@
         (prevStep)="backStep()"
       />
     </div>
+  </div>
+  <div class="booking-nav">
+    <app-booking-navi
+      [currentStep]="step()"
+      (nextStep)="nextStep()"
+      (prevStep)="backStep()"
+    />
   </div>
 </div>
 <app-footer />

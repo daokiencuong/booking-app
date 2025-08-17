@@ -13,6 +13,16 @@ export class BookingService {
   mainServiceSelected = signal<MainServiceGet[]>([]);
   getAllSeviceSelected = this.mainServiceSelected.asReadonly();
 
+  getTotalService = computed(() => {
+    return this.getAllSeviceSelected().reduce((total, main) => {
+      let subPrice = main.subServices.reduce(
+        (sum, sub) => sum + 1 ,
+        0
+      );
+      return total + 1 + subPrice;
+    }, 0);
+  });
+
   getTotalPrice = computed(() => {
     return this.getAllSeviceSelected().reduce((total, main) => {
       let mainPrice = main.price || 0;
@@ -47,7 +57,6 @@ export class BookingService {
     }
   });
 
-  // Hàm parse "PT1H30M" → số phút
   parseDuration(duration: string): number {
     if (!duration) return 0;
     const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
@@ -72,7 +81,6 @@ export class BookingService {
         return [...services, JSON.parse(JSON.stringify(data))];
       }
     });
-    console.log(this.mainServiceSelected());
   }
 
   onUpdateSubService(data: MainServiceGet) {
@@ -85,7 +93,6 @@ export class BookingService {
       }
       return services;
     });
-    console.log(this.mainServiceSelected());
   }
 
   isMainServiceSelected(id: number) {

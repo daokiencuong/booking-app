@@ -60,3 +60,22 @@ html {
   /* Borders */
   --border-color: #d1d9e6;
 }
+
+.loader {
+  border: 8px solid #f3f3f3; /* màu nền nhạt */
+  border-top: 8px solid #322a7d; /* màu vòng xoay */
+  border-radius: 50%; /* làm tròn */
+  width: 60px; /* chiều rộng */
+  height: 60px; /* chiều cao */
+  animation: spin 1s linear infinite; /* xoay liên tục */
+  margin: 50px auto; /* căn giữa */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

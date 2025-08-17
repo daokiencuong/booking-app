@@ -36,6 +36,10 @@
   align-self: flex-start;
 }
 
+.booking-nav {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .content-select {
     width: 95vw;
@@ -44,9 +48,15 @@
   .content-view {
     display: none;
   }
+
+  .booking-nav {
+    display: inline;
+    position: sticky;
+    bottom: 0;
+  }
 }
 
-@media screen and (min-width: 769.01px) and (max-width: 992px ) {
+@media screen and (min-width: 769.01px) and (max-width: 992px) {
   .content-select {
     width: 70%;
   }

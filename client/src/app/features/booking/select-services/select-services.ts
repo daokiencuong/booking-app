@@ -22,6 +22,7 @@ import { MainServiceGet } from '../../../model/response/service/main-service-get
 export class SelectServices implements OnInit {
   @ViewChild('categoryBar') categoryBar!: ElementRef<HTMLDivElement>;
   data: ServiceCategoryGet[] = [];
+  isReady = signal<boolean>(false);
   activeCategory = signal<number>(0);
   showLeftArrow = signal<boolean>(false);
   showRightArrow = signal<boolean>(true);
@@ -29,17 +30,21 @@ export class SelectServices implements OnInit {
   constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
-    this.bookingService.getAllService().subscribe((res) => {
-      this.data = res;
+    this.bookingService.getAllService().subscribe({
+      next: (res) => {
+        this.data = res;
+        setTimeout(() => {
+          this.updateArrows();
+        }, 0);
+      },
+      complete: () => {
+        this.isReady.set(true);
+      },
     });
   }
 
   onChangeCategory(categoryIndex: number) {
     this.activeCategory.set(categoryIndex);
-  }
-
-  ngAfterViewInit() {
-    this.updateArrows();
   }
 
   scrollLeft() {
@@ -55,6 +60,8 @@ export class SelectServices implements OnInit {
   updateArrows() {
     const el = this.categoryBar.nativeElement;
     this.showLeftArrow.set(el.scrollLeft > 0);
-    this.showRightArrow.set(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+    this.showRightArrow.set(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 2
+    );
   }
 }
