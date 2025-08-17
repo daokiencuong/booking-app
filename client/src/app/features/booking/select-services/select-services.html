@@ -1,5 +1,5 @@
 <div class="category-wrapper">
-  @if (showLeftArrow) {
+  @if (showLeftArrow()) {
   <span
     class="material-symbols-outlined scroll-btn left"
     (click)="scrollLeft()"
@@ -20,7 +20,7 @@
     }
   </div>
 
-  @if (showRightArrow) {
+  @if (showRightArrow()) {
   <span
     class="material-symbols-outlined scroll-btn right"
     (click)="scrollRight()"
@@ -36,9 +36,8 @@
   </h5>
   <div class="main-service-list">
     @for (mainService of data[activeCategory()].mainServices; track $index) {
-    <app-main-service
-      [mainService]="mainService"
-    />
+    <app-main-service [mainService]="mainService" />
     }
   </div>
 </div>
+

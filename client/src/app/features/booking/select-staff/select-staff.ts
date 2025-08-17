@@ -1,4 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { ListStaff } from '../../admin/staff-manage/components/list-staff/list-staff';
+import { StaffActiveGet } from '../../../model/response/staff/staff-active-get.model';
+import { StaffService } from '../../../core/services/staff-service';
 
 @Component({
   selector: 'app-select-staff',
@@ -9,67 +12,21 @@ import { Component, signal } from '@angular/core';
 export class SelectStaff {
   isCardOpen = signal<boolean>(false);
   staffIdSelected = signal<number>(0);
+  listStaff = signal<StaffActiveGet[]>([]);
+
+  constructor(private staffService: StaffService) {
+    this.staffService.getAllStaff().subscribe((res) => this.listStaff.set(res));
+  }
 
   onClick() {
     this.isCardOpen.update((prev) => !prev);
   }
 
-  isSeleted(id: number){
+  isSeleted(id: number) {
     return id === this.staffIdSelected();
   }
 
-  onSelected(id: number){
+  onSelected(id: number) {
     this.staffIdSelected.set(id);
   }
-
-  listStaff = [
-    {
-      id: 2,
-      name: 'Harry',
-      email: 'thehung1234@gmail.com',
-      role: 'ADMIN',
-      description: 'Harry specializes in Solar, Arcylic, Bio and Hybrid gel, Dipping service. He pays attention on a small details and make your nails perfect. He love to do long & design Nails set. You won’t regret booking with him',
-      staffActive: true,
-      createdAt: '2025-07-18T11:27:14.816234Z',
-      updatedAt: '2025-07-18T11:27:18.141656Z',
-      createdBy: 'daokiencuong04@gmail.com',
-      updatedBy: 'daokiencuong04@gmail.com',
-    },
-    {
-      id: 1,
-      name: 'Đào Kiên Cường',
-      email: 'daokiencuong04@gmail.com',
-      role: 'ADMIN',
-      description: 'Lion, he’s always up for the perfect look. You can trust him with your nails and your pedicure. He make it full flawless. He is sweet that you will love his personalities as well. Very details and very gentle man !',
-      staffActive: false,
-      createdAt: '2025-07-18T11:26:57.762403Z',
-      updatedAt: '2025-07-29T08:16:10.945941Z',
-      createdBy: 'daokiencuong04@gmail.com',
-      updatedBy: 'daokiencuong04@gmail.com',
-    },
-    {
-      id: 1,
-      name: 'Đào Kiên Cường',
-      email: 'daokiencuong04@gmail.com',
-      role: 'ADMIN',
-      description: 'Lion, he’s always up for the perfect look. You can trust him with your nails and your pedicure. He make it full flawless. He is sweet that you will love his personalities as well. Very details and very gentle man !',
-      staffActive: false,
-      createdAt: '2025-07-18T11:26:57.762403Z',
-      updatedAt: '2025-07-29T08:16:10.945941Z',
-      createdBy: 'daokiencuong04@gmail.com',
-      updatedBy: 'daokiencuong04@gmail.com',
-    },
-    {
-      id: 1,
-      name: 'Đào Kiên Cường',
-      email: 'daokiencuong04@gmail.com',
-      role: 'ADMIN',
-      description: 'Lion, he’s always up for the perfect look. You can trust him with your nails and your pedicure. He make it full flawless. He is sweet that you will love his personalities as well. Very details and very gentle man !',
-      staffActive: false,
-      createdAt: '2025-07-18T11:26:57.762403Z',
-      updatedAt: '2025-07-29T08:16:10.945941Z',
-      createdBy: 'daokiencuong04@gmail.com',
-      updatedBy: 'daokiencuong04@gmail.com',
-    },
-  ];
 }

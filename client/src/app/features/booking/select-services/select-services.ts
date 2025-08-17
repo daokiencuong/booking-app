@@ -23,8 +23,8 @@ export class SelectServices implements OnInit {
   @ViewChild('categoryBar') categoryBar!: ElementRef<HTMLDivElement>;
   data: ServiceCategoryGet[] = [];
   activeCategory = signal<number>(0);
-  showLeftArrow = false;
-  showRightArrow = true;
+  showLeftArrow = signal<boolean>(false);
+  showRightArrow = signal<boolean>(true);
 
   constructor(private bookingService: BookingService) {}
 
@@ -54,7 +54,7 @@ export class SelectServices implements OnInit {
 
   updateArrows() {
     const el = this.categoryBar.nativeElement;
-    this.showLeftArrow = el.scrollLeft > 0;
-    this.showRightArrow = el.scrollLeft + el.clientWidth < el.scrollWidth - 2;
+    this.showLeftArrow.set(el.scrollLeft > 0);
+    this.showRightArrow.set(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
   }
 }

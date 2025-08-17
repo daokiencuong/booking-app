@@ -20,7 +20,7 @@
       <div class="arrow">&rsaquo;</div>
       }
     </div>
-    @if (isCardOpen()) { @for (staff of listStaff; track $index) {
+    @if (isCardOpen()) { @for (staff of listStaff(); track $index) {
     <div class="staff-card" [class.active]="isSeleted(staff.id)" (click)="onSelected(staff.id)">
       <div class="staff-icon">🦸</div>
       <div class="staff-info">
