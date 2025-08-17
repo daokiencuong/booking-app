@@ -29,7 +29,9 @@ export class SelectServices implements OnInit {
   constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
-    this.data = this.bookingService.getAllService();
+    this.bookingService.getAllService().subscribe((res) => {
+      this.data = res;
+    });
   }
 
   onChangeCategory(categoryIndex: number) {

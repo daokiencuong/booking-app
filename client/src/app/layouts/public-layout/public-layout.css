@@ -4,17 +4,17 @@
   min-height: 82vh;
 }
 
-.step-view{
+.step-view {
   text-align: center;
   padding: 0 0 10px;
 }
 
-.step-number{
+.step-number {
   font-size: 1.6rem;
   color: #575757;
 }
 
-.step-title{
+.step-title {
   font-size: 2rem;
   font-weight: 600;
 }
@@ -34,4 +34,20 @@
   top: 10px;
   z-index: 10;
   align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .content-select {
+    width: 95vw;
+  }
+
+  .content-view {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 769.01px) and (max-width: 992px ) {
+  .content-select {
+    width: 70%;
+  }
 }
