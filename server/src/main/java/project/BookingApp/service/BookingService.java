@@ -13,11 +13,13 @@ import project.BookingApp.domain.request.booking.ReqCheckTimeAvailableDTO;
 import project.BookingApp.domain.response.ResultPaginationDTO;
 import project.BookingApp.domain.response.booking.ResBookingAdminGetDTO;
 import project.BookingApp.domain.response.booking.ResBookingCreateDTO;
+import project.BookingApp.domain.response.booking.ResBookingStaffGetDTO;
 import project.BookingApp.domain.response.booking.ResCheckTimeAvailableDTO;
 import project.BookingApp.repository.BookingRepository;
 import project.BookingApp.repository.MainServiceRepository;
 import project.BookingApp.repository.SubServiceRepository;
 import project.BookingApp.repository.UserRepository;
+import project.BookingApp.util.SecurityUtil;
 import project.BookingApp.util.error.UserException;
 
 import java.time.LocalTime;
@@ -168,6 +170,67 @@ public class BookingService {
 
             return resBookingAdminGetDTO;
         }).toList();
+
+        ResultPaginationDTO paginationDTO = new ResultPaginationDTO();
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta();
+
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPageSize(pageable.getPageSize());
+
+        meta.setPages(bookingPage.getTotalPages());
+        meta.setTotal(bookingPage.getTotalElements());
+
+        paginationDTO.setMeta(meta);
+        paginationDTO.setResult(bookingList);
+
+        return paginationDTO;
+    }
+
+    public ResultPaginationDTO handleGetAllBookingForStaff(Specification<Booking> spec, Pageable pageable){
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ?
+                SecurityUtil.getCurrentUserLogin().get() : "";
+
+        User staff = this.userRepository.findByEmail(email);
+
+        Specification<Booking> customSpec = (root, query, cb) -> cb.equal(root.get("staff").get("id"), staff.getId());
+
+        Page<Booking> bookingPage = this.bookingRepository.findAll(customSpec.and(spec), pageable);
+
+        List<ResBookingStaffGetDTO> bookingList = bookingPage.stream().map(
+                booking -> {
+                    ResBookingStaffGetDTO resBookingStaffGetDTO = new ResBookingStaffGetDTO();
+                    resBookingStaffGetDTO.setId(booking.getId());
+                    resBookingStaffGetDTO.setStartTime(booking.getStartTime());
+                    resBookingStaffGetDTO.setEndTime(booking.getEndTime());
+                    resBookingStaffGetDTO.setCustomerName(booking.getCustomerName());
+                    resBookingStaffGetDTO.setTotalPrice(booking.getTotalPrice());
+                    resBookingStaffGetDTO.setBookingDate(booking.getBookingDate());
+                    resBookingStaffGetDTO.setDurationTime(booking.getDurationTime());
+
+                    List<MainService> mainServiceList = booking.getMainServices();
+                    List<SubService> subServiceList = booking.getSubServices();
+                    List<ResBookingStaffGetDTO.Service> serviceList = mainServiceList.stream().map(mainService -> {
+                        ResBookingStaffGetDTO.Service service = new ResBookingStaffGetDTO.Service();
+                        service.setId(mainService.getId());
+                        service.setName(mainService.getName());
+                        service.setPrice(mainService.getPrice());
+
+                        List<ResBookingStaffGetDTO.Service.SubService> subServices = subServiceList.stream().filter(sub -> sub.getMainService().getId().equals(mainService.getId())).map(sub -> {
+                            ResBookingStaffGetDTO.Service.SubService subService = new ResBookingStaffGetDTO.Service.SubService();
+                            subService.setId(sub.getId());
+                            subService.setName(sub.getName());
+                            subService.setPrice(sub.getPrice());
+                            return subService;
+                        }).toList();
+
+                        return service;
+                    }).toList();
+
+                    resBookingStaffGetDTO.setServices(serviceList);
+
+                    return resBookingStaffGetDTO;
+                }
+        ).toList();
 
         ResultPaginationDTO paginationDTO = new ResultPaginationDTO();
         ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta();

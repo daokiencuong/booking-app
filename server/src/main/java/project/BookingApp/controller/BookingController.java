@@ -50,4 +50,12 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
+    @GetMapping("staff/booking")
+    public ResponseEntity<ResultPaginationDTO> getAllBookingForStaff(
+            @Filter Specification<Booking> spec,
+            Pageable pageable
+    ){
+        ResultPaginationDTO res = this.bookingService.handleGetAllBookingForStaff(spec, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
