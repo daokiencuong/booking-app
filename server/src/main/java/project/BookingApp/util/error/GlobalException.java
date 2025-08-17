@@ -19,7 +19,8 @@ public class GlobalException {
             UserException.class,
             ServiceCategoryException.class,
             SubServiceException.class,
-            MainServiceException.class
+            MainServiceException.class,
+            WorkingScheduleException.class
             })
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();
