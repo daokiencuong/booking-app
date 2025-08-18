@@ -13,12 +13,12 @@ export class BookingService {
   mainServiceSelected = signal<MainServiceGet[]>([]);
   getAllSeviceSelected = this.mainServiceSelected.asReadonly();
 
+  _totalDurationMinute = signal<number>(0);
+  totalDurationMinute = this._totalDurationMinute.asReadonly();
+
   getTotalService = computed(() => {
     return this.getAllSeviceSelected().reduce((total, main) => {
-      let subPrice = main.subServices.reduce(
-        (sum, sub) => sum + 1 ,
-        0
-      );
+      let subPrice = main.subServices.reduce((sum, sub) => sum + 1, 0);
       return total + 1 + subPrice;
     }, 0);
   });
@@ -35,7 +35,7 @@ export class BookingService {
   });
 
   getTotalDuration = computed(() => {
-    const totalMinutes = this.getAllSeviceSelected().reduce((total, main) => {
+    return this.getAllSeviceSelected().reduce((total, main) => {
       let mainMinutes = this.parseDuration(main.durationTime);
       let subMinutes = main.subServices.reduce(
         (sum, sub) => sum + this.parseDuration(sub.durationTime),
@@ -43,19 +43,31 @@ export class BookingService {
       );
       return total + mainMinutes + subMinutes;
     }, 0);
-
-    // Chuyển phút → giờ & phút
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-
-    if (hours > 0 && minutes > 0) {
-      return `${hours}h ${minutes}m`;
-    } else if (hours > 0) {
-      return `${hours}h`;
-    } else {
-      return `${minutes}m`;
-    }
   });
+
+  getBookingsByStaffIdAndDate(
+    staffId: number,
+    date: string
+  ): Observable<
+    {
+      staffId: number;
+      bookingDate: string;
+      startTime: string;
+      endTime: string;
+    }[]
+  > {
+    return this.http.post<
+      {
+        staffId: number;
+        bookingDate: string;
+        startTime: string;
+        endTime: string;
+      }[]
+    >(`${environment.apiUrl}/public/time-booking`, {
+      staffId: staffId,
+      bookingDate: date,
+    });
+  }
 
   parseDuration(duration: string): number {
     if (!duration) return 0;

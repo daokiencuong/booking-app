@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { MainServiceGet } from '../../../model/response/service/main-service-get.model';
 import { BookingService } from '../../../core/services/booking-service';
+import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
 
 @Component({
   selector: 'app-booking-summary',
-  imports: [],
+  imports: [DurationPipe],
   templateUrl: './booking-summary.html',
   styleUrl: './booking-summary.css',
 })

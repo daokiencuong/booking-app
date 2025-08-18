@@ -8,7 +8,7 @@
 }
 
 .date-list::-webkit-scrollbar-button {
-  display: none; 
+  display: none;
 }
 
 .date-item {
@@ -28,16 +28,47 @@
   color: #fff;
 }
 
-.date-item.active .month{
-    background: #ffa101;
+.date-item.active .month {
+  background: #ffa101;
 }
 
-.month{
-    background: #ffe3b3;
-    border-radius: 8px 8px 0 0;
+.month {
+  background: #ffe3b3;
+  border-radius: 8px 8px 0 0;
 }
 
-.day{
-    font-weight: 500;
-    padding-top: 5px;
+.day {
+  font-weight: 500;
+  padding-top: 5px;
+}
+
+.list-group {
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+.time-item {
+  cursor: pointer;
+}
+
+.time-item.active {
+  background: #322a7d;
+  color: #fff;
+  border: none;
+}
+
+.material-symbols-outlined{
+  font-size: 1.8rem;
+}
+
+.time-item.active .material-symbols-outlined{
+  color: #fff;
+}
+
+.notice {
+  padding: 20px;
+  font-size: 1.6rem;
+  color: #373737;
+  font-style: italic;
+  text-align: center;
 }

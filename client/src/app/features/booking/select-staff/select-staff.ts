@@ -11,7 +11,6 @@ import { StaffService } from '../../../core/services/staff-service';
 })
 export class SelectStaff {
   isCardOpen = signal<boolean>(false);
-  staffIdSelected = signal<number>(0);
   listStaff = signal<StaffActiveGet[]>([]);
 
   constructor(private staffService: StaffService) {
@@ -23,10 +22,10 @@ export class SelectStaff {
   }
 
   isSeleted(id: number) {
-    return id === this.staffIdSelected();
+    return id === this.staffService.staffSeletedId();
   }
 
   onSelected(id: number) {
-    this.staffIdSelected.set(id);
+    this.staffService.selectStaff(id);
   }
 }

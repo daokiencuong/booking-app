@@ -13,7 +13,7 @@
       <div class="ms-price">{{ mainService().price | currency : "USD" }}</div>
     </div>
     <div class="content-row">
-      <div class="ms-dur">{{ mainService().durationTime | duration }}</div>
+      <div class="ms-dur">{{ mainService().durationTime | duration:'string' }}</div>
       <div class="ms-prtype">{{ mainService().priceType }}</div>
     </div>
     <div class="content-row">

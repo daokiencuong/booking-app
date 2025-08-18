@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { TimeService } from '../../../core/services/time-service';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-select-time',
@@ -8,11 +10,17 @@ import { Component } from '@angular/core';
   styleUrl: './select-time.css',
 })
 export class SelectTime {
+  private timeService = inject(TimeService);
   dates: { month: string; day: number; week: string; date: Date }[] = [];
   selectedDate: any;
+  isLoading = signal<boolean>(true);
+  times = signal<{ time: string; booked: boolean }[]>([]);
+  selectedHour = signal<string>('');
 
   ngOnInit() {
     this.generateDates(90);
+    this.selectedDate = this.dates[0];
+    this.selectDate(this.dates[0]);
   }
 
   generateDates(days: number) {
@@ -35,6 +43,18 @@ export class SelectTime {
 
   selectDate(d: any) {
     this.selectedDate = d;
-    console.log(this.selectedDate.date);
+    this.timeService.getAllTimeSlots(d.date).subscribe({
+      next: (res) => {
+        this.times.set(res);
+      },
+      complete: () => {
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  selectHour(hour: string) {
+    this.selectedHour.set(hour);
+    console.log(this.selectedHour());
   }
 }

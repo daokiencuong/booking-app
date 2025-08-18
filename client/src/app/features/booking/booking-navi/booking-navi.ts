@@ -1,9 +1,10 @@
 import { Component, computed, input, output } from '@angular/core';
 import { BookingService } from '../../../core/services/booking-service';
+import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
 
 @Component({
   selector: 'app-booking-navi',
-  imports: [],
+  imports: [DurationPipe],
   templateUrl: './booking-navi.html',
   styleUrl: './booking-navi.css',
 })
