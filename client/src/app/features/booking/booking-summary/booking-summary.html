@@ -22,7 +22,7 @@
     <div class="d-flex justify-content-between align-items-start mb-3">
       <div>
         <div>{{ mainService.name }}</div>
-        <small class="text-muted">{{ mainService.durationTime }}</small>
+        <small class="text-muted">{{ mainService.durationTime | duration:'string' }}</small>
       </div>
       <div>CAD {{ mainService.price }}</div>
     </div>
@@ -30,7 +30,7 @@
     <div class="d-flex justify-content-between align-items-start mb-3">
       <div>
         <div>{{ subService.name }}</div>
-        <small class="text-muted">{{ subService.durationTime }}</small>
+        <small class="text-muted">{{ subService.durationTime | duration:'string' }}</small>
       </div>
       <div>CAD {{ subService.price }}</div>
     </div>
@@ -53,7 +53,7 @@
 
   <!-- Continue Button -->
   @if (currentStep() !== 4 && totalMoney() !== 0) {
-  <button class="btn btn-primary w-100 mb-2" (click)="onNextStep()">
+  <button class="btn btn-primary w-100 mb-2" (click)="onNextStep()" [disabled]="this.bookingStateService.selectedHour() === '' && currentStep() === 3">
     Continue</button
   >} @if (currentStep() !== 1) {
   <button class="btn btn-secondary w-100" (click)="onPrevStep()">

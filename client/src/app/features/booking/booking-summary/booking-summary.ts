@@ -1,14 +1,12 @@
 import {
   Component,
   computed,
+  inject,
   input,
-  OnInit,
   output,
-  signal,
 } from '@angular/core';
-import { MainServiceGet } from '../../../model/response/service/main-service-get.model';
-import { BookingService } from '../../../core/services/booking-service';
 import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
+import { BookingStateService } from '../../../core/services/booking-state-service';
 
 @Component({
   selector: 'app-booking-summary',
@@ -17,24 +15,25 @@ import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
   styleUrl: './booking-summary.css',
 })
 export class BookingSummary {
+  bookingStateService = inject(BookingStateService);
+
   currentStep = input.required<number>();
   nextStep = output();
   prevStep = output();
+
   listServiceSelected = computed(() =>
-    this.bookingService.getAllSeviceSelected()
+    this.bookingStateService.mainServiceSelected()
   );
 
-  totalMoney = computed(() => this.bookingService.getTotalPrice());
+  totalMoney = computed(() => this.bookingStateService.getTotalPrice());
 
-  totalDuration = computed(() => this.bookingService.getTotalDuration());
-
-  constructor(private bookingService: BookingService) {}
+  totalDuration = computed(() => this.bookingStateService.getTotalDuration());
 
   onNextStep() {
     this.nextStep.emit();
   }
 
-  onPrevStep() { 
+  onPrevStep() {
     this.prevStep.emit();
   }
 }

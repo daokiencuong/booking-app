@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DurationPipe } from '../../../../../shared/pipes/duration-pipe-pipe';
 import { SubService } from '../sub-service/sub-service';
 import { SubServiceGet } from '../../../../../model/response/service/sub-service-get.model';
-import { BookingService } from '../../../../../core/services/booking-service';
+import { BookingStateService } from '../../../../../core/services/booking-state-service';
 
 @Component({
   selector: 'app-main-service',
@@ -15,10 +15,10 @@ import { BookingService } from '../../../../../core/services/booking-service';
 export class MainService {
   mainService = input.required<MainServiceGet>();
   subServiceChecked: SubServiceGet[] = [];
-  bookingService = inject(BookingService);
+  bookingStateService = inject(BookingStateService);
 
   onSelect() {
-    this.bookingService.onToggleMainService({
+    this.bookingStateService.onToggleMainService({
       ...this.mainService(),
       subServices: [],
     });
@@ -36,7 +36,7 @@ export class MainService {
       this.subServiceChecked.push(subServiceData);
     }
 
-    this.bookingService.onUpdateSubService({
+    this.bookingStateService.onUpdateSubService({
       ...this.mainService(),
       subServices: this.subServiceChecked,
     });

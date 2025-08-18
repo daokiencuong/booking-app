@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { ListStaff } from '../../admin/staff-manage/components/list-staff/list-staff';
 import { StaffActiveGet } from '../../../model/response/staff/staff-active-get.model';
 import { StaffService } from '../../../core/services/staff-service';
+import { BookingStateService } from '../../../core/services/booking-state-service';
 
 @Component({
   selector: 'app-select-staff',
@@ -13,7 +13,10 @@ export class SelectStaff {
   isCardOpen = signal<boolean>(false);
   listStaff = signal<StaffActiveGet[]>([]);
 
-  constructor(private staffService: StaffService) {
+  constructor(
+    private staffService: StaffService,
+    private bookingStateService: BookingStateService
+  ) {
     this.staffService.getAllStaff().subscribe((res) => this.listStaff.set(res));
   }
 
@@ -22,10 +25,10 @@ export class SelectStaff {
   }
 
   isSeleted(id: number) {
-    return id === this.staffService.staffSeletedId();
+    return id === this.bookingStateService.staffSeleted()?.id;
   }
 
-  onSelected(id: number) {
-    this.staffService.selectStaff(id);
+  onSelected(id: number, name: string) {
+    this.bookingStateService.selectStaff({ id: id, name: name });
   }
 }

@@ -2,7 +2,7 @@
   @for (d of dates; track $index) {
   <div
     (click)="selectDate(d)"
-    [class.active]="d === this.timeService.selectedDate"
+    [class.active]="d.date === this.bookingStateService.selectedDate()"
     class="date-item"
   >
     <div class="month">{{ d.month }}</div>
@@ -21,8 +21,8 @@
     <li
       class="list-group-item d-flex justify-content-between align-items-center py-4 time-item"
       (click)="selectHour(t.time)"
-      [class.active]="this.timeService.selectedHour() === t.time"
-    >
+      [class.active]="this.bookingStateService.selectedHour() === t.time"
+    > 
       <span class="fw-bold">{{ t.time }}</span>
       <span class="text-muted"
         ><span class="material-symbols-outlined">
@@ -34,8 +34,8 @@
   </ul>
   } @else {
   <div class="notice">
-    Sorry, no appointment available for this day. Please choose a different
-    staff or day.
+    Sorry, no appointment available for this day. 
+    <div>Please choose a different staff or day.</div>
   </div>
   }
 </div>

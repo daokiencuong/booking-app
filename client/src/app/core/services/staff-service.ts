@@ -10,12 +10,6 @@ import { TimeService } from './time-service';
 })
 export class StaffService {
   private http = inject(HttpClient);
-  _staffSeletedId = signal<number>(0);
-  staffSeletedId = this._staffSeletedId.asReadonly();
-
-  selectStaff(id: number) {
-    this._staffSeletedId.set(id);
-  }
 
   getAllStaff(): Observable<StaffActiveGet[]> {
     return this.http.get<StaffActiveGet[]>(

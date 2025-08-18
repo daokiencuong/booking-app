@@ -1,6 +1,7 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { BookingService } from '../../../core/services/booking-service';
 import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
+import { BookingStateService } from '../../../core/services/booking-state-service';
 
 @Component({
   selector: 'app-booking-navi',
@@ -9,21 +10,21 @@ import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
   styleUrl: './booking-navi.css',
 })
 export class BookingNavi {
+  bookingStateService = inject(BookingStateService);
+
   currentStep = input.required<number>();
   nextStep = output();
   prevStep = output();
 
   listServiceSelected = computed(() =>
-    this.bookingService.getAllSeviceSelected()
+    this.bookingStateService.mainServiceSelected()
   );
 
-  totalMoney = computed(() => this.bookingService.getTotalPrice());
+  totalMoney = computed(() => this.bookingStateService.getTotalPrice());
 
-  totalDuration = computed(() => this.bookingService.getTotalDuration());
+  totalDuration = computed(() => this.bookingStateService.getTotalDuration());
 
-  totalService = computed(() => this.bookingService.getTotalService());
-
-  constructor(private bookingService: BookingService) {}
+  totalService = computed(() => this.bookingStateService.getTotalService());
 
   onNextStep() {
     this.nextStep.emit();

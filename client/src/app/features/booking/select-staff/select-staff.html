@@ -1,5 +1,9 @@
 <div class="container">
-  <div class="option-card" [class.active]="isSeleted(0)" (click)="onSelected(0)">
+  <div
+    class="option-card"
+    [class.active]="isSeleted(0)"
+    (click)="onSelected(0, 'No preference')"
+  >
     <div class="option-body">
       <div class="option-icon">👤</div>
       <div class="option-text">
@@ -21,7 +25,11 @@
       }
     </div>
     @if (isCardOpen()) { @for (staff of listStaff(); track $index) {
-    <div class="staff-card" [class.active]="isSeleted(staff.id)" (click)="onSelected(staff.id)">
+    <div
+      class="staff-card"
+      [class.active]="isSeleted(staff.id)"
+      (click)="onSelected(staff.id, staff.name)"
+    >
       <div class="staff-icon">🦸</div>
       <div class="staff-info">
         <h6>{{ staff.name }}</h6>

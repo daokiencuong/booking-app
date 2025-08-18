@@ -1,8 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { StaffService } from './staff-service';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { BookingStateService } from './booking-state-service';
 import { BookingService } from './booking-service';
 
 @Injectable({
@@ -10,11 +10,8 @@ import { BookingService } from './booking-service';
 })
 export class TimeService {
   private http = inject(HttpClient);
-  private staffService = inject(StaffService);
+  private bookingStateService = inject(BookingStateService);
   private bookingService = inject(BookingService);
-  selectedDate: any;
-  selectedHour = signal<string>('');
-
   private slotDuration = 15;
 
   getWorkSchedule(): Observable<
@@ -44,7 +41,7 @@ export class TimeService {
           return of([]); // nếu không có ca làm thì trả về empty
         }
 
-        const staffId = this.staffService.staffSeletedId();
+        const staffId = this.bookingStateService.staffSeleted().id;
         const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
 
         return this.bookingService
@@ -55,7 +52,8 @@ export class TimeService {
               return this.buildTimeSlots(
                 schedule.openTime,
                 schedule.closeTime,
-                bookings
+                bookings,
+                dateStr
               );
             })
           );
@@ -66,12 +64,30 @@ export class TimeService {
   private buildTimeSlots(
     openTime: string,
     closeTime: string,
-    bookings: { startTime: string; endTime: string }[]
+    bookings: {
+      staffId: number;
+      bookingDate: string;
+      startTime: string;
+      endTime: string;
+    }[],
+    dateStr: string
   ): { time: string; booked: boolean }[] {
     const slots: { time: string; booked: boolean }[] = [];
-    const duration = this.bookingService.getTotalDuration();
+    const duration = this.bookingStateService.getTotalDuration();
 
-    let current = this.toMinutes(openTime);
+    const today = new Date();
+
+    let current: number;
+    if (dateStr && this.isSameDateStr(dateStr, today)) {
+      const nowMinutes = today.getHours() * 60 + today.getMinutes();
+      const rounded = Math.ceil(nowMinutes / 15) * 15;
+      current = Math.max(rounded, this.toMinutes(openTime));
+    } else {
+      current = this.toMinutes(openTime);
+    }
+
+    // --- end new code ---
+
     const end = this.toMinutes(closeTime);
 
     while (current < end) {
@@ -82,13 +98,13 @@ export class TimeService {
             current < this.toMinutes(b.endTime)) ||
           (current + duration >= this.toMinutes(b.endTime) &&
             current <= this.toMinutes(b.startTime)) ||
-          
-            (current + duration > this.toMinutes(b.startTime) &&
-              current + duration <= this.toMinutes(b.endTime))
+          (current + duration > this.toMinutes(b.startTime) &&
+            current + duration <= this.toMinutes(b.endTime))
       );
       slots.push({ time, booked });
       current += this.slotDuration;
     }
+
     return slots;
   }
 
@@ -103,5 +119,14 @@ export class TimeService {
       .padStart(2, '0');
     const m = (minutes % 60).toString().padStart(2, '0');
     return `${h}:${m}`;
+  }
+
+  private isSameDateStr(dateStr: string, d: Date): boolean {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return (
+      d.getFullYear() === year &&
+      d.getMonth() + 1 === month &&
+      d.getDate() === day
+    );
   }
 }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { TimeService } from '../../../core/services/time-service';
 import { single } from 'rxjs';
+import { BookingStateService } from '../../../core/services/booking-state-service';
 
 @Component({
   selector: 'app-select-time',
@@ -11,13 +12,13 @@ import { single } from 'rxjs';
 })
 export class SelectTime {
   timeService = inject(TimeService);
+  bookingStateService = inject(BookingStateService);
   dates: { month: string; day: number; week: string; date: Date }[] = [];
   isLoading = signal<boolean>(true);
   times = signal<{ time: string; booked: boolean }[]>([]);
 
   ngOnInit() {
     this.generateDates(90);
-    this.timeService.selectedDate = this.dates[0];
     this.selectDate(this.dates[0]);
   }
 
@@ -39,8 +40,8 @@ export class SelectTime {
     }
   }
 
-  selectDate(d: any) {
-    this.timeService.selectedDate = d;
+  selectDate(d: { month: string; day: number; week: string; date: Date }) {
+    this.bookingStateService.selectDate(d.date);
     this.timeService.getAllTimeSlots(d.date).subscribe({
       next: (res) => {
         this.times.set(res);
@@ -52,6 +53,6 @@ export class SelectTime {
   }
 
   selectHour(hour: string) {
-    this.timeService.selectedHour.set(hour);
+    this.bookingStateService.selectHour(hour);
   }
 }
