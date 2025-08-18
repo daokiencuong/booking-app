@@ -34,7 +34,7 @@ export class BookingSummary {
     this.nextStep.emit();
   }
 
-  onPrevStep() {
+  onPrevStep() { 
     this.prevStep.emit();
   }
 }

@@ -10,16 +10,14 @@ import { single } from 'rxjs';
   styleUrl: './select-time.css',
 })
 export class SelectTime {
-  private timeService = inject(TimeService);
+  timeService = inject(TimeService);
   dates: { month: string; day: number; week: string; date: Date }[] = [];
-  selectedDate: any;
   isLoading = signal<boolean>(true);
   times = signal<{ time: string; booked: boolean }[]>([]);
-  selectedHour = signal<string>('');
 
   ngOnInit() {
     this.generateDates(90);
-    this.selectedDate = this.dates[0];
+    this.timeService.selectedDate = this.dates[0];
     this.selectDate(this.dates[0]);
   }
 
@@ -42,7 +40,7 @@ export class SelectTime {
   }
 
   selectDate(d: any) {
-    this.selectedDate = d;
+    this.timeService.selectedDate = d;
     this.timeService.getAllTimeSlots(d.date).subscribe({
       next: (res) => {
         this.times.set(res);
@@ -54,7 +52,6 @@ export class SelectTime {
   }
 
   selectHour(hour: string) {
-    this.selectedHour.set(hour);
-    console.log(this.selectedHour());
+    this.timeService.selectedHour.set(hour);
   }
 }

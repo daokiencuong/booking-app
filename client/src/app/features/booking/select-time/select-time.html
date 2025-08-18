@@ -2,7 +2,7 @@
   @for (d of dates; track $index) {
   <div
     (click)="selectDate(d)"
-    [class.active]="d === selectedDate"
+    [class.active]="d === this.timeService.selectedDate"
     class="date-item"
   >
     <div class="month">{{ d.month }}</div>
@@ -21,7 +21,7 @@
     <li
       class="list-group-item d-flex justify-content-between align-items-center py-4 time-item"
       (click)="selectHour(t.time)"
-      [class.active]="selectedHour() === t.time"
+      [class.active]="this.timeService.selectedHour() === t.time"
     >
       <span class="fw-bold">{{ t.time }}</span>
       <span class="text-muted"

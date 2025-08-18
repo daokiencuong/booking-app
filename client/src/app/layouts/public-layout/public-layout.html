@@ -22,9 +22,10 @@
       } @case (3) {
       <app-select-time />
       } @case (4) {
-      <app-review-and-confirm />
+      <app-review-and-confirm [currentStep]="step()" (prevStep)="backStep()" />
       } }
     </div>
+    @if (step() !== 4) {
     <div class="content-view">
       <app-booking-summary
         [currentStep]="step()"
@@ -32,7 +33,9 @@
         (prevStep)="backStep()"
       />
     </div>
+    }
   </div>
+  @if (step() !== 4) {
   <div class="booking-nav">
     <app-booking-navi
       [currentStep]="step()"
@@ -40,5 +43,6 @@
       (prevStep)="backStep()"
     />
   </div>
+  }
 </div>
 <app-footer />

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { StaffService } from './staff-service';
 import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +12,8 @@ export class TimeService {
   private http = inject(HttpClient);
   private staffService = inject(StaffService);
   private bookingService = inject(BookingService);
+  selectedDate: any;
+  selectedHour = signal<string>('');
 
   private slotDuration = 15;
 
