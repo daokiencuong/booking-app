@@ -51,6 +51,7 @@ public class BookingService {
         booking.setStartTime(req.getStartTime());
         booking.setDurationTime(req.getDurationTime());
         booking.setEndTime(req.getStartTime().plus(req.getDurationTime()));
+        booking.setNotes(req.getNotes());
 
         User staff = this.userRepository.findById(req.getStaff().getId())
                 .orElseThrow(() -> new UserException("Staff not found"));
@@ -74,6 +75,7 @@ public class BookingService {
         res.setStartTime(savedBooking.getStartTime());
         res.setDurationTime(savedBooking.getDurationTime());
         res.setCreatedAt(savedBooking.getCreatedAt());
+        res.setNotes(savedBooking.getNotes());
 
         ResBookingCreateDTO.StaffBooking staffBooking = new ResBookingCreateDTO.StaffBooking();
         staffBooking.setId(savedBooking.getStaff().getId());

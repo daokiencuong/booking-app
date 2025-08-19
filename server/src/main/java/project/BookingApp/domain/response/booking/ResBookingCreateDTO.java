@@ -23,6 +23,7 @@ public class ResBookingCreateDTO {
     private StaffBooking staff;
     private List<MainServiceBooking> mainServices;
     private Instant createdAt;
+    private String notes;
 
     @Getter
     @Setter

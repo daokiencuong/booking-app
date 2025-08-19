@@ -25,6 +25,7 @@ public class MainService {
 
     private String name;
     private double price;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private Duration durationTime;
 

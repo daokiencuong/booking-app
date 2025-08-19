@@ -21,6 +21,7 @@ public class ReqBookingCreateDTO {
     private StaffBooking staff;
     private List<Long> mainServices;
     private List<Long> subServices;
+    private String notes;
 
     @Getter
     @Setter

@@ -31,6 +31,8 @@ public class Booking {
     private Duration durationTime;
     private LocalTime endTime;
     private Instant createdAt;
+    @Column(columnDefinition = "TEXT")
+    private String notes;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
