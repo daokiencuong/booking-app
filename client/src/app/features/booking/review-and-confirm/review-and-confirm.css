@@ -1,0 +1,60 @@
+.custom-bold {
+  font-size: 13px;
+}
+
+.custom-bold-subservice{
+  font-size: 12px;
+}
+
+.custom-muted {
+  font-size: 12px;
+}
+
+.custom-muted-subservice{
+  font-size: 11px;
+}
+
+.form-control,
+.form-floating > label {
+  font-size: 13px;
+}
+
+.form-floating > label {
+  top: -0.3rem; /* nhích label cao hơn */
+  font-size: 13px;
+}
+
+.btn-book-now {
+  display: block;
+  width: 50%;
+  background-color: #2e247d; /* tím đậm */
+  color: #fff; /* chữ trắng */
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px; /* bo góc */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-book-now.disabled {
+  background-color: #bda8d4; /* tím nhạt */
+  color: #f0f0f0;           /* trắng xám */
+  border-color: #b79fcf;
+  opacity: 0.6;
+}
+
+
+input.ng-invalid.ng-touched {
+  background: #ffc3c3;
+}
+
+.notice {
+  font-size: 13px;
+  padding: 10px 0 0;
+  color: #373737;
+  font-style: italic;
+}

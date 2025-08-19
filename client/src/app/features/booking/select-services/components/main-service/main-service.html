@@ -10,7 +10,7 @@
   <div class="ms-content">
     <div class="content-row">
       <h2 class="ms-title">{{ mainService().name }}</h2>
-      <div class="ms-price">{{ mainService().price | currency : "USD" }}</div>
+      <div class="ms-price">CAD {{ mainService().price }}</div>
     </div>
     <div class="content-row">
       <div class="ms-dur">{{ mainService().durationTime | duration:'string' }}</div>

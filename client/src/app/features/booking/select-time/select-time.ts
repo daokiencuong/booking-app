@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { TimeService } from '../../../core/services/time-service';
-import { single } from 'rxjs';
+import { map, single } from 'rxjs';
 import { BookingStateService } from '../../../core/services/booking-state-service';
 
 @Component({
@@ -42,14 +42,13 @@ export class SelectTime {
 
   selectDate(d: { month: string; day: number; week: string; date: Date }) {
     this.bookingStateService.selectDate(d.date);
-    this.timeService.getAllTimeSlots(d.date).subscribe({
-      next: (res) => {
-        this.times.set(res);
-      },
-      complete: () => {
-        this.isLoading.set(false);
-      },
-    });
+    this.timeService
+      .getAllTimeSlots(d.date)
+      .pipe(map((res) => res.filter((slot) => !slot.booked)))
+      .subscribe({
+        next: (res) => this.times.set(res),
+        complete: () => this.isLoading.set(false),
+      });
   }
 
   selectHour(hour: string) {

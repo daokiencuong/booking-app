@@ -1,5 +1,6 @@
 <app-header />
 <div class="content">
+  @if (step() < 5) {
   <div class="step-view">
     <div class="step-number">Step {{ step() }} of 4</div>
 
@@ -13,6 +14,8 @@
     <div class="step-title">Review and confirm</div>
     } }
   </div>
+  }
+
   <div class="main-content">
     <div class="content-select">
       @switch ( step() ) { @case (1) {
@@ -22,10 +25,16 @@
       } @case (3) {
       <app-select-time />
       } @case (4) {
-      <app-review-and-confirm [currentStep]="step()" (prevStep)="backStep()" />
+      <app-review-and-confirm
+        [currentStep]="step()"
+        (prevStep)="backStep()"
+        (nextStep)="nextStep()"
+      />
+      } @case (5) {
+      <app-success />
       } }
     </div>
-    @if (step() !== 4) {
+    @if (step() < 4) {
     <div class="content-view">
       <app-booking-summary
         [currentStep]="step()"
@@ -35,7 +44,7 @@
     </div>
     }
   </div>
-  @if (step() !== 4) {
+  @if (step() < 4) {
   <div class="booking-nav">
     <app-booking-navi
       [currentStep]="step()"

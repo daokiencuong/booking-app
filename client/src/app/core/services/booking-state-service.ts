@@ -1,14 +1,37 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { MainServiceGet } from '../../model/response/service/main-service-get.model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
+interface BookingRequest {
+  customerEmail: string;
+  customerName: string;
+  totalPrice: number;
+  bookingDate: string; // dạng "YYYY-MM-DD"
+  startTime: string; // dạng "HH:mm:ss"
+  durationTime: number; // tính bằng giây
+  notes: string;
+  staff: {
+    id: number;
+  };
+  mainServices: number[];
+  subServices: number[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookingStateService {
+  private http = inject(HttpClient);
+
   _mainServiceSelected = signal<MainServiceGet[]>([]);
   mainServiceSelected = this._mainServiceSelected.asReadonly();
 
-  _staffSeleted = signal<{ id: number; name: string }>({id: 0, name: 'No preference'});
+  _staffSeleted = signal<{ id: number; name: string }>({
+    id: 0,
+    name: 'No preference',
+  });
   staffSeleted = this._staffSeleted.asReadonly();
 
   _selectedDate = signal<Date | null>(null);
@@ -104,9 +127,52 @@ export class BookingStateService {
     this._selectedHour.set(hour);
   }
 
-  getAllDataBooking() {
-    console.log(this.mainServiceSelected());
-    console.log(this.staffSeleted());
-    console.log(this.selectedDate(), this.selectedHour());
+  createBooking(
+    cusName: string,
+    cusMail: string,
+    cusNotes: string
+  ): Observable<any> {
+    const bookingData: BookingRequest = {
+      customerEmail: cusMail,
+      customerName: cusName,
+      totalPrice: this.getTotalPrice(),
+      bookingDate: this.formatDate(this.selectedDate()) || '', // dạng "YYYY-MM-DD"
+      startTime: this.formatHour(this.selectedHour()), // dạng "HH:mm:ss"
+      durationTime: this.getTotalDuration() * 60, // tính bằng giây
+      notes: cusNotes,
+      staff: {
+        id: this.staffSeleted().id,
+      },
+      mainServices: this.getMainServiceIds(this.mainServiceSelected()),
+      subServices: this.getSubServiceIds(this.mainServiceSelected()),
+    };
+
+    return this.http.post(`${environment.apiUrl}/public/booking`, bookingData);
+  }
+
+  formatDate(date: Date | null): string | null {
+    if (!date) return null;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  formatHour(time: string): string {
+    if (!time) return '';
+
+    const parts = time.split(':');
+    if (parts.length === 2) {
+      return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}:00`;
+    }
+    return time;
+  }
+
+  getMainServiceIds(services: MainServiceGet[]): number[] {
+    return services.map((s) => s.id);
+  }
+
+  getSubServiceIds(services: MainServiceGet[]): number[] {
+    return services.flatMap((s) => s.subServices.map((sub) => sub.id));
   }
 }

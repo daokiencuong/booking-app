@@ -1,0 +1,19 @@
+ .booking-success {
+    background: transparent; /* nền trong suốt */
+    color: #111; /* chữ đen xám */
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.3rem;/* chữ to hơn */
+    border: 1px solid #e0e0e0; /* viền nhẹ, tinh tế */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); /* shadow nhẹ */
+  }
+  .booking-success h2 {
+    font-size: 2rem;
+    color: #000; /* đậm hơn */
+  }
+  .booking-success h4 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  .booking-success p {
+    margin-bottom: 0.75rem;
+  }

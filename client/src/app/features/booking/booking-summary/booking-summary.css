@@ -26,3 +26,7 @@ button {
   text-align: center; /* Canh giữa */
   padding: 1rem;
 }
+
+.service-name{
+  width: 70%;
+}

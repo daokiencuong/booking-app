@@ -7,6 +7,7 @@ import { ReviewAndConfirm } from '../../features/booking/review-and-confirm/revi
 import { BookingSummary } from '../../features/booking/booking-summary/booking-summary';
 import { SelectStaff } from '../../features/booking/select-staff/select-staff';
 import { BookingNavi } from '../../features/booking/booking-navi/booking-navi';
+import { Success } from "../../features/booking/success/success";
 
 @Component({
   selector: 'app-public-layout',
@@ -19,7 +20,8 @@ import { BookingNavi } from '../../features/booking/booking-navi/booking-navi';
     BookingSummary,
     SelectStaff,
     BookingNavi,
-  ],
+    Success
+],
   templateUrl: './public-layout.html',
   styleUrl: './public-layout.css',
 })
@@ -27,7 +29,7 @@ export class PublicLayout {
   step = signal<number>(1);
 
   nextStep() {
-    if (this.step() > 3) {
+    if (this.step() > 4) {
     } else {
       this.step.update((prevVal) => ++prevVal);
     }
