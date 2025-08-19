@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { StaffActiveGet } from '../../../model/response/staff/staff-active-get.model';
 import { StaffService } from '../../../core/services/staff-service';
 import { BookingStateService } from '../../../core/services/booking-state-service';
+import { StaffGet } from '../../../model/response/staff/staff-get.model';
 
 @Component({
   selector: 'app-select-staff',
@@ -11,7 +11,7 @@ import { BookingStateService } from '../../../core/services/booking-state-servic
 })
 export class SelectStaff {
   isCardOpen = signal<boolean>(false);
-  listStaff = signal<StaffActiveGet[]>([]);
+  listStaff = signal<StaffGet[]>([]);
 
   constructor(
     private staffService: StaffService,

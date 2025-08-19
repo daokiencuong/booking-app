@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
+import { StaffService } from '../../../core/services/staff-service';
+import { StaffGet } from '../../../model/response/staff/staff-get.model';
+import { AdminSection } from '../../../shared/components/admin-section/admin-section';
 import { ListStaff } from './components/list-staff/list-staff';
 import { NewStaff } from './components/new-staff/new-staff';
-import { StaffCreateModel } from '../../../model/staff-create.model';
-import { AdminSection } from '../../../shared/components/admin-section/admin-section';
 
 @Component({
   selector: 'staff-manage',
@@ -12,6 +13,27 @@ import { AdminSection } from '../../../shared/components/admin-section/admin-sec
 })
 export class StaffManage {
   isDialogCreateOpen = signal<boolean>(false);
+  staffList = signal<StaffGet[]>([]);
+  itemsPerPage = signal<number>(5);
+  currentPage = signal<number>(1);
+  totalPages = signal<number>(1);
+
+  constructor(private staffService: StaffService) {
+    effect(() => {
+      const page = this.currentPage();
+      const size = this.itemsPerPage();
+      this.load(page, size);
+    });
+  }
+
+  private load(page: number, size: number) {
+    this.staffService.getAllUserForAdmin(page, size).subscribe({
+      next: (res) => {
+        this.totalPages.set(res.meta.pages);
+        this.staffList.set(res.result);
+      },
+    });
+  }
 
   openDialogCreate() {
     this.isDialogCreateOpen.set(true);
@@ -21,7 +43,25 @@ export class StaffManage {
     this.isDialogCreateOpen.set(false);
   }
 
-  createNewStaff(data: StaffCreateModel) {
-    console.log(data);
+  onNextPage() {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update((prev) => ++prev);
+    }
+  }
+
+  onPrevPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.update((prev) => --prev);
+    }
+  }
+
+  onItemsPerPageChange(size: number) {
+    this.itemsPerPage.set(Number(size));
+    this.currentPage.set(1);
+  }
+
+  onCreated() {
+    this.load(this.currentPage(), this.itemsPerPage());
+    this.closeDialogCreate();
   }
 }

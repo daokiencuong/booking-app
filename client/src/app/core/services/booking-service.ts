@@ -42,4 +42,10 @@ export class BookingService {
       `${environment.apiUrl}/public/service`
     );
   }
+
+  getAllServiceForAdmin(): Observable<ServiceCategoryGet[]> {
+    return this.http.get<ServiceCategoryGet[]>(
+      `${environment.apiUrl}/admin/service`
+    );
+  }
 }

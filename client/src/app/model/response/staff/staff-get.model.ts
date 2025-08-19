@@ -1,4 +1,4 @@
-export interface StaffActiveGet {
+export interface StaffGet {
   id: number;
   name: string;
   email: string;

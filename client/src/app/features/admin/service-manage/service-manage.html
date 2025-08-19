@@ -1,5 +1,5 @@
 <admin-section [sectionTitle]="'Service Management'">
-  @for (category of mockdata; track category.id) {
+  @for (category of serviceData(); track category.id) {
     <app-service-category [category]="category"/>
   }
 </admin-section>

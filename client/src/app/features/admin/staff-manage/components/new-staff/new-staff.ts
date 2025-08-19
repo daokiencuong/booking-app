@@ -1,45 +1,59 @@
-import { Component, Inject, output, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { StaffCreateModel } from '../../../../../model/staff-create.model';
+import { Component, output, signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { StaffService } from '../../../../../core/services/staff-service';
+import { StaffCreateModel } from '../../../../../model/request/staff/staff-create.model';
 
 @Component({
   selector: 'modal-new-staff',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './new-staff.html',
-  styleUrl: './new-staff.css',
+  styleUrls: ['./new-staff.css'],
 })
 export class NewStaff {
   close = output();
-  create = output<StaffCreateModel>();
+  created = output();
   showPassword = signal<boolean>(false);
 
-  staff = {
-    name: '',
-    email: '',
-    password: '',
-    role: 'MEMBER',
-    description: '',
-    staffActive: true,
-  };
+  constructor(private staffService: StaffService) {}
+
+  staffCreateForm = new FormGroup({
+    name: new FormControl<string>('', Validators.required),
+    email: new FormControl<string>('', [Validators.email, Validators.required]),
+    password: new FormControl<string>('', [Validators.required]),
+    role: new FormControl<string>('MEMBER'),
+    description: new FormControl<string>(''),
+    staffActive: new FormControl<boolean>(false),
+  });
 
   closeDialog() {
     this.close.emit();
   }
 
-  submit() {
-    if (
-      this.staff.email === '' ||
-      this.staff.name === '' ||
-      this.staff.password === ''
-    ) {
-      
-    } else {
-      this.create.emit(this.staff);
-      this.closeDialog();
-    }
-  }
-
   onShowPassword() {
     this.showPassword.update((showPassword) => !showPassword);
+  }
+
+  onSubmit() {
+    const staff: StaffCreateModel = {
+      name: this.staffCreateForm.value.name ?? '',
+      email: this.staffCreateForm.value.email ?? '',
+      password: this.staffCreateForm.value.password ?? '',
+      role: this.staffCreateForm.value.role ?? '',
+      description: this.staffCreateForm.value.description ?? '',
+      staffActive: this.staffCreateForm.value.staffActive ?? false,
+    };
+
+    this.staffService.createNewUser(staff).subscribe({
+      next: () => {
+        this.created.emit();
+        console.log('Created');
+        this.closeDialog();
+      },
+    });
   }
 }

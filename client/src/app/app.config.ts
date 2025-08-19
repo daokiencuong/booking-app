@@ -11,12 +11,13 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { DataInterceptor } from './core/interceptors/data-interceptor';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([DataInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([DataInterceptor, authInterceptor])),
   ],
 };

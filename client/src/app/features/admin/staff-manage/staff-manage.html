@@ -3,13 +3,18 @@
     Create New Staff
   </button>
   <div class="staff-list">
-    <app-list-staff />
+    <app-list-staff
+      [staffList]="staffList()"
+      [itemsPerPage]="itemsPerPage()"
+      [currentPage]="currentPage()"
+      [totalPages]="totalPages()"
+      (next)="onNextPage()"
+      (prev)="onPrevPage()"
+      (itemsPerPageChange)="onItemsPerPageChange($event)"
+    />
   </div>
 </admin-section>
 
 @if (isDialogCreateOpen()) {
-<modal-new-staff
-  (close)="closeDialogCreate()"
-  (create)="createNewStaff($event)"
-/>
+<modal-new-staff (close)="closeDialogCreate()" (created)="onCreated()" />
 }

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { StaffModel } from '../../../../../model/staff.model';
+import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { StaffGet } from '../../../../../model/response/staff/staff-get.model';
 
 @Component({
   selector: 'app-list-staff',
@@ -9,38 +9,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './list-staff.css',
 })
 export class ListStaff {
-  staffList: StaffModel[] = [
-    {
-      id: 2,
-      name: 'Harry',
-      email: 'thehung1234@gmail.com',
-      role: 'ADMIN',
-      description: 'Harry is best for u',
-      staffActive: true,
-      createdAt: '2025-07-18T11:27:14.816234Z',
-      updatedAt: '2025-07-18T11:27:18.141656Z',
-      createdBy: 'daokiencuong04@gmail.com',
-      updatedBy: 'daokiencuong04@gmail.com',
-    }
-  ];
+  staffList = input<StaffGet[]>([]);
+  itemsPerPage = input<number>(5);
+  currentPage = input<number>(1);
+  totalPages = input<number>(1);
 
-  itemsPerPage = 5;
-  currentPage = 1;
-
-  get totalPages() {
-    return Math.ceil(this.staffList.length / this.itemsPerPage);
-  }
-
-  get pagedStaff() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.staffList.slice(start, start + this.itemsPerPage);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) this.currentPage++;
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) this.currentPage--;
-  }
+  next = output<void>();
+  prev = output<void>();
+  itemsPerPageChange = output<number>();
 }

@@ -1,28 +1,25 @@
 <div class="dialog-backdrop" (click)="closeDialog()"></div>
 <div class="dialog">
   <h2>Create New Staff</h2>
-  <form (ngSubmit)="submit()" #staffForm="ngForm">
+  <form [formGroup]="staffCreateForm" (ngSubmit)="onSubmit()">
     <input
       type="text"
       name="name"
-      [(ngModel)]="staff.name"
       placeholder="Name"
-      required
+      formControlName="name"
     />
     <input
       type="email"
       name="email"
-      [(ngModel)]="staff.email"
       placeholder="Email"
-      required
+      formControlName="email"
     />
     <div class="input-group">
       <input
         [type]="showPassword() ? 'text' : 'password'"
         name="password"
-        [(ngModel)]="staff.password"
         placeholder="Password"
-        required
+        formControlName="password"
       />
       <span class="toggle-password" (click)="onShowPassword()">
         @if (showPassword()) {
@@ -33,29 +30,32 @@
       </span>
     </div>
 
-    <select name="role" [(ngModel)]="staff.role" required>
-      <option value="'ADMIN'">ADMIN</option>
-      <option value="'MEMBER'">STAFF</option>
+    <select name="role" formControlName="role">
+      <option value="ADMIN">ADMIN</option>
+      <option value="MEMBER">STAFF</option>
     </select>
     <textarea
       name="description"
-      [(ngModel)]="staff.description"
       placeholder="Description"
+      formControlName="description"
     ></textarea>
     <div class="switch-label">
       <span>Staff Active</span>
       <label class="switch">
         <input
           type="checkbox"
-          [(ngModel)]="staff.staffActive"
           name="staffActive"
+          formControlName="staffActive"
         />
         <span class="slider"></span>
       </label>
     </div>
 
     <div class="actions">
-      <button type="submit">Create</button>
+      <button type="submit" 
+      [class.disabled]="this.staffCreateForm.invalid"
+      [disabled]="this.staffCreateForm.invalid"
+      >Create</button>
       <button type="button" (click)="closeDialog()">Cancel</button>
     </div>
   </form>
