@@ -1,63 +1,142 @@
 <div class="modal-body">
+  @if (mode() === 'detail' && mainService()) {
   <div class="info-grid">
     <div class="info-item">
       <label>ID</label>
-      <span>{{ mainService.id }}</span>
+      <span>{{ mainService()!.id }}</span>
     </div>
     <div class="info-item">
       <label>Name</label>
-      <span>{{ mainService.name }}</span>
+      <span>{{ mainService()!.name }}</span>
     </div>
     <div class="info-item">
       <label>Price</label>
-      <span>{{ mainService.price | currency:'USD' }}</span>
+      <span>{{ mainService()!.price | currency:'USD' }}</span>
     </div>
     <div class="info-item">
       <label>Price Type</label>
-      <span>{{ mainService.priceType }}</span>
+      <span>{{ mainService()!.priceType }}</span>
     </div>
     <div class="info-item full-width">
       <label>Description</label>
-      <span>{{ mainService.description }}</span>
+      <span>{{ mainService()!.description }}</span>
     </div>
     <div class="info-item">
       <label>Duration</label>
-      <span>{{ mainService.durationTime }}</span>
+      <span>{{ mainService()!.durationTime | duration:'string' }}</span>
     </div>
     <div class="info-item">
       <label>Created At</label>
-      <span>{{ mainService.createdAt }}</span>
+      <span>{{ mainService()!.createdAt | date:'short' }}</span>
     </div>
     <div class="info-item">
       <label>Created By</label>
-      <span>{{ mainService.createdBy }}</span>
+      <span>{{ mainService()!.createdBy }}</span>
     </div>
     <div class="info-item">
       <label>Updated At</label>
-      <span>{{ mainService.updatedAt || '—' }}</span>
+      <span>{{ mainService()!.updatedAt || '—' }}</span>
     </div>
     <div class="info-item">
       <label>Updated By</label>
-      <span>{{ mainService.updatedBy || '—' }}</span>
+      <span>{{ mainService()!.updatedBy || '—' }}</span>
     </div>
   </div>
 
   <h6>Sub Services</h6>
-  <button class="btn-add">+ Add Subservice</button>
+  <button class="btn-add" (click)="openCreateSubServiceForm()">+ Add Subservice</button>
   <table class="subservice-table">
     <thead>
       <tr>
         <th>#</th>
         <th>Name</th>
         <th>Price</th>
+        <th>Duration</th>
+        <th>Type</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sub of mainService.subServices; let i = index">
+      <tr *ngFor="let sub of mainService()!.subServices; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ sub.name }}</td>
         <td>{{ sub.price | currency:'USD' }}</td>
+        <td>{{ sub.durationTime | duration:'string' }}</td>
+        <td>{{ sub.priceType }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="openEditSubServiceForm(sub)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteSubService(sub.id)">Delete</button>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  @if (isSubServiceFormOpen()) {
+  <div class="mt-3 p-3 border rounded">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label">Name</label>
+        <input class="form-control" [ngModel]="subFormName()" (ngModelChange)="subFormName.set($event)" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Price</label>
+        <input type="number" class="form-control" [ngModel]="subFormPrice()" (ngModelChange)="subFormPrice.set($event)" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Duration (min)</label>
+        <input type="number" class="form-control" [ngModel]="subFormDurationMinutes()" (ngModelChange)="subFormDurationMinutes.set($event)" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Price Type</label>
+        <select class="form-select" [ngModel]="subFormPriceType()" (ngModelChange)="subFormPriceType.set($event)">
+          <option value="FIXED">FIXED</option>
+          <option value="FROM">FROM</option>
+        </select>
+      </div>
+      <div class="col-md-12 mt-2">
+        <button class="btn btn-secondary me-2" (click)="cancelSubServiceForm()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveSubService()">Save</button>
+      </div>
+    </div>
+  </div>
+  }
+  }
+
+  @if (mode() === 'create' || mode() === 'edit') {
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Name</label>
+      <input class="form-control" [ngModel]="formName()" (ngModelChange)="formName.set($event)" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Price</label>
+      <input type="number" class="form-control" [ngModel]="formPrice()" (ngModelChange)="formPrice.set($event)" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Price Type</label>
+      <select class="form-select" [ngModel]="formPriceType()" (ngModelChange)="formPriceType.set($event)">
+        <option value="FIXED">FIXED</option>
+        <option value="FROM">FROM</option>
+      </select>
+    </div>
+    <div class="col-md-12">
+      <label class="form-label">Description</label>
+      <textarea rows="3" class="form-control" [ngModel]="formDescription()" (ngModelChange)="formDescription.set($event)"></textarea>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Duration (min)</label>
+      <input type="number" class="form-control" [ngModel]="formDurationMinutes()" (ngModelChange)="formDurationMinutes.set($event)" />
+    </div>
+  </div>
+  }
+</div>
+
+<div class="modal-footer">
+  @if (mode() === 'detail') {
+  <button class="btn btn-secondary" (click)="cancel()">Close</button>
+  }
+  @if (mode() === 'create' || mode() === 'edit') {
+  <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
+  <button class="btn btn-primary" (click)="saveMainService()">Save</button>
+  }
 </div>

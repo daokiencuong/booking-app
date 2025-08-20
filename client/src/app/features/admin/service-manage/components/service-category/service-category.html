@@ -1,7 +1,11 @@
 <div class="category-title-container" (click)="onClick()">
   <i class="bi bi-folder-fill"></i>
   <span class="category-name">{{ category().name }}</span>
-  <span class="badge bg-primary ms-auto">Xem</span>
+  <div class="ms-auto d-flex gap-2">
+    <button class="btn btn-sm btn-outline-success me-2" (click)="onCreateMainService($event)">+ Main Service</button>
+    <button class="btn btn-sm btn-outline-warning me-2" (click)="onEditCategory($event)">Edit Category</button>
+    <button class="btn btn-sm btn-outline-danger" (click)="onDeleteCategory($event)">Delete Category</button>
+  </div>
 </div>
 
 
@@ -30,9 +34,9 @@
       <td class="text-center">{{ mainService.createdAt | date : "short" }}</td>
       <td class="text-center">{{ mainService.createdBy }}</td>
       <td class="text-center">
-        <button class="btn btn-sm btn-primary me-1">Details</button>
-        <button class="btn btn-sm btn-warning mx-1">Edit</button>
-        <button class="btn btn-sm btn-danger ms-1">Delete</button>
+        <button class="btn btn-sm btn-primary me-1" (click)="$event.stopPropagation(); detailMainService.emit(mainService)">Details</button>
+        <button class="btn btn-sm btn-warning mx-1" (click)="$event.stopPropagation(); editMainService.emit(mainService)">Edit</button>
+        <button class="btn btn-sm btn-danger ms-1" (click)="$event.stopPropagation(); deleteMainService.emit(mainService.id)">Delete</button>
       </td>
     </tr>
     }

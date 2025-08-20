@@ -1,5 +1,69 @@
 <admin-section [sectionTitle]="'Service Management'">
+  <div class="d-flex justify-content-end mb-2">
+    <button class="btn btn-success" (click)="openCreateCategoryModal()">
+      + New Category
+    </button>
+  </div>
+
   @for (category of serviceData(); track category.id) {
-    <app-service-category [category]="category"/>
+    <app-service-category
+      [category]="category"
+      (editCategory)="openEditCategoryModal($event)"
+      (deleteCategory)="deleteCategory($event)"
+      (createMainService)="openCreateMainServiceModal($event)"
+      (editMainService)="openEditMainServiceModal($event)"
+      (detailMainService)="openDetailMainServiceModal($event)"
+      (deleteMainService)="deleteMainService($event)"
+    />
   }
+
+  <!-- Category modal -->
+  @if (isCategoryModalOpen()) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.35)">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ categoryModalMode() === 'create' ? 'Create Category' : 'Edit Category' }}</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="isCategoryModalOpen.set(false)"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">Name</label>
+          <input class="form-control" [ngModel]="categoryFormName()" (ngModelChange)="categoryFormName.set($event)" placeholder="Category name" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="isCategoryModalOpen.set(false)">Cancel</button>
+          <button class="btn btn-primary" (click)="submitCategoryForm()">{{ categoryModalMode() === 'create' ? 'Create' : 'Save' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Main service modal (detail/create/edit) -->
+  @if (isMainServiceModalOpen()) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.35)">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            @if (mainServiceModalMode() === 'detail') { Main Service Details }
+            @if (mainServiceModalMode() === 'create') { Create Main Service }
+            @if (mainServiceModalMode() === 'edit') { Edit Main Service }
+          </h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeMainServiceModal()"></button>
+        </div>
+        <div class="modal-body">
+          <app-main-service-modal
+            [mode]="mainServiceModalMode()"
+            [mainService]="selectedMainService()"
+            [categoryIdForCreate]="selectedCategoryIdForCreate()"
+            (closed)="closeMainServiceModal()"
+            (changed)="mainServiceChanged()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
 </admin-section>
