@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { BookingStateService } from '../../../core/services/booking-state-service';
 import { DatePipe } from '@angular/common';
 import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
@@ -21,6 +21,7 @@ export class ReviewAndConfirm {
   currentStep = input.required<number>();
   prevStep = output();
   nextStep = output();
+  isSending = signal<boolean>(false);
 
   customerInfoForm = new FormGroup({
     name: new FormControl<string>('', Validators.required),
@@ -41,6 +42,7 @@ export class ReviewAndConfirm {
   }
 
   onSubmit() {
+    this.isSending.set(true);
     this.bookingStateService
       .createBooking(
         this.customerInfoForm.value.name || '',
@@ -49,6 +51,7 @@ export class ReviewAndConfirm {
       )
       .subscribe({
         complete:() => {
+          this.isSending.set(false);
           this.onNextStep();
         }
       });

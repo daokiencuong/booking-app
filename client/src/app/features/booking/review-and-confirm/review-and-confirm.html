@@ -1,3 +1,4 @@
+@if (!isSending()) {
 <div class="card shadow-sm rounded-3 p-3 mb-4">
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center">
@@ -87,8 +88,7 @@
         }}</small>
       </div>
     </div>
-    @for (subService of mainService.subServices; track
-    subService.id) {
+    @for (subService of mainService.subServices; track subService.id) {
     <div
       class="d-flex justify-content-between align-items-start py-2 pe-3 border-bottom ps-5"
     >
@@ -99,7 +99,9 @@
         }}</small>
       </div>
       <div class="text-end">
-        <div class="fw-bold custom-bold-subservice">CAD {{ subService.price }}</div>
+        <div class="fw-bold custom-bold-subservice">
+          CAD {{ subService.price }}
+        </div>
         <small class="text-muted custom-muted-subservice">{{
           subService.priceType
         }}</small>
@@ -108,7 +110,11 @@
     } }
 
     <div class="d-flex justify-content-between p-3 fw-bold custom-bold">
-      <span>Estimated Total ({{this.bookingStateService.getTotalDuration() | duration:"number"}})</span>
+      <span
+        >Estimated Total ({{
+          this.bookingStateService.getTotalDuration() | duration : "number"
+        }})</span
+      >
       <span>CAD {{ this.bookingStateService.getTotalPrice() }} + Taxes</span>
     </div>
   </div>
@@ -166,3 +172,6 @@
     </button>
   </form>
 </div>
+} @else {
+  <div class="loader"></div>
+}
