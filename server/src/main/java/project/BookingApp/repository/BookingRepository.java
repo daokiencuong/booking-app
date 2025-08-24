@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long>, JpaSpecificationExecutor<Booking> {
     List<Booking> findAllByBookingDateAndStaffId(LocalDate bookingDate, Long staffId);
+    List<Booking> findAllByBookingDate(LocalDate bookingDate);
 }

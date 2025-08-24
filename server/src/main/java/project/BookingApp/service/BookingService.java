@@ -3,6 +3,7 @@ package project.BookingApp.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import project.BookingApp.domain.Booking;
 import project.BookingApp.domain.MainService;
@@ -20,12 +21,15 @@ import project.BookingApp.repository.MainServiceRepository;
 import project.BookingApp.repository.SubServiceRepository;
 import project.BookingApp.repository.UserRepository;
 import project.BookingApp.util.SecurityUtil;
+import project.BookingApp.util.error.BookingServiceException;
 import project.BookingApp.util.error.UserException;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,12 +38,14 @@ public class BookingService {
     private final UserRepository userRepository;
     private final MainServiceRepository mainServiceRepository;
     private final SubServiceRepository subServiceRepository;
+    private final TelegramBotService telegramBotService;
 
-    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, MainServiceRepository mainServiceRepository, SubServiceRepository subServiceRepository) {
+    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, MainServiceRepository mainServiceRepository, SubServiceRepository subServiceRepository, TelegramBotService telegramBotService) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.mainServiceRepository = mainServiceRepository;
         this.subServiceRepository = subServiceRepository;
+        this.telegramBotService = telegramBotService;
     }
 
     public ResBookingCreateDTO handleCreateBooking(ReqBookingCreateDTO req){
@@ -53,10 +59,38 @@ public class BookingService {
         booking.setEndTime(req.getStartTime().plus(req.getDurationTime()));
         booking.setNotes(req.getNotes());
 
-        User staff = this.userRepository.findById(req.getStaff().getId())
-                .orElseThrow(() -> new UserException("Staff not found"));
+        if (req.getStaff().getId() == 0) {
+            List<Booking> bookingList = this.bookingRepository.findAllByBookingDate(req.getBookingDate());
 
-        booking.setStaff(staff);
+            List<User> allStaff = this.userRepository.findByStaffActive(true);
+
+            LocalTime start = req.getStartTime();
+            LocalTime end = req.getStartTime().plus(req.getDurationTime());
+
+            Optional<User> availableStaff = allStaff.stream()
+                    .filter(staff -> {
+                        List<Booking> staffBookings = bookingList.stream()
+                                .filter(b -> b.getStaff().getId().equals(staff.getId()))
+                                .toList();
+
+                        return staffBookings.stream().noneMatch(b -> {
+                            LocalTime bStart = b.getStartTime();
+                            LocalTime bEnd = b.getEndTime();
+                            return !(end.isBefore(bStart) || start.isAfter(bEnd) || start.equals(bEnd) || end.equals(bStart));
+                        });
+                    })
+                    .findFirst();
+
+            User staff = availableStaff.orElseThrow(
+                    () -> new BookingServiceException("No available staff for the selected time")
+            );
+
+            booking.setStaff(staff);
+        } else {
+            User staff = this.userRepository.findById(req.getStaff().getId())
+                    .orElseThrow(() -> new UserException("Staff not found"));
+            booking.setStaff(staff);
+        }
 
         List<MainService> mainServices = this.mainServiceRepository.findAllById(req.getMainServices());
         booking.setMainServices(mainServices);
@@ -110,10 +144,26 @@ public class BookingService {
 
 
         res.setMainServices(listMainServices);
+        this.sendBookingMessage(res);
         return res;
     }
 
     public List<ResCheckTimeAvailableDTO> handleCheckTimeAvailable(ReqCheckTimeAvailableDTO req){
+        if(req.getStaffId() == 0){
+            List<Booking> listBookingInDate = this.bookingRepository.findAllByBookingDate(req.getBookingDate());
+
+            List<ResCheckTimeAvailableDTO> res = listBookingInDate.stream().map(booking -> {
+                ResCheckTimeAvailableDTO resCheckTimeAvailableDTO = new ResCheckTimeAvailableDTO();
+                resCheckTimeAvailableDTO.setBookingDate(booking.getBookingDate());
+                resCheckTimeAvailableDTO.setStartTime(booking.getStartTime());
+                resCheckTimeAvailableDTO.setEndTime(booking.getEndTime());
+                resCheckTimeAvailableDTO.setStaffId(booking.getStaff().getId());
+                return resCheckTimeAvailableDTO;
+            }).toList();
+
+            return res;
+        }
+
         List<Booking> listBookingInDate = this.bookingRepository.findAllByBookingDateAndStaffId(req.getBookingDate(), req.getStaffId());
 
         List<ResCheckTimeAvailableDTO> res = listBookingInDate.stream().map(booking -> {
@@ -164,6 +214,8 @@ public class BookingService {
                     subService.setPrice(sub.getPrice());
                     return subService;
                 }).toList();
+
+                service.setSubServices(subServices);
 
                 return service;
             }).toList();
@@ -225,6 +277,8 @@ public class BookingService {
                             return subService;
                         }).toList();
 
+                        service.setSubServices(subServices);
+
                         return service;
                     }).toList();
 
@@ -248,4 +302,51 @@ public class BookingService {
 
         return paginationDTO;
     }
+
+    @Async
+    public void sendBookingMessage(ResBookingCreateDTO res) {
+        StringBuilder message = new StringBuilder();
+        message.append("📌 *New Booking!*\n\n")
+                .append("🆔 Booking ID: ").append(res.getId()).append("\n")
+                .append("👤 Customer: ").append(res.getCustomerName())
+                .append(" (").append(res.getCustomerEmail()).append(")\n")
+                .append("📅 Date: ").append(res.getBookingDate()).append("\n")
+                .append("⏰ Start Time: ").append(res.getStartTime())
+                .append(" | Duration: ").append(this.formatDuration(res.getDurationTime())).append("\n")
+                .append("💁‍♀️ Staff: ").append(res.getStaff().getName()).append("\n")
+                .append("📝 Notes: ").append(
+                        res.getNotes() != null && !res.getNotes().isEmpty()
+                                ? res.getNotes() : "None"
+                ).append("\n\n")
+                .append("💰 Total Price: ").append(res.getTotalPrice()).append(" CAD\n\n")
+                .append("📦 Services:\n");
+
+        for (ResBookingCreateDTO.MainServiceBooking main : res.getMainServices()) {
+            message.append(" - ").append(main.getName())
+                    .append(" (").append(main.getPrice()).append(" CAD)\n");
+            for (ResBookingCreateDTO.MainServiceBooking.SubServiceBooking sub : main.getSubServices()) {
+                message.append("     • ").append(sub.getName())
+                        .append(" (").append(sub.getPrice()).append(" CAD)\n");
+            }
+        }
+
+        String ms =  message.toString();
+        this.telegramBotService.SendMessage(ms);
+    }
+
+    public String formatDuration(Duration duration) {
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+
+        StringBuilder sb = new StringBuilder();
+        if (hours > 0) {
+            sb.append(hours).append(hours == 1 ? " hour" : " hours");
+        }
+        if (minutes > 0) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(minutes).append(minutes == 1 ? " minute" : " minutes");
+        }
+        return sb.toString();
+    }
+
 }

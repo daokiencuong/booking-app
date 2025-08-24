@@ -20,7 +20,8 @@ public class GlobalException {
             ServiceCategoryException.class,
             SubServiceException.class,
             MainServiceException.class,
-            WorkingScheduleException.class
+            WorkingScheduleException.class,
+            BookingServiceException.class
             })
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();

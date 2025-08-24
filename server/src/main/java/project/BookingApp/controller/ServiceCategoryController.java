@@ -39,12 +39,11 @@ public class ServiceCategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @GetMapping("common/service")
-    public ResponseEntity<ResultPaginationDTO> getAllServiceCategory(
-            @Filter Specification<ServiceCategory> spec,
-            Pageable pageable
-            ){
-        ResultPaginationDTO res = this.serviceCategoryService.handleGetAllServiceCategory(spec, pageable);
+    @GetMapping("admin/service")
+    private ResponseEntity<List<ResServiceCategoryGet>> getAllServiceCategoryForAdmin(
+            @Filter Specification<ServiceCategory> spec
+    ){
+        List<ResServiceCategoryGet> res = this.serviceCategoryService.handleGetAllServiceForAdmin(spec);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
