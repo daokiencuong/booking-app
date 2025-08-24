@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -31,29 +31,28 @@ export class TimeService {
     const dayOfWeek = date
       .toLocaleDateString('en-US', { weekday: 'long' })
       .toUpperCase();
-    // ví dụ: MONDAY, TUESDAY...
 
     return this.getWorkSchedule().pipe(
       switchMap((schedules: any[]) => {
         // tìm schedule của đúng ngày
         const schedule = schedules.find((s) => s.day === dayOfWeek);
         if (!schedule) {
-          return of([]); // nếu không có ca làm thì trả về empty
+          return of([]);
         }
 
         const staffId = this.bookingStateService.staffSeleted().id;
-        const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
+        const dateStr = date.toISOString().split('T')[0];
 
         return this.bookingService
           .getBookingsByStaffIdAndDate(staffId, dateStr)
           .pipe(
             map((bookings) => {
-              // generate slots dựa trên ca làm + bookings
               return this.buildTimeSlots(
                 schedule.openTime,
                 schedule.closeTime,
                 bookings,
-                dateStr
+                dateStr,
+                staffId
               );
             })
           );
@@ -70,11 +69,12 @@ export class TimeService {
       startTime: string;
       endTime: string;
     }[],
-    dateStr: string
+    dateStr: string,
+    staffId: number
   ): { time: string; booked: boolean }[] {
     const slots: { time: string; booked: boolean }[] = [];
     const duration = this.bookingStateService.getTotalDuration();
-
+    const totalStaff = this.bookingStateService.totalActiveStaff();
     const today = new Date();
 
     let current: number;
@@ -86,9 +86,33 @@ export class TimeService {
       current = this.toMinutes(openTime);
     }
 
-    // --- end new code ---
-
     const end = this.toMinutes(closeTime);
+
+    if (staffId === 0) {
+      while (current < end) {
+        const time = this.toTimeString(current);
+
+        const busyStaff = new Set<number>();
+
+        bookings.forEach((b) => {
+          if (
+            (current >= this.toMinutes(b.startTime) &&
+              current < this.toMinutes(b.endTime)) ||
+            (current + duration > this.toMinutes(b.startTime) &&
+              current < this.toMinutes(b.endTime))
+          ) {
+            busyStaff.add(b.staffId);
+          }
+        });
+
+        const booked = busyStaff.size >= totalStaff;
+        slots.push({ time, booked });
+
+        current += this.slotDuration;
+      }
+
+      return slots;
+    }
 
     while (current < end) {
       const time = this.toTimeString(current);

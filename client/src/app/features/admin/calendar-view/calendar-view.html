@@ -1,1 +1,138 @@
-<daypilot-scheduler [config]="config"></daypilot-scheduler>
+<admin-section [sectionTitle]="'Calendar View'">
+  <div class="calendar-container">
+    <div class="date-picker-section">
+      <label for="dateInput">Chọn ngày:</label>
+      <input
+        type="date"
+        id="dateInput"
+        [(ngModel)]="selectedDate"
+        (change)="onDateChange()"
+        class="date-input"
+      />
+    </div>
+
+    <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+
+    <div *ngIf="!loading && staffRows.length > 0" class="gantt-table-container">
+      <table class="gantt-table" role="grid" aria-label="Gantt schedule">
+        <thead>
+          <tr>
+            <th class="corner-sticky" scope="col">Thời gian</th>
+            <th
+              class="staff-col-header sticky-top"
+              *ngFor="let staff of staffRows"
+              scope="col"
+            >
+              {{ staff.name }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="slot-row"
+            *ngFor="let row of verticalRows; let rowIndex = index"
+          >
+            <th class="time-cell sticky-col" scope="row">
+              {{ timeSlots[rowIndex] }}
+            </th>
+            <ng-container *ngFor="let cell of row">
+              <td
+                *ngIf="cell.type === 'gap'"
+                class="gap-cell"
+                aria-hidden="true"
+              ></td>
+              <td
+                *ngIf="cell.type === 'booking'"
+                class="booking-cell"
+                [attr.rowspan]="cell.rowspan"
+                (click)="openBookingDetail(cell.booking!)"
+                [title]="
+                  'Khách: ' +
+                  cell.booking!.customerName +
+                  ' | ' +
+                  formatTime(cell.booking!.startTime) +
+                  '-' +
+                  formatTime(cell.booking!.endTime)
+                "
+              >
+                <div class="booking-content">
+                  <div class="booking-title">
+                    {{ cell.booking!.customerName }}
+                  </div>
+                  <div class="booking-time">
+                    {{ formatTime(cell.booking!.startTime) }} -
+                    {{ formatTime(cell.booking!.endTime) }}
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!loading && staffRows.length === 0" class="no-data">
+      Không có booking nào cho ngày {{ selectedDate }}
+    </div>
+  </div>
+
+  <!-- Booking Detail Modal -->
+  <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Chi tiết Booking</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedBooking">
+        <div class="detail-row">
+          <strong>Khách hàng:</strong>
+          <span>{{ selectedBooking.customerName }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Email:</strong>
+          <span>{{ selectedBooking.customerEmail }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Nhân viên:</strong>
+          <span>{{ selectedBooking.staff.name }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Ngày:</strong>
+          <span>{{ selectedBooking.bookingDate }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Thời gian:</strong>
+          <span
+            >{{ formatTime(selectedBooking.startTime) }} -
+            {{ formatTime(selectedBooking.endTime) }}</span
+          >
+        </div>
+
+        <div class="detail-row">
+          <strong>Thời lượng:</strong>
+          <span>{{ formatDuration(selectedBooking.durationTime) }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Dịch vụ:</strong>
+          <span>{{ getServiceNames(selectedBooking.services) }}</span>
+        </div>
+
+        <div class="detail-row">
+          <strong>Tổng tiền:</strong>
+          <span>{{ selectedBooking.totalPrice | currency : "VND" }}</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+  <app-gant-chart/>
+</admin-section>

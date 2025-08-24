@@ -17,7 +17,10 @@ export class SelectStaff {
     private staffService: StaffService,
     private bookingStateService: BookingStateService
   ) {
-    this.staffService.getAllStaff().subscribe((res) => this.listStaff.set(res));
+    this.staffService.getAllStaff().subscribe((res) => {
+      this.listStaff.set(res);
+      this.bookingStateService.setTotalActiveStaff(res.length);
+    });
   }
 
   onClick() {

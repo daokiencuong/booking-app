@@ -40,6 +40,13 @@ export class BookingStateService {
   _selectedHour = signal<string>('');
   selectedHour = this._selectedHour.asReadonly();
 
+  _totalActiveStaff = signal<number>(0);
+  totalActiveStaff = this._totalActiveStaff.asReadonly();
+
+  setTotalActiveStaff(total: number){
+    this._totalActiveStaff.set(total);
+  }
+
   getTotalService = computed(() => {
     return this.mainServiceSelected().reduce((total, main) => {
       let subPrice = main.subServices.reduce((sum, sub) => sum + 1, 0);
