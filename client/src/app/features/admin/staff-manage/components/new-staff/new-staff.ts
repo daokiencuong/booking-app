@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { StaffService } from '../../../../../core/services/staff-service';
 import { StaffCreateModel } from '../../../../../model/request/staff/staff-create.model';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'modal-new-staff',
@@ -19,7 +20,10 @@ export class NewStaff {
   created = output();
   showPassword = signal<boolean>(false);
 
-  constructor(private staffService: StaffService) {}
+  constructor(
+    private staffService: StaffService,
+    private toast: NgToastService
+  ) {}
 
   staffCreateForm = new FormGroup({
     name: new FormControl<string>('', Validators.required),
@@ -53,6 +57,12 @@ export class NewStaff {
         this.created.emit();
         console.log('Created');
         this.closeDialog();
+      },
+      error: (err) => {
+        console.error(err);
+        const message = err?.error?.message || err?.message || 'Create staff failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
       },
     });
   }

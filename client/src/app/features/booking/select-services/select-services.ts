@@ -3,15 +3,13 @@ import {
   Component,
   ElementRef,
   OnInit,
-  QueryList,
   signal,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
+import { NgToastService } from 'ng-angular-popup';
+import { BookingService } from '../../../core/services/booking-service';
 import { ServiceCategoryGet } from '../../../model/response/service/service-category-get.model';
 import { MainService } from './components/main-service/main-service';
-import { BookingService } from '../../../core/services/booking-service';
-import { MainServiceGet } from '../../../model/response/service/main-service-get.model';
 
 @Component({
   selector: 'app-select-services',
@@ -27,7 +25,10 @@ export class SelectServices implements OnInit {
   showLeftArrow = signal<boolean>(false);
   showRightArrow = signal<boolean>(true);
 
-  constructor(private bookingService: BookingService) {}
+  constructor(
+    private bookingService: BookingService,
+    private toast: NgToastService
+  ) {}
 
   ngOnInit(): void {
     this.bookingService.getAllService().subscribe({
@@ -36,6 +37,13 @@ export class SelectServices implements OnInit {
         setTimeout(() => {
           this.updateArrows();
         }, 0);
+      },
+      error: (err) => {
+        console.error(err);
+        const message =
+          err?.error?.message || err?.message || 'Load services failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
       },
       complete: () => {
         this.isReady.set(true);

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MainServiceGet } from '../../../../../model/response/service/main-service-get.model';
 import { ServiceCatalogService } from '../../../../../core/services/service-catalog-service';
 import { DurationPipe } from '../../../../../shared/pipes/duration-pipe-pipe';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-main-service-modal',
@@ -34,7 +35,10 @@ export class MainServiceModal {
   subFormDurationMinutes = signal<number>(0);
   subFormPriceType = signal<'FIXED' | 'FROM'>('FIXED');
 
-  constructor(private serviceCatalogService: ServiceCatalogService) {
+  constructor(
+    private serviceCatalogService: ServiceCatalogService,
+    private toast: NgToastService
+  ) {
     effect(() => {
       const currentMode = this.mode();
       const ms = this.mainService();
@@ -88,7 +92,12 @@ export class MainServiceModal {
           this.changed.emit();
           this.closed.emit();
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err);
+          const message = err?.error?.message || err?.message || 'Create main service failed';
+          const error = err?.error?.error || 'Unknown error occurred';
+          this.toast.danger(message, error, 3000);
+        },
       });
     } else if (mode === 'edit') {
       const ms = this.mainService();
@@ -106,7 +115,12 @@ export class MainServiceModal {
           this.changed.emit();
           this.closed.emit();
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err);
+          const message = err?.error?.message || err?.message || 'Update main service failed';
+          const error = err?.error?.error || 'Unknown error occurred';
+          this.toast.danger(message, error, 3000);
+        },
       });
     }
   }
@@ -153,7 +167,12 @@ export class MainServiceModal {
             this.isSubServiceFormOpen.set(false);
             this.changed.emit();
           },
-          error: (err) => console.error(err),
+          error: (err) => {
+            console.error(err);
+            const message = err?.error?.message || err?.message || 'Create sub service failed';
+            const error = err?.error?.error || 'Unknown error occurred';
+            this.toast.danger(message, error, 3000);
+          },
         });
     } else {
       // update
@@ -164,7 +183,12 @@ export class MainServiceModal {
             this.isSubServiceFormOpen.set(false);
             this.changed.emit();
           },
-          error: (err) => console.error(err),
+          error: (err) => {
+            console.error(err);
+            const message = err?.error?.message || err?.message || 'Update sub service failed';
+            const error = err?.error?.error || 'Unknown error occurred';
+            this.toast.danger(message, error, 3000);
+          },
         });
     }
   }
@@ -173,7 +197,12 @@ export class MainServiceModal {
     if (!confirm('Delete this sub-service?')) return;
     this.serviceCatalogService.deleteSubService(subId).subscribe({
       next: () => this.changed.emit(),
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        const message = err?.error?.message || err?.message || 'Delete sub service failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
+      },
     });
   }
 }

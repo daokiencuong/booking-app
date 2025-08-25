@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { NgToastService } from 'ng-angular-popup';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { CategoryCreateReq } from '../../model/request/service/category-create-req.model';
 import { CategoryUpdateReq } from '../../model/request/service/category-update-req.model';
@@ -21,82 +23,156 @@ import { SubServiceUpdateRes } from '../../model/response/service/sub-service-up
 })
 export class ServiceCatalogService {
   private http = inject(HttpClient);
+  private toast = inject(NgToastService);
 
   getAllServiceForAdmin(): Observable<ServiceCategoryGet[]> {
-    return this.http.get<ServiceCategoryGet[]>(
-      `${environment.apiUrl}/admin/service`
-    );
+    return this.http
+      .get<ServiceCategoryGet[]>(`${environment.apiUrl}/admin/service`);
   }
 
   createCategory(
     categoryData: CategoryCreateReq
   ): Observable<CategoryCreateRes> {
-    return this.http.post<CategoryCreateRes>(
-      `${environment.apiUrl}/admin/service-category`,
-      categoryData
-    );
+    return this.http
+      .post<CategoryCreateRes>(
+        `${environment.apiUrl}/admin/service-category`,
+        categoryData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success('Category created successfully', 'Success', 3000);
+        })
+      );
   }
 
   createMainService(
     mainServiceData: MainServiceCreateReq
   ): Observable<MainServiceCreateRes> {
-    return this.http.post<MainServiceCreateRes>(
-      `${environment.apiUrl}/admin/main-service`,
-      mainServiceData
-    );
+    return this.http
+      .post<MainServiceCreateRes>(
+        `${environment.apiUrl}/admin/main-service`,
+        mainServiceData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Main service created successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 
   createSubService(
     subServiceData: SubServiceCreateReq
   ): Observable<SubServiceCreateRes> {
-    return this.http.post<SubServiceCreateRes>(
-      `${environment.apiUrl}/admin/sub-service`,
-      subServiceData
-    );
+    return this.http
+      .post<SubServiceCreateRes>(
+        `${environment.apiUrl}/admin/sub-service`,
+        subServiceData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Sub service created successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 
   updateCategory(
     categoryData: CategoryUpdateReq
   ): Observable<CategoryUpdateRes> {
-    return this.http.put<CategoryUpdateRes>(
-      `${environment.apiUrl}/admin/service-category`,
-      categoryData
-    );
+    return this.http
+      .put<CategoryUpdateRes>(
+        `${environment.apiUrl}/admin/service-category`,
+        categoryData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success('Category updated successfully', 'Success', 3000);
+        })
+      );
   }
 
   updateMainService(
     mainServiceData: MainServiceUpdateReq
   ): Observable<MainServiceUpdateRes> {
-    return this.http.put<MainServiceUpdateRes>(
-      `${environment.apiUrl}/admin/main-service`,
-      mainServiceData
-    );
+    return this.http
+      .put<MainServiceUpdateRes>(
+        `${environment.apiUrl}/admin/main-service`,
+        mainServiceData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Main service updated successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 
   updateSubService(
     subServiceData: SubServiceUpdateReq
   ): Observable<SubServiceUpdateRes> {
-    return this.http.put<SubServiceUpdateRes>(
-      `${environment.apiUrl}/admin/sub-service`,
-      subServiceData
-    );
+    return this.http
+      .put<SubServiceUpdateRes>(
+        `${environment.apiUrl}/admin/sub-service`,
+        subServiceData
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Sub service updated successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 
   deleteCategory(categoryId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${environment.apiUrl}/admin/service-category/${categoryId}`
-    );
+    return this.http
+      .delete<void>(
+        `${environment.apiUrl}/admin/service-category/${categoryId}`
+      )
+      .pipe(
+        tap(() => {
+          this.toast.success('Category deleted successfully', 'Success', 3000);
+        })
+      );
   }
 
   deleteMainService(mainServiceId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${environment.apiUrl}/admin/main-service/${mainServiceId}`
-    );
+    return this.http
+      .delete<void>(`${environment.apiUrl}/admin/main-service/${mainServiceId}`)
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Main service deleted successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 
   deleteSubService(subServiceId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${environment.apiUrl}/admin/sub-service/${subServiceId}`
-    );
+    return this.http
+      .delete<void>(`${environment.apiUrl}/admin/sub-service/${subServiceId}`)
+      .pipe(
+        tap(() => {
+          this.toast.success(
+            'Sub service deleted successfully',
+            'Success',
+            3000
+          );
+        })
+      );
   }
 }

@@ -36,6 +36,15 @@ html {
   scroll-behavior: smooth;
 }
 
+.msg-title {
+    font-size: 1.4rem !important;
+    font-weight: 600;
+}
+  
+.msg-summary {
+    font-size: 1.2rem !important;
+}
+
 :root {
   /* Base colors */
   --color-gray: #bbc5d5;

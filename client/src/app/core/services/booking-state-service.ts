@@ -1,8 +1,10 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { MainServiceGet } from '../../model/response/service/main-service-get.model';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { NgToastService } from 'ng-angular-popup';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { MainServiceGet } from '../../model/response/service/main-service-get.model';
 
 interface BookingRequest {
   customerEmail: string;
@@ -24,6 +26,7 @@ interface BookingRequest {
 })
 export class BookingStateService {
   private http = inject(HttpClient);
+  private toast = inject(NgToastService);
 
   _mainServiceSelected = signal<MainServiceGet[]>([]);
   mainServiceSelected = this._mainServiceSelected.asReadonly();
@@ -43,7 +46,7 @@ export class BookingStateService {
   _totalActiveStaff = signal<number>(0);
   totalActiveStaff = this._totalActiveStaff.asReadonly();
 
-  setTotalActiveStaff(total: number){
+  setTotalActiveStaff(total: number) {
     this._totalActiveStaff.set(total);
   }
 

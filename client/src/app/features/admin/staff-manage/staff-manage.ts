@@ -4,6 +4,7 @@ import { StaffGet } from '../../../model/response/staff/staff-get.model';
 import { AdminSection } from '../../../shared/components/admin-section/admin-section';
 import { ListStaff } from './components/list-staff/list-staff';
 import { NewStaff } from './components/new-staff/new-staff';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'staff-manage',
@@ -18,7 +19,10 @@ export class StaffManage {
   currentPage = signal<number>(1);
   totalPages = signal<number>(1);
 
-  constructor(private staffService: StaffService) {
+  constructor(
+    private staffService: StaffService,
+    private toast: NgToastService
+  ) {
     effect(() => {
       const page = this.currentPage();
       const size = this.itemsPerPage();
@@ -31,6 +35,12 @@ export class StaffManage {
       next: (res) => {
         this.totalPages.set(res.meta.pages);
         this.staffList.set(res.result);
+      },
+      error: (err) => {
+        console.error(err);
+        const message = err?.error?.message || err?.message || 'Fetch staff list failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
       },
     });
   }

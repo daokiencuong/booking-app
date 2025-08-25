@@ -1,10 +1,11 @@
-import { inject, Injectable } from '@angular/core';
-import { ServiceCategoryGet } from '../../model/response/service/service-category-get.model';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ResultPagination } from '../../model/response/common/result-pagination.model';
 import { BookingGetForAdminRes } from '../../model/response/booking/booking-get-for-admin-res.model';
+import { ResultPagination } from '../../model/response/common/result-pagination.model';
+import { ServiceCategoryGet } from '../../model/response/service/service-category-get.model';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -42,7 +43,7 @@ export class BookingService {
   }
 
   getAllBookingForAdmin(
-    bookingDate: string 
+    bookingDate: string
   ): Observable<ResultPagination<BookingGetForAdminRes[]>> {
     return this.http.get<ResultPagination<BookingGetForAdminRes[]>>(
       `${environment.apiUrl}/admin/booking?filter=bookingDate:'${bookingDate}'`

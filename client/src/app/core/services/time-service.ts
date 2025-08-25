@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { map, Observable, of, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { NgToastService } from 'ng-angular-popup';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { BookingStateService } from './booking-state-service';
 import { BookingService } from './booking-service';
+import { BookingStateService } from './booking-state-service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class TimeService {
   private http = inject(HttpClient);
   private bookingStateService = inject(BookingStateService);
   private bookingService = inject(BookingService);
+  private toast = inject(NgToastService);
   private slotDuration = 15;
 
   getWorkSchedule(): Observable<

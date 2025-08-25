@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { TimeService } from '../../../core/services/time-service';
-import { map, single } from 'rxjs';
+import { NgToastService } from 'ng-angular-popup';
+import { map } from 'rxjs';
 import { BookingStateService } from '../../../core/services/booking-state-service';
+import { TimeService } from '../../../core/services/time-service';
 
 @Component({
   selector: 'app-select-time',
@@ -13,6 +14,7 @@ import { BookingStateService } from '../../../core/services/booking-state-servic
 export class SelectTime {
   timeService = inject(TimeService);
   bookingStateService = inject(BookingStateService);
+  toast = inject(NgToastService);
   dates: { month: string; day: number; week: string; date: Date }[] = [];
   isLoading = signal<boolean>(true);
   times = signal<{ time: string; booked: boolean }[]>([]);
@@ -47,6 +49,13 @@ export class SelectTime {
       .pipe(map((res) => res.filter((slot) => !slot.booked)))
       .subscribe({
         next: (res) => this.times.set(res),
+        error: (err) => {
+          console.error(err);
+          const message =
+            err?.error?.message || err?.message || 'Load time slots failed';
+          const error = err?.error?.error || 'Unknown error occurred';
+          this.toast.danger(message, error, 3000);
+        },
         complete: () => this.isLoading.set(false),
       });
   }

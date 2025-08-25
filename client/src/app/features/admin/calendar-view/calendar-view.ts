@@ -5,6 +5,7 @@ import { BookingService } from '../../../core/services/booking-service';
 import { BookingGetForAdminRes } from '../../../model/response/booking/booking-get-for-admin-res.model';
 import { AdminSection } from '../../../shared/components/admin-section/admin-section';
 import { GantChart } from "./gant-chart/gant-chart";
+import { NgToastService } from 'ng-angular-popup';
 
 interface StaffRow {
   id: number;
@@ -53,7 +54,10 @@ export class CalendarView implements OnInit {
   // Precomputed vertical grid (time rows x staff columns)
   verticalRows: VerticalCellSpec[][] = [];
 
-  constructor(private bookingService: BookingService) {
+  constructor(
+    private bookingService: BookingService,
+    private toast: NgToastService
+  ) {
     this.generateTimeSlots();
   }
 
@@ -83,6 +87,9 @@ export class CalendarView implements OnInit {
       },
       error: (error) => {
         console.error('Error loading bookings:', error);
+        const message = error?.error?.message || error?.message || 'Load bookings failed';
+        const errorMsg = error?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, errorMsg, 3000);
         this.bookings = [];
         this.staffRows = [];
         this.rowCellsMap.clear();

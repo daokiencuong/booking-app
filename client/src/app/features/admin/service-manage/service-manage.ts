@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgToastService } from 'ng-angular-popup';
 import { ServiceCatalogService } from '../../../core/services/service-catalog-service';
 import { MainServiceGet } from '../../../model/response/service/main-service-get.model';
 import { ServiceCategoryGet } from '../../../model/response/service/service-category-get.model';
@@ -27,14 +28,23 @@ export class ServiceManage {
   selectedMainService = signal<MainServiceGet | null>(null);
   selectedCategoryIdForCreate = signal<number | null>(null);
 
-  constructor(private serviceCatalogService: ServiceCatalogService) {
+  constructor(
+    private serviceCatalogService: ServiceCatalogService,
+    private toast: NgToastService
+  ) {
     this.reload();
   }
 
   reload() {
     this.serviceCatalogService.getAllServiceForAdmin().subscribe({
       next: (res) => this.serviceData.set(res),
-      error: (err) => console.log(err),
+      error: (err) => {
+        console.log(err);
+        const message =
+          err?.error?.message || err?.message || 'Create category failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
+      },
     });
   }
 
@@ -64,7 +74,13 @@ export class ServiceManage {
           this.isCategoryModalOpen.set(false);
           this.reload();
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err);
+          const message =
+            err?.error?.message || err?.message || 'Create category failed';
+          const error = err?.error?.error || 'Unknown error occurred';
+          this.toast.danger(message, error, 3000);
+        },
       });
     } else {
       const category = this.selectedCategoryForEdit();
@@ -76,7 +92,13 @@ export class ServiceManage {
             this.isCategoryModalOpen.set(false);
             this.reload();
           },
-          error: (err) => console.error(err),
+          error: (err) => {
+            console.error(err);
+            const message =
+              err?.error?.message || err?.message || 'Update category failed';
+            const error = err?.error?.error || 'Unknown error occurred';
+            this.toast.danger(message, error, 3000);
+          },
         });
     }
   }
@@ -89,7 +111,13 @@ export class ServiceManage {
     }
     this.serviceCatalogService.deleteCategory(categoryId).subscribe({
       next: () => this.reload(),
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        const message =
+          err?.error?.message || err?.message || 'Delete category failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
+      },
     });
   }
 
@@ -128,7 +156,13 @@ export class ServiceManage {
     if (!confirm('Delete this main service?')) return;
     this.serviceCatalogService.deleteMainService(mainServiceId).subscribe({
       next: () => this.reload(),
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.log(err);
+        const message =
+          err?.error?.message || err?.message || 'Delete main service failed';
+        const error = err?.error?.error || 'Unknown error occurred';
+        this.toast.danger(message, error, 3000);
+      },
     });
   }
 }
