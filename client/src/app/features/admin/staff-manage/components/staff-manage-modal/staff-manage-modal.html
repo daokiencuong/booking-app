@@ -1,0 +1,110 @@
+@if (isOpen()) {
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>
+        {{
+          modalType() === "edit" ? "Edit Staff Information" : "Change Password"
+        }}
+      </h2>
+      <button class="close-btn" (click)="onCancel()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Edit Staff Form -->
+      @if (modalType() === 'edit') {
+      <form (ngSubmit)="onSubmit()" #editFormElement="ngForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="editForm().name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            type="description"
+            id="description"
+            name="description"
+            [(ngModel)]="editForm().description"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="staffActive">Staff Active</label>
+          <select
+            id="staffActive"
+            name="staffActive"
+            [(ngModel)]="editForm().staffActive"
+            required
+          >
+            <option value="">Select staffActive</option>
+            <option value="false">false</option>
+            <option value="true">true</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isLoading()"
+          >
+            {{ isLoading() ? "Updating..." : "Update" }}
+          </button>
+        </div>
+      </form>
+      }
+
+      <!-- Change Password Form -->
+      @if (modalType() === 'changePassword') {
+      <form (ngSubmit)="onSubmit()" #passwordFormElement="ngForm">
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            [(ngModel)]="passwordForm().newPassword"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            [(ngModel)]="passwordForm().confirmPassword"
+            required
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isLoading()"
+          >
+            {{ isLoading() ? "Changing..." : "Change Password" }}
+          </button>
+        </div>
+      </form>
+      }
+    </div>
+  </div>
+</div>
+}

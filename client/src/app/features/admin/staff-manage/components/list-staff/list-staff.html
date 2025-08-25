@@ -1,5 +1,7 @@
-<table>
-  <thead>
+<table
+  class="table table-hover table-striped table-bordered align-middle text-center shadow-sm"
+>
+  <thead class="table-dark">
     <tr>
       <th>ID</th>
       <th>Name</th>
@@ -16,13 +18,37 @@
       <td>{{ staff.name }}</td>
       <td>{{ staff.email }}</td>
       <td>{{ staff.role }}</td>
-      <td>{{ staff.staffActive ? "Yes" : "No" }}</td>
       <td>
-        <span class="material-symbols-outlined" title="Edit"> edit </span>
-        <span class="material-symbols-outlined" title="Change password">
+        <span
+          class="badge"
+          [class.bg-success]="staff.staffActive"
+          [class.bg-danger]="!staff.staffActive"
+        >
+          {{ staff.staffActive ? "Yes" : "No" }}
+        </span>
+      </td>
+      <td>
+        <span
+          class="material-symbols-outlined text-primary me-2"
+          title="Edit"
+          (click)="editStaff.emit(staff)"
+        >
+          edit
+        </span>
+        <span
+          class="material-symbols-outlined text-warning me-2"
+          title="Change password"
+          (click)="changePassword.emit(staff)"
+        >
           vpn_key_alert
         </span>
-        <span class="material-symbols-outlined" title="Delete"> delete </span>
+        <span
+          class="material-symbols-outlined text-danger"
+          title="Delete"
+          (click)="deleteStaff.emit(staff)"
+        >
+          delete
+        </span>
       </td>
     </tr>
     }

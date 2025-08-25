@@ -17,4 +17,9 @@ export class ListStaff {
   next = output<void>();
   prev = output<void>();
   itemsPerPageChange = output<number>();
+
+  // New outputs for actions
+  editStaff = output<StaffGet>();
+  changePassword = output<StaffGet>();
+  deleteStaff = output<StaffGet>();
 }

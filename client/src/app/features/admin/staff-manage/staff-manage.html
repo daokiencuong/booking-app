@@ -1,8 +1,24 @@
 <admin-section [sectionTitle]="'Staff Management'">
-  <button (click)="openDialogCreate()" class="btn btn-primary">
-    Create New Staff
-  </button>
-  <div class="staff-list">
+  <div class="staff-manage-container">
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-input-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input
+          type="text"
+          placeholder="Search staff by name..."
+          class="search-input"
+          [value]="searchTerm()"
+          (input)="onSearchChange($any($event.target).value)"
+        />
+      </div>
+      <button class="btn btn-primary" (click)="openDialogCreate()">
+        <span class="material-symbols-outlined">add</span>
+        Add New Staff
+      </button>
+    </div>
+
+    <!-- Staff List -->
     <app-list-staff
       [staffList]="staffList()"
       [itemsPerPage]="itemsPerPage()"
@@ -11,10 +27,26 @@
       (next)="onNextPage()"
       (prev)="onPrevPage()"
       (itemsPerPageChange)="onItemsPerPageChange($event)"
-    />
+      (editStaff)="onEditStaff($event)"
+      (changePassword)="onChangePassword($event)"
+      (deleteStaff)="onDeleteStaff($event)"
+    >
+    </app-list-staff>
+
+    <!-- Create Staff Dialog -->
+    @if (isDialogCreateOpen()) {
+    <modal-new-staff (close)="closeDialogCreate()" (created)="onCreated()">
+    </modal-new-staff
+    >}
+
+    <!-- Edit/Change Password Modal -->
+    <app-staff-manage-modal
+      [isOpen]="isModalOpen()"
+      [modalType]="modalType()"
+      [staffData]="selectedStaff()"
+      (closeModal)="closeModal()"
+      (staffUpdated)="onStaffUpdated()"
+    >
+    </app-staff-manage-modal>
   </div>
 </admin-section>
-
-@if (isDialogCreateOpen()) {
-<modal-new-staff (close)="closeDialogCreate()" (created)="onCreated()" />
-}
