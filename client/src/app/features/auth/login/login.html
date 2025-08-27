@@ -1,0 +1,75 @@
+<div
+  class="container d-flex justify-content-center align-items-center vh-100 bg-light px-3"
+>
+  <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+    <div class="card border-0 shadow-lg rounded-4">
+      <div class="card-header bg-white border-0 text-center py-4">
+        <h4 class="fw-bold text-primary mb-0">🔒 Staff Login</h4>
+        <p class="text-muted small mb-0">Sign in with your staff account</p>
+      </div>
+      <div class="card-body px-4 py-3">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold"
+              >Email address</label
+            >
+            <div class="input-group">
+              <input
+                type="email"
+                class="form-control border-start-0"
+                id="email"
+                placeholder="Enter your email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label fw-semibold"
+              >Password</label
+            >
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control border-start-0"
+                id="password"
+                placeholder="Enter your password"
+                formControlName="password"
+              />
+            </div>
+          </div>
+
+          @if (loginForm.touched && loginForm.invalid) {
+          <div class="text-danger fst-italic">Please enter email and password!!!</div>
+          }
+
+          <!-- Login Button -->
+          <div class="d-grid mt-4">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg rounded-3"
+              [disabled]="loginForm.touched && loginForm.invalid"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer bg-white border-0 text-center pb-4">
+        <small class="text-muted">
+          Don’t have an account? <br />
+          Please contact
+          <a
+            href="http://regalnailsbrockville.ca"
+            target="_blank"
+            class="text-decoration-none fw-semibold text-primary"
+          >
+            regalnailsbrockville.ca
+          </a>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

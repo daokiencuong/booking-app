@@ -1,0 +1,11 @@
+:host{
+    font-size: 1.4rem;
+}
+
+input{
+    font-size: 1.3rem;
+}
+
+input.ng-invalid.ng-touched {
+  background: #ffc3c3;
+}

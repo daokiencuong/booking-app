@@ -9,6 +9,11 @@ export const routes: Routes = [
     title: 'Booking Service',
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login').then((m) => m.Login),
+  },
+  {
     path: 'admin',
     loadComponent: () =>
       import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
@@ -57,5 +62,10 @@ export const routes: Routes = [
           import('./features/admin/setting/setting').then((m) => m.Setting),
       },
     ],
+  },
+  {
+    path: 'staff',
+    loadComponent: () =>
+      import('./layouts/staff-layout/staff-layout').then((m) => m.StaffLayout),
   },
 ];
