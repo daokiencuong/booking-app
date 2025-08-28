@@ -49,7 +49,7 @@ export class GanttChartComponent implements OnInit {
   }
 
   onDateChange() {
-    console.log(this.selectedDate);
+    this.loadBookings();
   }
 
   getBookingsForTimeSlot(timeSlot: string): BookingGetForStaffRes[] {
