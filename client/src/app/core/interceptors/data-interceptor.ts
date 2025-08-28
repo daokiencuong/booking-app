@@ -11,7 +11,6 @@ export function DataInterceptor(
       if (event instanceof HttpResponse) {
         const body = event.body as RestResponse<any>;
 
-        // nếu body có status + data => chỉ trả về data
         if (body && 'status' in body && 'data' in body) {
           return event.clone({ body: body.data });
         }

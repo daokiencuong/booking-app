@@ -45,4 +45,8 @@ export class AuthService {
   getAccoutInfo(): Observable<UserInfoRes> {
     return this.http.get<UserInfoRes>(`${environment.apiUrl}/auth/account`);
   }
+
+  refreshToken(): Observable<LoginRes> {
+    return this.http.post<LoginRes>(`${environment.apiUrl}/auth/refresh`, {}, {withCredentials: true});
+  }
 }
