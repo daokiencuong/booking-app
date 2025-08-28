@@ -11,9 +11,15 @@ import { SideBarComponent } from '../../features/staff/side-bar/side-bar';
   styleUrl: './staff-layout.css',
 })
 export class StaffLayout {
-  isSidebarOpen = true;
+  isSidebarOpen = false;
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  onSidebarNavigate() {
+    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+      this.isSidebarOpen = false;
+    }
   }
 }

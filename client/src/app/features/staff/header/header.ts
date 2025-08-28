@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-staff-header',
@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './header.css',
 })
 export class StaffHeaderComponent {
-  @Output() toggleSidebar = new EventEmitter<void>();
+  toggleSidebar = output<void>();
 
   onToggleSidebar() {
     this.toggleSidebar.emit();

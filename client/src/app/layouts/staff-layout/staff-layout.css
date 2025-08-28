@@ -5,54 +5,24 @@
 }
 
 .sidebar-container {
-  flex-shrink: 0;
 }
 
 .content-container {
-  flex: 1;
-  margin-left: 280px;
   padding: 20px;
   background-color: #f5f7fa;
   min-height: 100vh;
 }
-/* Sidebar collapsed (desktop) */
-@media (min-width: 769px) {
-  .staff-layout.sidebar-collapsed .content-container {
-    margin-left: 72px;
-    transition: margin-left 0.2s ease;
-  }
+
+.main-container {
+  width: 100%;
 }
 
-/* Mobile responsive */
+/* Mobile overlay for open sidebar */
 @media (max-width: 768px) {
-  .staff-layout {
-    flex-direction: column;
-  }
-
-  .content-container {
-    margin-left: 0;
-    margin-top: 0;
-    padding: 15px;
-    min-height: calc(100vh - 56px);
-  }
-}
-/* Collapsed sidebar behavior */
-.sidebar-container .collapsed {
-  width: 72px !important;
-}
-
-/* When sidebar collapsed, reduce content left margin on desktop */
-@media (min-width: 769px) {
-  .content-container {
-    transition: margin-left 0.2s ease;
-  }
-  .sidebar-container .collapsed ~ .content-container {
-    margin-left: 72px;
-  }
-}
-
-@media (max-width: 480px) {
-  .content-container {
-    padding: 10px;
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 900;
   }
 }

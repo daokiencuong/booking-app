@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { AuthService } from '../../../core/services/auth-service';
@@ -14,6 +14,12 @@ export class SideBarComponent {
   authService = inject(AuthService);
   toast = inject(NgToastService);
   router = inject(Router);
+  isSidebarOpen = input.required<boolean>();
+  navigate = output<void>();
+
+  onNavigate() {
+    this.navigate.emit();
+  }
 
   onLogOut() {
     this.authService.logOut().subscribe({

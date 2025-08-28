@@ -1,9 +1,17 @@
-<div class="sidebar">
+<div
+  class="sidebar"
+  [class.collapsed]="!isSidebarOpen()"
+  [class.open]="isSidebarOpen()"
+>
   <div class="sidebar-header">
-    <h3>Staff Panel</h3>
+    @if (isSidebarOpen()) {
+    <h3>S</h3>
+    } @else {
+    <h3>Staff Side</h3>
+    }
   </div>
 
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" (click)="onNavigate()">
     <a
       routerLink="/staff/gantt-chart"
       routerLinkActive="active"
