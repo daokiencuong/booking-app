@@ -18,6 +18,7 @@ import project.BookingApp.domain.response.user.ResUserCreateDTO;
 import project.BookingApp.domain.response.user.ResUserGetDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.service.UserService;
+import project.BookingApp.util.SecurityUtil;
 import project.BookingApp.util.annotation.ApiMessage;
 import org.springframework.data.domain.Pageable;
 
@@ -62,6 +63,12 @@ public class UserController {
     @GetMapping("public/staff")
     public ResponseEntity<List<ResUserGetDTO>> getAllStaff(){
         List<ResUserGetDTO> res = this.userService.handleGetAllStaff();
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("common/users")
+    public ResponseEntity<ResUserGetDTO> getUserInfo(){
+        ResUserGetDTO res = this.userService.handleGetUserInfo();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

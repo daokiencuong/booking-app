@@ -1,19 +1,30 @@
 package project.BookingApp.config;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.BookingApp.domain.WorkingSchedule;
+import project.BookingApp.domain.request.user.ReqUserCreateDTO;
+import project.BookingApp.repository.UserRepository;
 import project.BookingApp.repository.WorkingScheduleRepository;
+import project.BookingApp.service.UserService;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Service
 public class WorkingScheduleInitializer implements CommandLineRunner {
     private final WorkingScheduleRepository workingScheduleRepository;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public WorkingScheduleInitializer(WorkingScheduleRepository workingScheduleRepository) {
+    public WorkingScheduleInitializer(WorkingScheduleRepository workingScheduleRepository, UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.workingScheduleRepository = workingScheduleRepository;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -36,6 +47,18 @@ public class WorkingScheduleInitializer implements CommandLineRunner {
 
                 workingScheduleRepository.save(ws);
             }
+        }
+
+        if(userRepository.count() == 0) {
+            ReqUserCreateDTO user = new ReqUserCreateDTO();
+            user.setName("SuperAdmin");
+            user.setEmail("superadmin@gmail.com");
+
+            String password = String.valueOf(Math.random()*1000) + System.currentTimeMillis();
+            System.out.println("Password for superadmin: " + password);
+            user.setPassword(this.passwordEncoder.encode(password));
+
+            this.userService.handleCreateNewUser(user);
         }
     }
 }

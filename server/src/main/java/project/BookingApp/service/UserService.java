@@ -14,6 +14,7 @@ import project.BookingApp.domain.response.user.ResUserCreateDTO;
 import project.BookingApp.domain.response.user.ResUserGetDTO;
 import project.BookingApp.domain.response.user.ResUserUpdateDTO;
 import project.BookingApp.repository.UserRepository;
+import project.BookingApp.util.SecurityUtil;
 import project.BookingApp.util.constant.RoleEnum;
 import project.BookingApp.util.error.UserException;
 import org.springframework.data.domain.Pageable;
@@ -135,6 +136,29 @@ public class UserService {
 
         ResChangePassForceDTO res = new ResChangePassForceDTO();
         res.setMessage("Successfully changed password");
+
+        return res;
+    }
+
+    public ResUserGetDTO handleGetUserInfo(){
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ?
+                SecurityUtil.getCurrentUserLogin().get() : "";
+
+        User currentUserDB = this.findByEmail(email);
+        ResUserGetDTO res = new ResUserGetDTO();
+
+        if(currentUserDB != null){
+            res.setId(currentUserDB.getId());
+            res.setName(currentUserDB.getName());
+            res.setEmail(currentUserDB.getEmail());
+            res.setRole(currentUserDB.getRole());
+            res.setDescription(currentUserDB.getDescription());
+            res.setStaffActive(currentUserDB.isStaffActive());
+            res.setCreatedBy(currentUserDB.getCreatedBy());
+            res.setUpdatedBy(currentUserDB.getUpdatedBy());
+            res.setCreatedAt(currentUserDB.getCreatedAt());
+            res.setUpdatedAt(currentUserDB.getUpdatedAt());
+        }
 
         return res;
     }
