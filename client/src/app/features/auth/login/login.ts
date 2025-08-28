@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,10 +16,22 @@ import { LoginReq } from '../../../model/request/auth/login-req.model';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit{
   authService = inject(AuthService);
   toast = inject(NgToastService);
   router = inject(Router);
+
+  ngOnInit(): void {
+      this.authService.getAccoutInfo().subscribe({
+        next: (res) => {
+        if (res.user.role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/staff']);
+        }
+      },
+      })
+  }
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),

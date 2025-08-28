@@ -4,9 +4,6 @@
   background-color: #f5f7fa;
 }
 
-.sidebar-container {
-}
-
 .content-container {
   padding: 20px;
   background-color: #f5f7fa;
@@ -15,6 +12,14 @@
 
 .main-container {
   width: 100%;
+}
+
+@media (min-width: 769px) {
+  .sidebar-container {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+  }
 }
 
 /* Mobile overlay for open sidebar */
