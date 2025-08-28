@@ -33,28 +33,36 @@ export class StaffService {
     );
   }
 
+  getUserInfo(): Observable<StaffGet> {
+    return this.http.get<StaffGet>(`${environment.apiUrl}/common/users`);
+  }
+
   createNewUser(userData: StaffCreateModel): Observable<StaffCreateRes> {
-    return this.http
-      .post<StaffCreateRes>(`${environment.apiUrl}/admin/users`, userData);
+    return this.http.post<StaffCreateRes>(
+      `${environment.apiUrl}/admin/users`,
+      userData
+    );
   }
 
   updateUserInfo(userData: StaffUpdateReq): Observable<StaffUpdateRes> {
-    return this.http
-      .put<StaffUpdateRes>(`${environment.apiUrl}/common/users`, userData);
+    return this.http.put<StaffUpdateRes>(
+      `${environment.apiUrl}/common/users`,
+      userData
+    );
   }
 
   changeForcePassword(
     data: StaffUpdatePasswordForceReq
   ): Observable<StaffUpdatePasswordForceRes> {
-    return this.http
-      .put<StaffUpdatePasswordForceRes>(
-        `${environment.apiUrl}/admin/users/change-pass-force`,
-        data
-      );
+    return this.http.put<StaffUpdatePasswordForceRes>(
+      `${environment.apiUrl}/admin/users/change-pass-force`,
+      data
+    );
   }
 
   deleteUser(userId: number): Observable<void> {
-    return this.http
-      .delete<void>(`${environment.apiUrl}/admin/users/${userId}`);
+    return this.http.delete<void>(
+      `${environment.apiUrl}/admin/users/${userId}`
+    );
   }
 }

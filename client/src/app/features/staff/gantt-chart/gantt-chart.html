@@ -1,0 +1,53 @@
+<div class="gantt-chart">
+  <div class="gantt-header">
+    <h2>Lịch Hẹn Hôm Nay</h2>
+    <div class="date-picker">
+      <label for="date">Chọn ngày:</label>
+      <input
+        type="date"
+        id="date"
+        [(ngModel)]="selectedDate"
+        (change)="onDateChange()"
+      />
+    </div>
+  </div>
+
+  <div class="gantt-container">
+    <div class="time-column">
+      <div class="time-header">Giờ</div>
+      @for (timeSlot of timeSlots; track timeSlot) {
+      <div class="time-slot">{{ timeSlot }}</div>
+      }
+    </div>
+
+    <div class="booking-column">
+      <div class="booking-header">Lịch Hẹn</div>
+      <div class="booking-timeline">
+        @for (timeSlot of timeSlots; track timeSlot) {
+        <div class="timeline-slot"></div>
+        } @for (booking of bookings; track booking.id) {
+        <div
+          class="booking-item"
+          [ngStyle]="getBookingStyle(booking)"
+          (click)="openBookingModal(booking)"
+        >
+          <div class="booking-customer">{{ booking.customerName }}</div>
+          <div class="booking-time">
+            {{ booking.startTime | slice : 0 : 5 }} -
+            {{ booking.endTime | slice : 0 : 5 }}
+          </div>
+          <div class="booking-service">{{ getServiceNames(booking) }}</div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Detail Modal -->
+  <app-booking-detail
+    [booking]="selectedBooking"
+    [showModal]="showModal"
+    (closeModal)="closeModal()"
+  >
+  </app-booking-detail>
+</div>

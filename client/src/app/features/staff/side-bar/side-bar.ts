@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth-service';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
+import { AuthService } from '../../../core/services/auth-service';
 
 @Component({
-  selector: 'admin-sidebar',
-  imports: [RouterLink],
-  templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css',
+  selector: 'app-side-bar',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  templateUrl: './side-bar.html',
+  styleUrl: './side-bar.css',
 })
-export class Sidebar {
-  constructor(
-    private authService: AuthService,
-    private toast: NgToastService,
-    private router: Router
-  ) {}
+export class SideBarComponent {
+  authService = inject(AuthService);
+  toast = inject(NgToastService);
+  router = inject(Router);
 
   onLogOut() {
     this.authService.logOut().subscribe({

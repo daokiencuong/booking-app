@@ -1,0 +1,45 @@
+.staff-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  padding: 0 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #e6e9ef;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: #f1f3f5;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.menu-button:hover {
+  background: #e9ecef;
+}
+
+.menu-button:active {
+  transform: scale(0.98);
+}
+
+.header-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+@media (min-width: 769px) {
+  .menu-button {
+    display: none;
+  }
+}

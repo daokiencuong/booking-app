@@ -1,0 +1,48 @@
+@if (showModal && booking) {
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Chi Tiết Lịch Hẹn</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="detail-row">
+        <span class="label">Khách hàng:</span>
+        <span class="value">{{ booking.customerName }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Dịch vụ:</span>
+        <span class="value">{{ getServiceNames(booking) }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Thời gian:</span>
+        <span class="value"
+          >{{ booking.startTime | slice : 0 : 5 }} -
+          {{ booking.endTime | slice : 0 : 5 }}</span
+        >
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Thời lượng:</span>
+        <span class="value">{{ booking.durationTime | duration:"string"}}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Ngày:</span>
+        <span class="value">{{ booking.bookingDate }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Giá:</span>
+        <span class="value price">{{
+          booking.totalPrice | currency : "CAD"
+        }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+}
+

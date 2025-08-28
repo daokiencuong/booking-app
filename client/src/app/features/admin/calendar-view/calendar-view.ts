@@ -1,78 +1,53 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgToastService } from 'ng-angular-popup';
 import { BookingService } from '../../../core/services/booking-service';
 import { BookingGetForAdminRes } from '../../../model/response/booking/booking-get-for-admin-res.model';
+import { ServiceGet } from '../../../model/response/booking/booking-get-for-staff-res.model';
 import { AdminSection } from '../../../shared/components/admin-section/admin-section';
-import { GantChart } from "./gant-chart/gant-chart";
-import { NgToastService } from 'ng-angular-popup';
+import { DurationPipe } from '../../../shared/pipes/duration-pipe-pipe';
 
 interface StaffRow {
   id: number;
   name: string;
 }
 
-interface GanttTableCell {
-  type: 'gap' | 'booking';
-  colspan: number;
-  booking?: BookingGetForAdminRes;
-}
-
-interface VerticalCellSpec {
-  type: 'gap' | 'booking' | 'skip';
-  rowspan?: number;
-  booking?: BookingGetForAdminRes;
-  staffId: number;
-}
-
 @Component({
   selector: 'app-calendar-view',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminSection, GantChart],
+  imports: [CommonModule, FormsModule, AdminSection, DurationPipe],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
 })
 export class CalendarView implements OnInit {
-  selectedDate: string = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  private bookingService = inject(BookingService);
+  private toast = inject(NgToastService);
+
+  selectedDate: string = new Date().toISOString().split('T')[0];
   bookings: BookingGetForAdminRes[] = [];
   staffRows: StaffRow[] = [];
-  loading: boolean = false;
+  loading = false;
   selectedBooking: BookingGetForAdminRes | null = null;
-  showModal: boolean = false;
+  showModal = false;
 
-  // Timeline config
-  readonly startHour: number = 9;
-  readonly endHour: number = 20;
-  readonly slotMinutes: number = 15;
+  readonly startHour = 9;
+  readonly endHour = 20;
+  readonly slotMinutes = 60;
 
-  timeSlots: string[] = []; // 15-min ticks
-  totalSlots: number = 0;
-
-  // Precomputed table cells per staff (for colspan rendering)
-  private rowCellsMap: Map<number, GanttTableCell[]> = new Map();
-
-  // Precomputed vertical grid (time rows x staff columns)
-  verticalRows: VerticalCellSpec[][] = [];
-
-  constructor(
-    private bookingService: BookingService,
-    private toast: NgToastService
-  ) {
-    this.generateTimeSlots();
-  }
+  timeSlots: string[] = [];
+  verticalRows: any[][] = [];
 
   ngOnInit(): void {
+    this.generateTimeSlots();
     this.loadBookings();
   }
 
   generateTimeSlots() {
     this.timeSlots = [];
-    const startMinutes = this.startHour * 60;
-    const endMinutes = this.endHour * 60;
-    for (let m = startMinutes; m < endMinutes; m += this.slotMinutes) {
-      this.timeSlots.push(this.formatMinutesToHHMM(m));
+    for (let hour = this.startHour; hour <= this.endHour; hour++) {
+      this.timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
     }
-    this.totalSlots = this.timeSlots.length;
   }
 
   loadBookings() {
@@ -81,19 +56,15 @@ export class CalendarView implements OnInit {
       next: (response) => {
         this.bookings = response.result || [];
         this.buildStaffRowsFromBookings();
-        this.buildRowCells();
-        this.buildVerticalCells();
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading bookings:', error);
-        const message = error?.error?.message || error?.message || 'Load bookings failed';
+        const message =
+          error?.error?.message || error?.message || 'Load bookings failed';
         const errorMsg = error?.error?.error || 'Unknown error occurred';
         this.toast.danger(message, errorMsg, 3000);
         this.bookings = [];
         this.staffRows = [];
-        this.rowCellsMap.clear();
-        this.verticalRows = [];
         this.loading = false;
       },
     });
@@ -120,139 +91,6 @@ export class CalendarView implements OnInit {
     return this.bookings.filter((b) => b.staff.id === staffId);
   }
 
-  // Build table cells (with colspans) per staff
-  private buildRowCells(): void {
-    this.rowCellsMap.clear();
-    for (const staff of this.staffRows) {
-      const cells = this.buildRowCellsForStaff(staff.id);
-      this.rowCellsMap.set(staff.id, cells);
-    }
-  }
-
-  private buildRowCellsForStaff(staffId: number): GanttTableCell[] {
-    const bookings = this.bookingsForStaff(staffId).slice();
-    // Sort by start time
-    bookings.sort(
-      (a, b) =>
-        this.parseTimeToMinutes(a.startTime) -
-        this.parseTimeToMinutes(b.startTime)
-    );
-
-    let pointer = 0; // current slot index
-    const cells: GanttTableCell[] = [];
-
-    for (const b of bookings) {
-      const startIdx = this.getStartSlotIndex(b.startTime);
-      const endIdx = this.getEndSlotIndex(b.endTime);
-      if (endIdx <= startIdx) {
-        continue;
-      }
-
-      if (startIdx > pointer) {
-        cells.push({ type: 'gap', colspan: startIdx - pointer });
-      }
-
-      cells.push({ type: 'booking', colspan: endIdx - startIdx, booking: b });
-      pointer = endIdx;
-    }
-
-    if (pointer < this.totalSlots) {
-      cells.push({ type: 'gap', colspan: this.totalSlots - pointer });
-    }
-
-    return cells;
-  }
-
-  getRowCells(staffId: number): GanttTableCell[] {
-    return this.rowCellsMap.get(staffId) || [];
-  }
-
-  // Build time-rows x staff-columns grid with rowspans
-  private buildVerticalCells(): void {
-    const numRows = this.totalSlots;
-    const numCols = this.staffRows.length;
-
-    // Initialize with gaps
-    const grid: VerticalCellSpec[][] = Array.from({ length: numRows }, () =>
-      Array.from({ length: numCols }, (_, colIdx) => ({
-        type: 'gap',
-        staffId: this.staffRows[colIdx]?.id ?? -1,
-      }))
-    );
-
-    for (let col = 0; col < numCols; col++) {
-      const staffId = this.staffRows[col].id;
-      const bookings = this.bookingsForStaff(staffId)
-        .slice()
-        .sort(
-          (a, b) =>
-            this.parseTimeToMinutes(a.startTime) -
-            this.parseTimeToMinutes(b.startTime)
-        );
-
-      for (const b of bookings) {
-        const startIdx = this.getStartSlotIndex(b.startTime);
-        const endIdx = this.getEndSlotIndex(b.endTime);
-        if (endIdx <= startIdx) continue;
-
-        // If any portion already covered by a prior booking, skip overlapping part
-        // Find the first free row >= startIdx
-        let placeStart = startIdx;
-        while (
-          placeStart < endIdx &&
-          grid[placeStart][col] &&
-          grid[placeStart][col].type !== 'gap'
-        ) {
-          placeStart++;
-        }
-        if (placeStart >= endIdx) continue;
-
-        // Determine continuous free span
-        let placeEnd = placeStart + 1;
-        while (
-          placeEnd < endIdx &&
-          grid[placeEnd][col] &&
-          grid[placeEnd][col].type === 'gap'
-        ) {
-          placeEnd++;
-        }
-
-        const span = Math.max(1, placeEnd - placeStart);
-
-        grid[placeStart][col] = {
-          type: 'booking',
-          rowspan: span,
-          booking: b,
-          staffId,
-        };
-        for (let r = placeStart + 1; r < placeStart + span; r++) {
-          grid[r][col] = { type: 'skip', staffId };
-        }
-      }
-    }
-
-    this.verticalRows = grid;
-  }
-
-  // Slot index helpers (shared)
-  private getStartSlotIndex(time: string): number {
-    const minutes = this.parseTimeToMinutes(time);
-    const start = this.startHour * 60;
-    const end = this.endHour * 60;
-    const clamped = Math.max(start, Math.min(end, minutes));
-    const idx = Math.floor((clamped - start) / this.slotMinutes);
-    return Math.max(0, Math.min(this.totalSlots, idx));
-  }
-
-  private getEndSlotIndex(time: string): number {
-    const minutes = this.parseTimeToMinutes(time);
-    const start = this.startHour * 60;
-    const end = this.endHour * 60;
-    const clamped = Math.max(start, Math.min(end, minutes));
-    const idx = Math.ceil((clamped - start) / this.slotMinutes);
-    return Math.max(0, Math.min(this.totalSlots, idx));
-  }
-
   openBookingDetail(booking: BookingGetForAdminRes) {
     this.selectedBooking = booking;
     this.showModal = true;
@@ -263,37 +101,58 @@ export class CalendarView implements OnInit {
     this.selectedBooking = null;
   }
 
-  formatTime(timeString: string): string {
-    const m = this.parseTimeToMinutes(timeString);
-    return this.formatMinutesToHHMM(m);
-  }
-
-  // Helpers
-  private parseTimeToMinutes(time: string): number {
-    // Supports "HH:mm:ss" or "HH:mm"
-    const parts = time.split(':');
-    const h = parseInt(parts[0], 10) || 0;
-    const m = parseInt(parts[1], 10) || 0;
-    return h * 60 + m;
-  }
-
-  private formatMinutesToHHMM(totalMinutes: number): string {
-    const h = Math.floor(totalMinutes / 60);
-    const m = totalMinutes % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-  }
-
-  getServiceNames(services: any[]): string {
+  getServiceNames(services: ServiceGet[]): string {
     if (!services || services.length === 0) return 'Không có dịch vụ';
-    return services.map((s: any) => s.name).join(', ');
+    return services
+      .map((service) => {
+        if (service.subServices == null || service.subServices.length == 0) {
+          return service.name;
+        }
+        return (
+          service.name +
+          ' [' +
+          service.subServices?.map((sub) => sub.name).join(', ') +
+          ']'
+        );
+      })
+      .join(', ');
+  }
+
+  getBookingStyle(booking: BookingGetForAdminRes) {
+    const start = new Date(`2000-01-01T${booking.startTime}`);
+    const end = new Date(`2000-01-01T${booking.endTime}`);
+    const startMinutes = start.getHours() * 60 + start.getMinutes();
+    const endMinutes = end.getHours() * 60 + end.getMinutes();
+    const baseMinutes = this.startHour * 60;
+    const top = startMinutes - baseMinutes;
+    const height = Math.max(30, endMinutes - startMinutes);
+
+    const isLong = height > 60;
+    const background = isLong
+      ? 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'
+      : 'linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%)';
+
+    return {
+      background,
+      top: `${top}px`,
+      height: `${height}px`,
+      position: 'absolute' as const,
+      left: '5px',
+      right: '5px',
+    };
+  }
+
+  formatTime(timeString: string): string {
+    const [h, m] = timeString.split(':');
+    return `${h}:${m}`;
   }
 
   formatDuration(duration: string): string {
     if (!duration) return '';
     const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
     if (!match) return duration;
-    const hours = match[1] ? parseInt(match[1]) : 0;
-    const minutes = match[2] ? parseInt(match[2]) : 0;
+    const hours = match[1] ? parseInt(match[1], 10) : 0;
+    const minutes = match[2] ? parseInt(match[2], 10) : 0;
     if (hours > 0 && minutes > 0) return `${hours}h ${minutes}p`;
     if (hours > 0) return `${hours}h`;
     if (minutes > 0) return `${minutes}p`;

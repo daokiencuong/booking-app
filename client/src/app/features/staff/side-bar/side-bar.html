@@ -1,0 +1,26 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h3>Staff Panel</h3>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a
+      routerLink="/staff/gantt-chart"
+      routerLinkActive="active"
+      class="nav-item"
+    >
+      <div class="nav-icon">📊</div>
+      <span class="nav-text">Gantt Chart</span>
+    </a>
+
+    <a routerLink="/staff/profile" routerLinkActive="active" class="nav-item">
+      <div class="nav-icon">👤</div>
+      <span class="nav-text">Profile</span>
+    </a>
+  </nav>
+
+  <button class="sidebar-logout" title="Logout" (click)="onLogOut()">
+    <span class="material-symbols-outlined"> logout </span>
+    <span class="logout-text">Logout</span>
+  </button>
+</div>

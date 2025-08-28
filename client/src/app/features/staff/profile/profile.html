@@ -1,1 +1,99 @@
-<p>profile works!</p>
+<div class="profile">
+  <div class="profile-header">
+    <h2>Thông Tin Cá Nhân</h2>
+  </div>
+
+  @if (staffProfile) {
+  <div class="profile-content">
+    <div class="profile-section">
+      <div class="section-header">
+        <h3>Thông Tin Cơ Bản</h3>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">ID:</div>
+          <div class="info-value">{{ staffProfile.id }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Họ và tên:</div>
+          <div class="info-value">{{ staffProfile.name }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Email:</div>
+          <div class="info-value">{{ staffProfile.email }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Vai trò:</div>
+          <div class="info-value role-{{ staffProfile.role.toLowerCase() }}">
+            {{ getRoleDisplayName(staffProfile.role) }}
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Trạng thái:</div>
+          <div
+            class="info-value {{ getStatusClass(staffProfile.staffActive) }}"
+          >
+            {{ getStatusDisplayName(staffProfile.staffActive) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="section-header">
+        <h3>Mô Tả</h3>
+      </div>
+
+      <div class="description-content">
+        <p>{{ staffProfile.description }}</p>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="section-header">
+        <h3>Thông Tin Hệ Thống</h3>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Ngày tạo:</div>
+          <div class="info-value">{{ formatDate(staffProfile.createdAt) }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Ngày cập nhật:</div>
+          <div class="info-value">
+            {{
+              staffProfile.updatedAt
+                ? formatDate(staffProfile.updatedAt)
+                : "Chưa cập nhật"
+            }}
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Tạo bởi:</div>
+          <div class="info-value">{{ staffProfile.createdBy }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Cập nhật bởi:</div>
+          <div class="info-value">
+            {{ staffProfile.updatedBy || "Chưa cập nhật" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="loading">
+    <div class="spinner"></div>
+    <p>Đang tải thông tin...</p>
+  </div>
+  }
+</div>

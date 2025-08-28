@@ -1,74 +1,50 @@
 <admin-section [sectionTitle]="'Calendar View'">
-  <div class="calendar-container">
-    <div class="date-picker-section">
-      <label for="dateInput">Chọn ngày:</label>
-      <input
-        type="date"
-        id="dateInput"
-        [(ngModel)]="selectedDate"
-        (change)="onDateChange()"
-        class="date-input"
-      />
+  <div class="gantt-chart">
+    <div class="gantt-header">
+      <h2>Lịch Hẹn</h2>
+      <div class="date-picker">
+        <label for="date">Chọn ngày:</label>
+        <input
+          type="date"
+          id="date"
+          [(ngModel)]="selectedDate"
+          (change)="onDateChange()"
+        />
+      </div>
     </div>
 
     <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
 
-    <div *ngIf="!loading && staffRows.length > 0" class="gantt-table-container">
-      <table class="gantt-table" role="grid" aria-label="Gantt schedule">
-        <thead>
-          <tr>
-            <th class="corner-sticky" scope="col">Thời gian</th>
-            <th
-              class="staff-col-header sticky-top"
-              *ngFor="let staff of staffRows"
-              scope="col"
-            >
-              {{ staff.name }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="slot-row"
-            *ngFor="let row of verticalRows; let rowIndex = index"
+    <div *ngIf="!loading && staffRows.length > 0" class="gantt-container">
+      <div class="time-column">
+        <div class="time-header">Giờ</div>
+        @for (timeSlot of timeSlots; track timeSlot) {
+        <div class="time-slot">{{ timeSlot }}</div>
+        }
+      </div>
+
+      @for (staff of staffRows; track staff.id) {
+      <div class="booking-column">
+        <div class="booking-header">{{ staff.name }}</div>
+        <div class="booking-timeline">
+          @for (timeSlot of timeSlots; track timeSlot) {
+          <div class="timeline-slot"></div>
+          } @for (booking of bookingsForStaff(staff.id); track booking.id) {
+          <div
+            class="booking-item"
+            [ngStyle]="getBookingStyle(booking)"
+            (click)="openBookingDetail(booking)"
           >
-            <th class="time-cell sticky-col" scope="row">
-              {{ timeSlots[rowIndex] }}
-            </th>
-            <ng-container *ngFor="let cell of row">
-              <td
-                *ngIf="cell.type === 'gap'"
-                class="gap-cell"
-                aria-hidden="true"
-              ></td>
-              <td
-                *ngIf="cell.type === 'booking'"
-                class="booking-cell"
-                [attr.rowspan]="cell.rowspan"
-                (click)="openBookingDetail(cell.booking!)"
-                [title]="
-                  'Khách: ' +
-                  cell.booking!.customerName +
-                  ' | ' +
-                  formatTime(cell.booking!.startTime) +
-                  '-' +
-                  formatTime(cell.booking!.endTime)
-                "
-              >
-                <div class="booking-content">
-                  <div class="booking-title">
-                    {{ cell.booking!.customerName }}
-                  </div>
-                  <div class="booking-time">
-                    {{ formatTime(cell.booking!.startTime) }} -
-                    {{ formatTime(cell.booking!.endTime) }}
-                  </div>
-                </div>
-              </td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
+            <div class="booking-customer">{{ booking.customerName }}</div>
+            <div class="booking-time">
+              {{ formatTime(booking.startTime) }} -
+              {{ formatTime(booking.endTime) }}
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
     </div>
 
     <div *ngIf="!loading && staffRows.length === 0" class="no-data">
@@ -115,7 +91,7 @@
 
         <div class="detail-row">
           <strong>Thời lượng:</strong>
-          <span>{{ formatDuration(selectedBooking.durationTime) }}</span>
+          <span>{{ selectedBooking.durationTime | duration : "string" }}</span>
         </div>
 
         <div class="detail-row">
@@ -125,7 +101,7 @@
 
         <div class="detail-row">
           <strong>Tổng tiền:</strong>
-          <span>{{ selectedBooking.totalPrice | currency : "VND" }}</span>
+          <span>{{ selectedBooking.totalPrice | currency : "CAD" }}</span>
         </div>
       </div>
 
@@ -134,5 +110,4 @@
       </div>
     </div>
   </div>
-  <app-gant-chart/>
 </admin-section>

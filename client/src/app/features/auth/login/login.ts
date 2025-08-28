@@ -5,10 +5,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import { AuthService } from '../../../core/services/auth-service';
 import { LoginReq } from '../../../model/request/auth/login-req.model';
-import { NgToastService } from 'ng-angular-popup';
-import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -35,15 +35,14 @@ export class Login {
     this.authService.login(loginData).subscribe({
       next: (res) => {
         this.authService.saveAccessToken(res.access_token);
-        if(res.user.role === "ADMIN"){
-          this.router.navigate(['/admin']); 
+        if (res.user.role === 'ADMIN') {
+          this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/staff']);
         }
       },
       error: (err) => {
-        const message =
-          err?.error?.message || err?.message || 'Login failed';
+        const message = err?.error?.message || err?.message || 'Login failed';
         const error = err?.error?.error || 'Unknown error occurred';
         this.toast.danger(message, error, 3000);
       },

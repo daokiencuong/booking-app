@@ -9,3 +9,7 @@ export interface LoginRes {
   user: User;
   access_token: string;
 }
+
+export interface UserInfoRes {
+  user: User;
+}

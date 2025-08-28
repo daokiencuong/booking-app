@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { BookingGetForAdminRes } from '../../model/response/booking/booking-get-for-admin-res.model';
 import { ResultPagination } from '../../model/response/common/result-pagination.model';
 import { ServiceCategoryGet } from '../../model/response/service/service-category-get.model';
+import { BookingGetForStaffRes } from '../../model/response/booking/booking-get-for-staff-res.model';
 
 @Injectable({
   providedIn: 'root',
@@ -49,4 +50,13 @@ export class BookingService {
       `${environment.apiUrl}/admin/booking?filter=bookingDate:'${bookingDate}'`
     );
   }
+
+  getAllBookingForStaff(
+    bookingDate: string
+  ): Observable<ResultPagination<BookingGetForStaffRes[]>> {
+    return this.http.get<ResultPagination<BookingGetForStaffRes[]>>(
+      `${environment.apiUrl}/staff/booking?filter=bookingDate:'${bookingDate}'`
+    );
+  }
+  
 }

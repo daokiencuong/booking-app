@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { Footer } from './shared/components/footer/footer';
 import { PublicLayout } from './layouts/public-layout/public-layout';
+import { AdminLayoutGuard } from './core/guards/admin-layout-guard';
+import { StaffLayoutGuard } from './core/guards/staff-layout-guard';
 
 export const routes: Routes = [
   {
@@ -11,12 +13,13 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./features/auth/login/login').then((m) => m.Login),
+      import('./features/auth/login/login').then((m) => m.Login)
   },
   {
     path: 'admin',
     loadComponent: () =>
       import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
+    canActivate: [AdminLayoutGuard],
     children: [
       {
         path: '',
@@ -67,5 +70,29 @@ export const routes: Routes = [
     path: 'staff',
     loadComponent: () =>
       import('./layouts/staff-layout/staff-layout').then((m) => m.StaffLayout),
+    canActivate: [StaffLayoutGuard],
+    children: [
+      {
+        path: 'gantt-chart',
+        title: 'Gantt Chart',
+        loadComponent: () =>
+          import('./features/staff/gantt-chart/gantt-chart').then(
+            (m) => m.GanttChartComponent
+          ),
+      },
+      {
+        path: 'profile',
+        title: 'Profile',
+        loadComponent: () =>
+          import('./features/staff/profile/profile').then(
+            (m) => m.ProfileComponent
+          ),
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'gantt-chart',
+      },
+    ],
   },
 ];
