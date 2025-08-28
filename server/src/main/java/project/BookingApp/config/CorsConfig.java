@@ -18,8 +18,10 @@ public class CorsConfig {
 
 //        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000",
-                "http://localhost:4200", "http://localhost:5173"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://booking.regalnailsbrockville.ca",
+                "http://booking.regalnailsbrockville.ca",
+                "http://localhost:4200"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(
