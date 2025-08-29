@@ -8,6 +8,7 @@ import project.BookingApp.domain.request.user.ReqUserCreateDTO;
 import project.BookingApp.repository.UserRepository;
 import project.BookingApp.repository.WorkingScheduleRepository;
 import project.BookingApp.service.UserService;
+import project.BookingApp.util.constant.RoleEnum;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -53,6 +54,7 @@ public class WorkingScheduleInitializer implements CommandLineRunner {
             ReqUserCreateDTO user = new ReqUserCreateDTO();
             user.setName("SuperAdmin");
             user.setEmail("superadmin@gmail.com");
+            user.setRole(RoleEnum.ADMIN);
 
             String password = String.valueOf(Math.random()*1000) + System.currentTimeMillis();
             System.out.println("Password for superadmin: " + password);

@@ -37,5 +37,6 @@ out/
 .vscode/
 
 # ignore secret config
-application-secret.properties
+application-dev.properties
+application-prod.properties
 

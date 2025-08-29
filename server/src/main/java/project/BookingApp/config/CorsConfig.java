@@ -20,7 +20,7 @@ public class CorsConfig {
 
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://booking.regalnailsbrockville.ca",
-                "http://booking.regalnailsbrockville.ca",
+                "https://api.regalnailsbrockville.ca",
                 "http://localhost:4200"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
