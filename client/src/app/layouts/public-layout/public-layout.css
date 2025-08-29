@@ -50,9 +50,10 @@
   }
 
   .booking-nav {
-    display: inline;
+    display: block;
     position: sticky;
     bottom: 0;
+    position: -webkit-sticky;
   }
 }
 
